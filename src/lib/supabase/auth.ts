@@ -1,3 +1,4 @@
+import { cache } from "react";
 import { redirect } from "next/navigation";
 import { createClient } from "./server";
 import type { UserRole } from "./provisioning";
@@ -15,8 +16,9 @@ export interface UserProfile {
 
 /**
  * Returns the currently authenticated user from session cookies.
+ * Deduplicated per-request via React cache.
  */
-export async function getCurrentUser() {
+export const getCurrentUser = cache(async () => {
   const supabase = await createClient();
   const {
     data: { user },
@@ -28,13 +30,14 @@ export async function getCurrentUser() {
   }
 
   return user;
-}
+});
 
 /**
  * Returns the profile for the current user.
  * Rejects inactive personnel immediately.
+ * Deduplicated per-request via React cache.
  */
-export async function getCurrentProfile(): Promise<UserProfile | null> {
+export const getCurrentProfile = cache(async (): Promise<UserProfile | null> => {
   const user = await getCurrentUser();
   if (!user) {
     return null;
@@ -66,7 +69,7 @@ export async function getCurrentProfile(): Promise<UserProfile | null> {
     createdAt: profile.created_at,
     updatedAt: profile.updated_at,
   };
-}
+});
 
 /**
  * Requires an authenticated user with an active profile.

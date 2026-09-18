@@ -10,6 +10,11 @@ import { ClientFormDialog } from "./client-form-dialog";
 import { ClientArchiveDialog } from "./client-archive-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 
 interface ClientListProps {
   clients: ClientWithStats[];
@@ -180,25 +185,43 @@ export function ClientList({ clients, userRole, searchQuery = "" }: ClientListPr
                     <td className="py-3 px-4 text-right">
                       <div className="inline-flex items-center gap-1">
                         {canCreateOrEdit && (
-                          <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            onClick={() => handleOpenEdit(client)}
-                            aria-label={`Edit ${client.name}`}
-                          >
-                            <Edit2 className="size-3.5 text-muted-foreground hover:text-foreground" />
-                          </Button>
+                          <Tooltip>
+                            <TooltipTrigger
+                              render={
+                                <Button
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  onClick={() => handleOpenEdit(client)}
+                                  aria-label={`Edit ${client.name}`}
+                                >
+                                  <Edit2 className="size-3.5 text-muted-foreground hover:text-foreground" />
+                                </Button>
+                              }
+                            />
+                            <TooltipContent side="top">
+                              Edit data client
+                            </TooltipContent>
+                          </Tooltip>
                         )}
                         {canArchive && (
-                          <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            onClick={() => setArchivingClient(client)}
-                            aria-label={`Arsipkan ${client.name}`}
-                            className="text-destructive/70 hover:text-destructive"
-                          >
-                            <Archive className="size-3.5" />
-                          </Button>
+                          <Tooltip>
+                            <TooltipTrigger
+                              render={
+                                <Button
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  onClick={() => setArchivingClient(client)}
+                                  aria-label={`Arsipkan ${client.name}`}
+                                  className="text-destructive/70 hover:text-destructive"
+                                >
+                                  <Archive className="size-3.5" />
+                                </Button>
+                              }
+                            />
+                            <TooltipContent side="top">
+                              Arsipkan client
+                            </TooltipContent>
+                          </Tooltip>
                         )}
                       </div>
                     </td>

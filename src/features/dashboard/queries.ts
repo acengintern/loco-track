@@ -42,39 +42,62 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
   const supabase = await createClient();
   const today = getTodayIsoDate();
 
-  // 1. Active Projects Count
-  const { count: activeProjectsCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .is("deleted_at", null)
-    .not("status", "in", '("PUBLISHED","DONE","CANCELLED")');
+  const [
+    { count: activeProjectsCount },
+    { count: overdueProjectsCount },
+    { count: activeUsersCount },
+    { count: publishedProjectsCount },
+    { data: statusRows },
+    { data: recentActivityRows },
+  ] = await Promise.all([
+    // 1. Active Projects Count
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .is("deleted_at", null)
+      .not("status", "in", '("PUBLISHED","DONE","CANCELLED")'),
 
-  // 2. Overdue Projects Count
-  const { count: overdueProjectsCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .is("deleted_at", null)
-    .not("status", "in", '("PUBLISHED","DONE","CANCELLED")')
-    .lt("deadline", today);
+    // 2. Overdue Projects Count
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .is("deleted_at", null)
+      .not("status", "in", '("PUBLISHED","DONE","CANCELLED")')
+      .lt("deadline", today),
 
-  // 3. Active Users Count
-  const { count: activeUsersCount } = await supabase
-    .from("profiles")
-    .select("id", { count: "exact", head: true })
-    .eq("is_active", true);
+    // 3. Active Users Count
+    supabase
+      .from("profiles")
+      .select("id", { count: "exact", head: true })
+      .eq("is_active", true),
 
-  // 4. Published Projects Count
-  const { count: publishedProjectsCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .is("deleted_at", null)
-    .eq("status", "PUBLISHED");
+    // 4. Published Projects Count
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .is("deleted_at", null)
+      .eq("status", "PUBLISHED"),
 
-  // 5. Workflow Distribution across all projects
-  const { data: statusRows } = await supabase
-    .from("projects")
-    .select("status")
-    .is("deleted_at", null);
+    // 5. Workflow Distribution across all projects
+    supabase
+      .from("projects")
+      .select("status")
+      .is("deleted_at", null),
+
+    // 6. Recent Activity Log (10 items)
+    supabase
+      .from("activity_logs")
+      .select(`
+        id,
+        event_type,
+        created_at,
+        metadata,
+        project:project_id(name),
+        actor:user_id(full_name)
+      `)
+      .order("created_at", { ascending: false })
+      .limit(10),
+  ]);
 
   const statusMap: Record<string, number> = {};
   (statusRows || []).forEach((row) => {
@@ -97,20 +120,6 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
     label: item.label,
     count: statusMap[item.status] || 0,
   }));
-
-  // 6. Recent Activity Log (10 items)
-  const { data: recentActivityRows } = await supabase
-    .from("activity_logs")
-    .select(`
-      id,
-      event_type,
-      created_at,
-      metadata,
-      project:project_id(name),
-      actor:user_id(full_name)
-    `)
-    .order("created_at", { ascending: false })
-    .limit(10);
 
   const recentActivity = (recentActivityRows || []).map((row) => {
     const proj = Array.isArray(row.project) ? row.project[0] : row.project;
@@ -143,51 +152,89 @@ export async function getCreativeDirectorDashboardData(): Promise<CreativeDirect
   const today = getTodayIsoDate();
   const nextWeek = getSevenDaysAheadIsoDate();
 
-  // 1. Tasks Waiting QC (IN_REVIEW)
-  const { count: tasksWaitingQcCount } = await supabase
-    .from("tasks")
-    .select("id", { count: "exact", head: true })
-    .is("deleted_at", null)
-    .eq("status", "IN_REVIEW");
+  const [
+    { count: tasksWaitingQcCount },
+    { count: tasksInRevisionCount },
+    { count: projectsInQcCount },
+    { count: upcomingDeadlinesCount },
+    { data: qcRows },
+    { data: revRows },
+    { data: creativeProfiles },
+    { data: activeTasks },
+  ] = await Promise.all([
+    // 1. Tasks Waiting QC (IN_REVIEW)
+    supabase
+      .from("tasks")
+      .select("id", { count: "exact", head: true })
+      .is("deleted_at", null)
+      .eq("status", "IN_REVIEW"),
 
-  // 2. Tasks in Revision (REVISION_REQUESTED)
-  const { count: tasksInRevisionCount } = await supabase
-    .from("tasks")
-    .select("id", { count: "exact", head: true })
-    .is("deleted_at", null)
-    .eq("status", "REVISION_REQUESTED");
+    // 2. Tasks in Revision (REVISION_REQUESTED)
+    supabase
+      .from("tasks")
+      .select("id", { count: "exact", head: true })
+      .is("deleted_at", null)
+      .eq("status", "REVISION_REQUESTED"),
 
-  // 3. Projects in INTERNAL_QC
-  const { count: projectsInQcCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .is("deleted_at", null)
-    .eq("status", "INTERNAL_QC");
+    // 3. Projects in INTERNAL_QC
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .is("deleted_at", null)
+      .eq("status", "INTERNAL_QC"),
 
-  // 4. Upcoming Deadlines Count (projects active due within 7 days)
-  const { count: upcomingDeadlinesCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .is("deleted_at", null)
-    .not("status", "in", '("PUBLISHED","DONE","CANCELLED")')
-    .gte("deadline", today)
-    .lte("deadline", nextWeek);
+    // 4. Upcoming Deadlines Count (projects active due within 7 days)
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .is("deleted_at", null)
+      .not("status", "in", '("PUBLISHED","DONE","CANCELLED")')
+      .gte("deadline", today)
+      .lte("deadline", nextWeek),
 
-  // 5. QC Queue (Tasks currently in IN_REVIEW)
-  const { data: qcRows } = await supabase
-    .from("tasks")
-    .select(`
-      id,
-      title,
-      deadline,
-      project:project_id(id, name),
-      assignee:current_assignee_id(full_name),
-      files:project_files(version, deleted_at)
-    `)
-    .is("deleted_at", null)
-    .eq("status", "IN_REVIEW")
-    .order("deadline", { ascending: true })
-    .limit(10);
+    // 5. QC Queue (Tasks currently in IN_REVIEW)
+    supabase
+      .from("tasks")
+      .select(`
+        id,
+        title,
+        deadline,
+        project:project_id(id, name),
+        assignee:current_assignee_id(full_name),
+        files:project_files(version, deleted_at)
+      `)
+      .is("deleted_at", null)
+      .eq("status", "IN_REVIEW")
+      .order("deadline", { ascending: true })
+      .limit(10),
+
+    // 6. Revision Queue (Tasks currently in REVISION_REQUESTED)
+    supabase
+      .from("tasks")
+      .select(`
+        id,
+        title,
+        project:project_id(id, name),
+        assignee:current_assignee_id(full_name),
+        revision_requests(notes, round_number, status)
+      `)
+      .is("deleted_at", null)
+      .eq("status", "REVISION_REQUESTED")
+      .limit(10),
+
+    // 7. Creative Workload Summary (Active Creatives)
+    supabase
+      .from("profiles")
+      .select("id, full_name, role")
+      .in("role", ["GRAPHIC_DESIGNER", "VIDEO_EDITOR"])
+      .eq("is_active", true),
+
+    supabase
+      .from("tasks")
+      .select("id, current_assignee_id, status")
+      .is("deleted_at", null)
+      .not("status", "in", '("APPROVED","COMPLETED")'),
+  ]);
 
   const qcQueue = (qcRows || []).map((row) => {
     const proj = Array.isArray(row.project) ? row.project[0] : row.project;
@@ -206,20 +253,6 @@ export async function getCreativeDirectorDashboardData(): Promise<CreativeDirect
     };
   });
 
-  // 6. Revision Queue (Tasks currently in REVISION_REQUESTED)
-  const { data: revRows } = await supabase
-    .from("tasks")
-    .select(`
-      id,
-      title,
-      project:project_id(id, name),
-      assignee:current_assignee_id(full_name),
-      revision_requests(notes, round_number, status)
-    `)
-    .is("deleted_at", null)
-    .eq("status", "REVISION_REQUESTED")
-    .limit(10);
-
   const revisionQueue = (revRows || []).map((row) => {
     const proj = Array.isArray(row.project) ? row.project[0] : row.project;
     const assignee = Array.isArray(row.assignee) ? row.assignee[0] : row.assignee;
@@ -237,19 +270,6 @@ export async function getCreativeDirectorDashboardData(): Promise<CreativeDirect
       roundNumber: openRev?.round_number || 1,
     };
   });
-
-  // 7. Creative Workload Summary (Active Creatives)
-  const { data: creativeProfiles } = await supabase
-    .from("profiles")
-    .select("id, full_name, role")
-    .in("role", ["GRAPHIC_DESIGNER", "VIDEO_EDITOR"])
-    .eq("is_active", true);
-
-  const { data: activeTasks } = await supabase
-    .from("tasks")
-    .select("id, current_assignee_id, status")
-    .is("deleted_at", null)
-    .not("status", "in", '("APPROVED","COMPLETED")');
 
   const creativeWorkloadSummary = (creativeProfiles || []).map((profile) => {
     const userTasks = (activeTasks || []).filter((t) => t.current_assignee_id === profile.id);
@@ -281,50 +301,74 @@ export async function getAccountExecutiveDashboardData(): Promise<AccountExecuti
   const supabase = await createClient();
   const today = getTodayIsoDate();
 
-  // 1. Active Projects Count
-  const { count: activeProjectsCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .is("deleted_at", null)
-    .not("status", "in", '("PUBLISHED","DONE","CANCELLED")');
+  const [
+    { count: activeProjectsCount },
+    { count: clientReviewProjectsCount },
+    { count: overdueProjectsCount },
+    { count: publishedProjectsCount },
+    { data: crRows },
+    { data: deadlineRows },
+  ] = await Promise.all([
+    // 1. Active Projects Count
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .is("deleted_at", null)
+      .not("status", "in", '("PUBLISHED","DONE","CANCELLED")'),
 
-  // 2. Client Review Projects Count
-  const { count: clientReviewProjectsCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .is("deleted_at", null)
-    .eq("status", "CLIENT_REVIEW");
+    // 2. Client Review Projects Count
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .is("deleted_at", null)
+      .eq("status", "CLIENT_REVIEW"),
 
-  // 3. Overdue Projects Count
-  const { count: overdueProjectsCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .is("deleted_at", null)
-    .not("status", "in", '("PUBLISHED","DONE","CANCELLED")')
-    .lt("deadline", today);
+    // 3. Overdue Projects Count
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .is("deleted_at", null)
+      .not("status", "in", '("PUBLISHED","DONE","CANCELLED")')
+      .lt("deadline", today),
 
-  // 4. Published Projects Count
-  const { count: publishedProjectsCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .is("deleted_at", null)
-    .eq("status", "PUBLISHED");
+    // 4. Published Projects Count
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .is("deleted_at", null)
+      .eq("status", "PUBLISHED"),
 
-  // 5. Projects in Client Review List
-  const { data: crRows } = await supabase
-    .from("projects")
-    .select(`
-      id,
-      name,
-      deadline,
-      brand:brand_id(name),
-      sms_owner:sms_owner_id(full_name),
-      client_reviews(round_number, overall_verdict)
-    `)
-    .is("deleted_at", null)
-    .eq("status", "CLIENT_REVIEW")
-    .order("deadline", { ascending: true })
-    .limit(8);
+    // 5. Projects in Client Review List
+    supabase
+      .from("projects")
+      .select(`
+        id,
+        name,
+        deadline,
+        brand:brand_id(name),
+        sms_owner:sms_owner_id(full_name),
+        client_reviews(round_number, overall_verdict)
+      `)
+      .is("deleted_at", null)
+      .eq("status", "CLIENT_REVIEW")
+      .order("deadline", { ascending: true })
+      .limit(8),
+
+    // 6. Upcoming Deadlines List (active projects ordered by deadline)
+    supabase
+      .from("projects")
+      .select(`
+        id,
+        name,
+        status,
+        deadline,
+        brand:brand_id(name)
+      `)
+      .is("deleted_at", null)
+      .not("status", "in", '("PUBLISHED","DONE","CANCELLED")')
+      .order("deadline", { ascending: true })
+      .limit(8),
+  ]);
 
   const clientReviewProjects = (crRows || []).map((row) => {
     const brand = Array.isArray(row.brand) ? row.brand[0] : row.brand;
@@ -342,21 +386,6 @@ export async function getAccountExecutiveDashboardData(): Promise<AccountExecuti
       smsOwnerName: (sms as { full_name: string } | null)?.full_name || "Belum ditugaskan",
     };
   });
-
-  // 6. Upcoming Deadlines List (active projects ordered by deadline)
-  const { data: deadlineRows } = await supabase
-    .from("projects")
-    .select(`
-      id,
-      name,
-      status,
-      deadline,
-      brand:brand_id(name)
-    `)
-    .is("deleted_at", null)
-    .not("status", "in", '("PUBLISHED","DONE","CANCELLED")')
-    .order("deadline", { ascending: true })
-    .limit(8);
 
   const upcomingDeadlines = (deadlineRows || []).map((row) => {
     const brand = Array.isArray(row.brand) ? row.brand[0] : row.brand;
@@ -387,52 +416,106 @@ export async function getSmsDashboardData(smsUserId: string): Promise<SmsDashboa
   const supabase = await createClient();
   const today = getTodayIsoDate();
 
-  // 1. My Active Projects Count (Owned by caller)
-  const { count: myActiveProjectsCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .eq("sms_owner_id", smsUserId)
-    .is("deleted_at", null)
-    .not("status", "in", '("PUBLISHED","DONE","CANCELLED")');
+  const [
+    { count: myActiveProjectsCount },
+    { count: awaitingClientProjectsCount },
+    { count: readyToPublishProjectsCount },
+    { count: overdueOwnedProjectsCount },
+    { data: qcProjects },
+    { data: pubRows },
+    { data: clientRevTasks },
+    { data: ownedRows },
+  ] = await Promise.all([
+    // 1. My Active Projects Count (Owned by caller)
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .eq("sms_owner_id", smsUserId)
+      .is("deleted_at", null)
+      .not("status", "in", '("PUBLISHED","DONE","CANCELLED")'),
 
-  // 2. Awaiting Client Projects Count
-  const { count: awaitingClientProjectsCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .eq("sms_owner_id", smsUserId)
-    .is("deleted_at", null)
-    .eq("status", "CLIENT_REVIEW");
+    // 2. Awaiting Client Projects Count
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .eq("sms_owner_id", smsUserId)
+      .is("deleted_at", null)
+      .eq("status", "CLIENT_REVIEW"),
 
-  // 3. Ready to Publish Projects Count
-  const { count: readyToPublishProjectsCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .eq("sms_owner_id", smsUserId)
-    .is("deleted_at", null)
-    .eq("status", "APPROVED");
+    // 3. Ready to Publish Projects Count
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .eq("sms_owner_id", smsUserId)
+      .is("deleted_at", null)
+      .eq("status", "APPROVED"),
 
-  // 4. Overdue Owned Projects Count
-  const { count: overdueOwnedProjectsCount } = await supabase
-    .from("projects")
-    .select("id", { count: "exact", head: true })
-    .eq("sms_owner_id", smsUserId)
-    .is("deleted_at", null)
-    .not("status", "in", '("PUBLISHED","DONE","CANCELLED")')
-    .lt("deadline", today);
+    // 4. Overdue Owned Projects Count
+    supabase
+      .from("projects")
+      .select("id", { count: "exact", head: true })
+      .eq("sms_owner_id", smsUserId)
+      .is("deleted_at", null)
+      .not("status", "in", '("PUBLISHED","DONE","CANCELLED")')
+      .lt("deadline", today),
 
-  // 5. Ready for Client Presentation (INTERNAL_QC where all tasks are APPROVED)
-  const { data: qcProjects } = await supabase
-    .from("projects")
-    .select(`
-      id,
-      name,
-      deadline,
-      brand:brand_id(name),
-      tasks(id, status, requires_qc)
-    `)
-    .eq("sms_owner_id", smsUserId)
-    .is("deleted_at", null)
-    .eq("status", "INTERNAL_QC");
+    // 5. Ready for Client Presentation (INTERNAL_QC where all tasks are APPROVED)
+    supabase
+      .from("projects")
+      .select(`
+        id,
+        name,
+        deadline,
+        brand:brand_id(name),
+        tasks(id, status, requires_qc)
+      `)
+      .eq("sms_owner_id", smsUserId)
+      .is("deleted_at", null)
+      .eq("status", "INTERNAL_QC"),
+
+    // 6. Ready to Publish List (status = APPROVED)
+    supabase
+      .from("projects")
+      .select(`
+        id,
+        name,
+        deadline,
+        brand:brand_id(name)
+      `)
+      .eq("sms_owner_id", smsUserId)
+      .is("deleted_at", null)
+      .eq("status", "APPROVED"),
+
+    // 7. Active Client Revisions on Owned Projects
+    supabase
+      .from("tasks")
+      .select(`
+        id,
+        title,
+        project:project_id(id, name, sms_owner_id),
+        assignee:current_assignee_id(full_name),
+        revision_requests!inner(notes, source, status)
+      `)
+      .is("deleted_at", null)
+      .eq("revision_requests.source", "CLIENT")
+      .in("revision_requests.status", ["OPEN", "IN_PROGRESS"]),
+
+    // 8. Owned Projects Table (Active)
+    supabase
+      .from("projects")
+      .select(`
+        id,
+        name,
+        status,
+        deadline,
+        brand:brand_id(name)
+      `)
+      .eq("sms_owner_id", smsUserId)
+      .is("deleted_at", null)
+      .not("status", "in", '("PUBLISHED","DONE","CANCELLED")')
+      .order("deadline", { ascending: true })
+      .limit(10),
+  ]);
 
   const readyForClient = (qcProjects || [])
     .filter((p) => {
@@ -449,19 +532,6 @@ export async function getSmsDashboardData(smsUserId: string): Promise<SmsDashboa
       };
     });
 
-  // 6. Ready to Publish List (status = APPROVED)
-  const { data: pubRows } = await supabase
-    .from("projects")
-    .select(`
-      id,
-      name,
-      deadline,
-      brand:brand_id(name)
-    `)
-    .eq("sms_owner_id", smsUserId)
-    .is("deleted_at", null)
-    .eq("status", "APPROVED");
-
   const readyToPublish = (pubRows || []).map((p) => {
     const brand = Array.isArray(p.brand) ? p.brand[0] : p.brand;
     return {
@@ -471,20 +541,6 @@ export async function getSmsDashboardData(smsUserId: string): Promise<SmsDashboa
       deadline: p.deadline,
     };
   });
-
-  // 7. Active Client Revisions on Owned Projects
-  const { data: clientRevTasks } = await supabase
-    .from("tasks")
-    .select(`
-      id,
-      title,
-      project:project_id(id, name, sms_owner_id),
-      assignee:current_assignee_id(full_name),
-      revision_requests!inner(notes, source, status)
-    `)
-    .is("deleted_at", null)
-    .eq("revision_requests.source", "CLIENT")
-    .in("revision_requests.status", ["OPEN", "IN_PROGRESS"]);
 
   const activeClientRevisions = (clientRevTasks || [])
     .filter((t) => {
@@ -504,22 +560,6 @@ export async function getSmsDashboardData(smsUserId: string): Promise<SmsDashboa
         notes: rev?.notes || "Revisi dari client sedang berlangsung",
       };
     });
-
-  // 8. Owned Projects Table (Active)
-  const { data: ownedRows } = await supabase
-    .from("projects")
-    .select(`
-      id,
-      name,
-      status,
-      deadline,
-      brand:brand_id(name)
-    `)
-    .eq("sms_owner_id", smsUserId)
-    .is("deleted_at", null)
-    .not("status", "in", '("PUBLISHED","DONE","CANCELLED")')
-    .order("deadline", { ascending: true })
-    .limit(10);
 
   const ownedProjects = (ownedRows || []).map((row) => {
     const brand = Array.isArray(row.brand) ? row.brand[0] : row.brand;
@@ -552,51 +592,52 @@ export async function getCreativeDashboardData(creativeUserId: string): Promise<
   const supabase = await createClient();
   const today = getTodayIsoDate();
 
-  // 1. Fetch all active tasks assigned to the user
-  const { data: activeTaskRows } = await supabase
-    .from("tasks")
-    .select(`
-      id,
-      title,
-      status,
-      priority,
-      deadline,
-      project:projects!inner (
+  const [{ data: activeTaskRows }, { count: totalCount }] = await Promise.all([
+    // 1. Fetch all active tasks assigned to the user
+    supabase
+      .from("tasks")
+      .select(`
         id,
-        name,
-        project_code,
-        brand:brands (
+        title,
+        status,
+        priority,
+        deadline,
+        project:projects!inner (
           id,
           name,
-          client:clients (
+          project_code,
+          brand:brands (
             id,
-            name
+            name,
+            client:clients (
+              id,
+              name
+            )
           )
+        ),
+        revision_requests (
+          id,
+          source,
+          notes,
+          status,
+          created_at,
+          round_number
         )
-      ),
-      revision_requests (
-        id,
-        source,
-        notes,
-        status,
-        created_at,
-        round_number
-      )
-    `)
-    .eq("current_assignee_id", creativeUserId)
-    .is("deleted_at", null)
-    .not("status", "in", '("APPROVED","COMPLETED")')
-    .order("deadline", { ascending: true });
+      `)
+      .eq("current_assignee_id", creativeUserId)
+      .is("deleted_at", null)
+      .not("status", "in", '("APPROVED","COMPLETED")')
+      .order("deadline", { ascending: true }),
+
+    // 2. Total assigned tasks count ever
+    supabase
+      .from("tasks")
+      .select("id", { count: "exact", head: true })
+      .eq("current_assignee_id", creativeUserId)
+      .is("deleted_at", null),
+  ]);
 
   const tasks = activeTaskRows || [];
-
-  // 2. Total assigned tasks count ever (to distinguish Case A: never assigned vs Case B: all completed)
-  const { count: totalCount } = await supabase
-    .from("tasks")
-    .select("id", { count: "exact", head: true })
-    .eq("current_assignee_id", creativeUserId)
-    .is("deleted_at", null);
-
   const totalAssignedTasksCount = totalCount || 0;
 
   // 3. Compute Metrics

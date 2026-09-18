@@ -36,6 +36,11 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import { cn } from "cn";
 
 interface TaskKanbanBoardProps {
@@ -201,12 +206,21 @@ export function TaskKanbanBoard({
 
                           {/* Quick Dropdown Menu */}
                           <DropdownMenu>
-                            <DropdownMenuTrigger
-                              className="size-6 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
-                              aria-label="Menu opsi tugas"
-                            >
-                              <MoreVertical className="size-3" />
-                            </DropdownMenuTrigger>
+                            <Tooltip>
+                              <TooltipTrigger
+                                render={
+                                  <DropdownMenuTrigger
+                                    className="size-6 flex items-center justify-center rounded text-muted-foreground hover:text-foreground hover:bg-muted/80 transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring"
+                                    aria-label="Menu opsi tugas"
+                                  >
+                                    <MoreVertical className="size-3" />
+                                  </DropdownMenuTrigger>
+                                }
+                              />
+                              <TooltipContent side="top">
+                                Opsi tugas
+                              </TooltipContent>
+                            </Tooltip>
                             <DropdownMenuContent align="end" className="w-44 text-xs">
                               <DropdownMenuItem
                                 onClick={() => onOpenDeliverables(task)}

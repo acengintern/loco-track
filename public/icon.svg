@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" fill="none">
+  <rect width="32" height="32" rx="7" fill="#09090b" stroke="#27272a" stroke-width="1" />
+  <text x="7" y="21" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif" font-size="13" font-weight="800" fill="#f8fafc" letter-spacing="-0.5">LT</text>
+  <circle cx="25" cy="9" r="2.5" fill="#10b981" />
+</svg>

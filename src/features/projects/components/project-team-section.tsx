@@ -10,6 +10,11 @@ import { addProjectMemberAction, removeProjectMemberAction } from "../actions";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
 import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -225,22 +230,31 @@ export function ProjectTeamSection({
                 </div>
 
                 {canManageTeam && !isOwner && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon-xs"
-                    aria-label={`Hapus ${member.user.full_name} dari roster`}
-                    onClick={() => {
-                      setRemoveError(null);
-                      setMemberToRemove({
-                        id: member.user_id,
-                        name: member.user.full_name,
-                      });
-                    }}
-                    className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive shrink-0"
-                  >
-                    <Trash2 className="size-3.5" />
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon-xs"
+                          aria-label={`Hapus ${member.user.full_name} dari roster`}
+                          onClick={() => {
+                            setRemoveError(null);
+                            setMemberToRemove({
+                              id: member.user_id,
+                              name: member.user.full_name,
+                            });
+                          }}
+                          className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive shrink-0"
+                        >
+                          <Trash2 className="size-3.5" />
+                        </Button>
+                      }
+                    />
+                    <TooltipContent side="top">
+                      Hapus dari tim project
+                    </TooltipContent>
+                  </Tooltip>
                 )}
               </div>
             );

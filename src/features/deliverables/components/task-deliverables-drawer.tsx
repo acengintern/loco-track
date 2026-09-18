@@ -20,6 +20,11 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/toast";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import { TaskStatusBadge, TaskTypeBadge, TaskPriorityBadge } from "@/features/tasks/components/task-badges";
 import type { TaskWithRelations, TaskStatus, TaskType } from "@/features/tasks/types";
 import type { DeliverableFile } from "../types";
@@ -533,20 +538,29 @@ export function TaskDeliverablesDrawer({
                     </Button>
 
                     {canDeleteFile(latestDeliverable) && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => handleDelete(latestDeliverable)}
-                        disabled={deletingFileId === latestDeliverable.id}
-                        className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive"
-                        title="Hapus versi ini"
-                      >
-                        {deletingFileId === latestDeliverable.id ? (
-                          <Loader2 className="size-3 animate-spin" />
-                        ) : (
-                          <Trash2 className="size-3" />
-                        )}
-                      </Button>
+                      <Tooltip>
+                        <TooltipTrigger
+                          render={
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleDelete(latestDeliverable)}
+                              disabled={deletingFileId === latestDeliverable.id}
+                              className="h-7 w-7 p-0 text-muted-foreground hover:text-destructive cursor-pointer"
+                              aria-label={`Hapus versi terbaru ${latestDeliverable.file_name}`}
+                            >
+                              {deletingFileId === latestDeliverable.id ? (
+                                <Loader2 className="size-3 animate-spin" />
+                              ) : (
+                                <Trash2 className="size-3" />
+                              )}
+                            </Button>
+                          }
+                        />
+                        <TooltipContent side="top">
+                          Hapus file ini
+                        </TooltipContent>
+                      </Tooltip>
                     )}
                   </div>
                 </div>
@@ -631,16 +645,25 @@ export function TaskDeliverablesDrawer({
                         </Button>
 
                         {canDeleteFile(file) && (
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleDelete(file)}
-                            disabled={deletingFileId === file.id}
-                            className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive"
-                            title="Hapus versi ini"
-                          >
-                            <Trash2 className="size-3" />
-                          </Button>
+                          <Tooltip>
+                            <TooltipTrigger
+                              render={
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleDelete(file)}
+                                  disabled={deletingFileId === file.id}
+                                  className="h-6 w-6 p-0 text-muted-foreground hover:text-destructive cursor-pointer"
+                                  aria-label={`Hapus versi ${file.version} (${file.file_name})`}
+                                >
+                                  <Trash2 className="size-3" />
+                                </Button>
+                              }
+                            />
+                            <TooltipContent side="top">
+                              Hapus versi ini
+                            </TooltipContent>
+                          </Tooltip>
                         )}
                       </div>
                     </div>

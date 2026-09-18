@@ -5,11 +5,19 @@ import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/toast";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const geist = Geist({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: "LOCO TRACK | Agency Production Tracker",
   description: "Internal agency workflow and production tracking system.",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/icon.svg", type: "image/svg+xml" }],
+  },
 };
 
 export default function RootLayout({

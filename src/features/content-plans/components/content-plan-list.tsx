@@ -11,6 +11,11 @@ import {
   Search,
   Tag,
 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 
 interface ContentPlanListProps {
   projectId: string;
@@ -189,16 +194,25 @@ export function ContentPlanList({
                       </td>
                       {canManage && (
                         <td className="px-4 py-3 text-right whitespace-nowrap">
-                          <button
-                            type="button"
-                            onClick={() => handleEdit(item)}
-                            disabled={isProductionLocked}
-                            className="rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                            title="Edit konten"
-                          >
-                            <Edit3 className="size-3.5" />
-                            <span className="sr-only">Edit</span>
-                          </button>
+                          <Tooltip>
+                            <TooltipTrigger
+                              render={
+                                <button
+                                  type="button"
+                                  onClick={() => handleEdit(item)}
+                                  disabled={isProductionLocked}
+                                  className="rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors disabled:opacity-40 disabled:cursor-not-allowed cursor-pointer"
+                                  aria-label={`Edit rencana konten ${item.title}`}
+                                >
+                                  <Edit3 className="size-3.5" />
+                                  <span className="sr-only">Edit Konten</span>
+                                </button>
+                              }
+                            />
+                            <TooltipContent side="top">
+                              Edit rencana konten
+                            </TooltipContent>
+                          </Tooltip>
                         </td>
                       )}
                     </tr>

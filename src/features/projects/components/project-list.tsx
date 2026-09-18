@@ -19,6 +19,11 @@ import { ProjectStatusBadge, ProjectPriorityBadge } from "./project-badges";
 import { ProjectArchiveDialog } from "./project-archive-dialog";
 import { ProjectCreateDialog } from "./project-create-dialog";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 
 interface ProjectListProps {
   data: PaginatedProjects;
@@ -174,25 +179,44 @@ export function ProjectList({
                       </td>
                       <td className="py-3 px-4 text-right">
                         <div className="inline-flex items-center gap-1">
-                          <Button
-                            nativeButton={false}
-                            variant="ghost"
-                            size="icon-sm"
-                            render={<Link href={`/projects/${project.id}`} />}
-                            aria-label={`Detail ${project.name}`}
-                          >
-                            <ExternalLink className="size-3.5 text-muted-foreground hover:text-foreground" />
-                          </Button>
+                          <Tooltip>
+                            <TooltipTrigger
+                              render={
+                                <Button
+                                  nativeButton={false}
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  render={<Link href={`/projects/${project.id}`} />}
+                                  aria-label={`Detail ${project.name}`}
+                                >
+                                  <ExternalLink className="size-3.5 text-muted-foreground hover:text-foreground" />
+                                </Button>
+                              }
+                            />
+                            <TooltipContent side="top">
+                              Lihat detail project
+                            </TooltipContent>
+                          </Tooltip>
+
                           {canManage && (
-                            <Button
-                              variant="ghost"
-                              size="icon-sm"
-                              onClick={() => setArchivingProject(project)}
-                              aria-label={`Arsipkan ${project.name}`}
-                              className="text-destructive/70 hover:text-destructive"
-                            >
-                              <Archive className="size-3.5" />
-                            </Button>
+                            <Tooltip>
+                              <TooltipTrigger
+                                render={
+                                  <Button
+                                    variant="ghost"
+                                    size="icon-sm"
+                                    onClick={() => setArchivingProject(project)}
+                                    aria-label={`Arsipkan ${project.name}`}
+                                    className="text-destructive/70 hover:text-destructive"
+                                  >
+                                    <Archive className="size-3.5" />
+                                  </Button>
+                                }
+                              />
+                              <TooltipContent side="top">
+                                Arsipkan project
+                              </TooltipContent>
+                            </Tooltip>
                           )}
                         </div>
                       </td>
@@ -284,14 +308,24 @@ export function ProjectList({
                         <span>Buka Detail</span>
                       </Button>
                       {canManage && (
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => setArchivingProject(project)}
-                          className="text-xs h-8 text-destructive border-destructive/20 hover:bg-destructive/10"
-                        >
-                          <Archive className="size-3.5" />
-                        </Button>
+                        <Tooltip>
+                          <TooltipTrigger
+                            render={
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setArchivingProject(project)}
+                                className="text-xs h-8 text-destructive border-destructive/20 hover:bg-destructive/10"
+                                aria-label={`Arsipkan ${project.name}`}
+                              >
+                                <Archive className="size-3.5" />
+                              </Button>
+                            }
+                          />
+                          <TooltipContent side="top">
+                            Arsipkan project
+                          </TooltipContent>
+                        </Tooltip>
                       )}
                     </div>
                   </div>

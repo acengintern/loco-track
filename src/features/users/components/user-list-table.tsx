@@ -20,6 +20,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import { ROLE_LABELS } from "@/constants/navigation";
 import type { UserRole } from "@/lib/supabase/provisioning";
 import type { UserListItem } from "../types";
@@ -170,18 +175,27 @@ export function UserListTable({
                     {/* Actions Menu */}
                     <td className="py-3 px-4 text-right">
                       <DropdownMenu>
-                        <DropdownMenuTrigger
-                          render={
-                            <Button
-                              variant="ghost"
-                              size="icon-sm"
-                              className="text-muted-foreground hover:text-foreground"
-                              aria-label={`Opsi untuk ${user.fullName}`}
-                            >
-                              <MoreHorizontal className="size-4" />
-                            </Button>
-                          }
-                        />
+                        <Tooltip>
+                          <TooltipTrigger
+                            render={
+                              <DropdownMenuTrigger
+                                render={
+                                  <Button
+                                    variant="ghost"
+                                    size="icon-sm"
+                                    className="text-muted-foreground hover:text-foreground"
+                                    aria-label={`Opsi untuk ${user.fullName}`}
+                                  >
+                                    <MoreHorizontal className="size-4" />
+                                  </Button>
+                                }
+                              />
+                            }
+                          />
+                          <TooltipContent side="left">
+                            Opsi pengguna
+                          </TooltipContent>
+                        </Tooltip>
                         <DropdownMenuContent align="end" className="w-48 text-xs">
                           <DropdownMenuItem
                             onClick={() => onEdit(user)}

@@ -14,6 +14,11 @@ import {
   Sparkles,
   CheckCircle2,
 } from "lucide-react";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 
 interface ScriptListProps {
   projectId: string;
@@ -199,27 +204,44 @@ export function ScriptList({
                     </td>
                     <td className="py-3 px-4 text-right">
                       <div className="inline-flex items-center justify-end gap-1">
-                        <button
-                          type="button"
-                          onClick={() => handleView(script)}
-                          aria-label={`Lihat naskah: ${script.title}`}
-                          className="inline-flex items-center gap-1 rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-                          title="Lihat Naskah Lengkap"
-                        >
-                          <Eye className="size-3.5" />
-                          <span className="sr-only">Lihat Naskah Lengkap</span>
-                        </button>
+                        <Tooltip>
+                          <TooltipTrigger
+                            render={
+                              <button
+                                type="button"
+                                onClick={() => handleView(script)}
+                                aria-label={`Lihat naskah: ${script.title}`}
+                                className="inline-flex items-center gap-1 rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+                              >
+                                <Eye className="size-3.5" />
+                                <span className="sr-only">Lihat Naskah Lengkap</span>
+                              </button>
+                            }
+                          />
+                          <TooltipContent side="top">
+                            Lihat naskah lengkap
+                          </TooltipContent>
+                        </Tooltip>
+
                         {canManage && (
-                          <button
-                            type="button"
-                            onClick={() => handleEdit(script)}
-                            aria-label={`Ubah naskah: ${script.title}`}
-                            className="inline-flex items-center gap-1 rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none focus:ring-1 focus:ring-ring"
-                            title="Ubah Naskah"
-                          >
-                            <Edit3 className="size-3.5" />
-                            <span className="sr-only">Ubah Naskah</span>
-                          </button>
+                          <Tooltip>
+                            <TooltipTrigger
+                              render={
+                                <button
+                                  type="button"
+                                  onClick={() => handleEdit(script)}
+                                  aria-label={`Ubah naskah: ${script.title}`}
+                                  className="inline-flex items-center gap-1 rounded p-1 text-muted-foreground hover:bg-muted hover:text-foreground focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+                                >
+                                  <Edit3 className="size-3.5" />
+                                  <span className="sr-only">Ubah Naskah</span>
+                                </button>
+                              }
+                            />
+                            <TooltipContent side="top">
+                              Ubah naskah
+                            </TooltipContent>
+                          </Tooltip>
                         )}
                       </div>
                     </td>

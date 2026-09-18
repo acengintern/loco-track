@@ -82,7 +82,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
   return (
     <aside
       className={cn(
-        "hidden md:flex md:flex-col md:shrink-0 border-r border-border bg-card select-none transition-[width] duration-200 ease-in-out",
+        "hidden md:flex md:flex-col md:shrink-0 border-r border-border bg-card select-none transition-[width] duration-200 ease-in-out sticky top-0 h-screen max-h-screen z-30",
         effectiveCollapsed ? "md:w-[72px]" : "md:w-64"
       )}
       aria-label="Sidebar Navigasi"
@@ -218,7 +218,7 @@ export function AppSidebar({ user }: AppSidebarProps) {
       {/* User Menu Footer */}
       <div
         className={cn(
-          "border-t border-border p-3",
+          "mt-auto shrink-0 border-t border-border p-3 bg-card",
           effectiveCollapsed && "flex justify-center p-2"
         )}
       >

@@ -7,6 +7,11 @@ import { cn } from "cn";
 import type { NotificationFeedData, NotificationItem } from "../types";
 import { markNotificationReadAction, markAllNotificationsReadAction } from "../actions";
 import { formatNotificationTimestamp, getNotificationCategory } from "../utils";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 
 interface NotificationBellProps {
   initialData: NotificationFeedData;
@@ -80,30 +85,39 @@ export function NotificationBell({ initialData }: NotificationBellProps) {
 
   return (
     <div className="relative inline-block">
-      <button
-        ref={buttonRef}
-        type="button"
-        aria-label={`Notifikasi: ${data.unreadCount} belum dibaca`}
-        aria-expanded={isOpen}
-        aria-haspopup="dialog"
-        onClick={() => setIsOpen((prev) => !prev)}
-        className={cn(
-          "group relative flex size-10 sm:size-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-md text-muted-foreground transition-colors cursor-pointer select-none",
-          "hover:text-foreground hover:bg-accent active:bg-accent/80",
-          "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring",
-          isOpen && "bg-accent text-foreground"
-        )}
-      >
-        <Bell className="size-5 text-muted-foreground group-hover:text-foreground transition-colors shrink-0" />
-        {data.unreadCount > 0 && (
-          <span
-            aria-hidden="true"
-            className="absolute -top-1 -right-1 sm:top-0 sm:right-0 flex min-w-[18px] h-[18px] items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground shadow-xs ring-2 ring-background animate-in zoom-in-75 duration-150"
-          >
-            {data.unreadCount > 9 ? "9+" : data.unreadCount}
-          </span>
-        )}
-      </button>
+      <Tooltip>
+        <TooltipTrigger
+          render={
+            <button
+              ref={buttonRef}
+              type="button"
+              aria-label={`Notifikasi: ${data.unreadCount} belum dibaca`}
+              aria-expanded={isOpen}
+              aria-haspopup="dialog"
+              onClick={() => setIsOpen((prev) => !prev)}
+              className={cn(
+                "group relative flex size-10 sm:size-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 items-center justify-center rounded-md text-muted-foreground transition-colors cursor-pointer select-none",
+                "hover:text-foreground hover:bg-accent active:bg-accent/80",
+                "focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring",
+                isOpen && "bg-accent text-foreground"
+              )}
+            >
+              <Bell className="size-5 text-muted-foreground group-hover:text-foreground transition-colors shrink-0" />
+              {data.unreadCount > 0 && (
+                <span
+                  aria-hidden="true"
+                  className="absolute -top-1 -right-1 sm:top-0 sm:right-0 flex min-w-[18px] h-[18px] items-center justify-center rounded-full bg-primary px-1 text-[10px] font-bold text-primary-foreground shadow-xs ring-2 ring-background animate-in zoom-in-75 duration-150"
+                >
+                  {data.unreadCount > 9 ? "9+" : data.unreadCount}
+                </span>
+              )}
+            </button>
+          }
+        />
+        <TooltipContent side="bottom">
+          {data.unreadCount > 0 ? `${data.unreadCount} notifikasi belum dibaca` : "Notifikasi"}
+        </TooltipContent>
+      </Tooltip>
 
       {isOpen && (
         <div

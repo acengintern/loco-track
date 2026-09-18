@@ -13,6 +13,11 @@ import {
   Loader2,
 } from "lucide-react";
 import { cn } from "cn";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import type { PaginatedNotificationsData, NotificationItem } from "../types";
 import {
   formatNotificationTimestamp,
@@ -293,16 +298,24 @@ export function NotificationCenterView({
                   )}
 
                   {!item.isRead && (
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      onClick={() => handleMarkOneRead(item)}
-                      title="Tandai sudah dibaca"
-                      aria-label="Tandai sudah dibaca"
-                      className="text-muted-foreground hover:text-foreground"
-                    >
-                      <Check className="size-3.5" />
-                    </Button>
+                    <Tooltip>
+                      <TooltipTrigger
+                        render={
+                          <Button
+                            variant="ghost"
+                            size="icon-sm"
+                            onClick={() => handleMarkOneRead(item)}
+                            aria-label="Tandai notifikasi ini sudah dibaca"
+                            className="text-muted-foreground hover:text-foreground cursor-pointer"
+                          >
+                            <Check className="size-3.5" />
+                          </Button>
+                        }
+                      />
+                      <TooltipContent side="top">
+                        Tandai sudah dibaca
+                      </TooltipContent>
+                    </Tooltip>
                   )}
                 </div>
               </div>

@@ -10,6 +10,11 @@ import { BrandFormDialog } from "./brand-form-dialog";
 import { BrandArchiveDialog } from "./brand-archive-dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 
 interface BrandListProps {
   brands: BrandWithRelations[];
@@ -157,25 +162,43 @@ export function BrandList({ brands, clients, userRole, searchQuery = "" }: Brand
                     <td className="py-3 px-4 text-right">
                       <div className="inline-flex items-center gap-1">
                         {canCreateOrEdit && (
-                          <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            onClick={() => handleOpenEdit(brand)}
-                            aria-label={`Edit ${brand.name}`}
-                          >
-                            <Edit2 className="size-3.5 text-muted-foreground hover:text-foreground" />
-                          </Button>
+                          <Tooltip>
+                            <TooltipTrigger
+                              render={
+                                <Button
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  onClick={() => handleOpenEdit(brand)}
+                                  aria-label={`Edit ${brand.name}`}
+                                >
+                                  <Edit2 className="size-3.5 text-muted-foreground hover:text-foreground" />
+                                </Button>
+                              }
+                            />
+                            <TooltipContent side="top">
+                              Edit brand
+                            </TooltipContent>
+                          </Tooltip>
                         )}
                         {canArchive && (
-                          <Button
-                            variant="ghost"
-                            size="icon-sm"
-                            onClick={() => setArchivingBrand(brand)}
-                            aria-label={`Arsipkan ${brand.name}`}
-                            className="text-destructive/70 hover:text-destructive"
-                          >
-                            <Archive className="size-3.5" />
-                          </Button>
+                          <Tooltip>
+                            <TooltipTrigger
+                              render={
+                                <Button
+                                  variant="ghost"
+                                  size="icon-sm"
+                                  onClick={() => setArchivingBrand(brand)}
+                                  aria-label={`Arsipkan ${brand.name}`}
+                                  className="text-destructive/70 hover:text-destructive"
+                                >
+                                  <Archive className="size-3.5" />
+                                </Button>
+                              }
+                            />
+                            <TooltipContent side="top">
+                              Arsipkan brand
+                            </TooltipContent>
+                          </Tooltip>
                         )}
                       </div>
                     </td>
