@@ -17,6 +17,7 @@ import type { ProjectWithRelations, PaginatedProjects } from "../types";
 import type { UserRole } from "@/types/database";
 import { ProjectStatusBadge, ProjectPriorityBadge } from "./project-badges";
 import { ProjectArchiveDialog } from "./project-archive-dialog";
+import { ProjectCreateDialog } from "./project-create-dialog";
 import { Button } from "@/components/ui/button";
 
 interface ProjectListProps {
@@ -24,6 +25,17 @@ interface ProjectListProps {
   userRole: UserRole;
   currentUserId: string;
   hasFilters: boolean;
+  brands?: Array<{
+    id: string;
+    name: string;
+    code: string;
+    client_name: string;
+  }>;
+  smsUsers?: Array<{
+    id: string;
+    full_name: string;
+    email: string;
+  }>;
 }
 
 export function ProjectList({
@@ -31,6 +43,8 @@ export function ProjectList({
   userRole,
   currentUserId,
   hasFilters,
+  brands = [],
+  smsUsers = [],
 }: ProjectListProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -68,15 +82,18 @@ export function ProjectList({
           </p>
           {canCreate && !hasFilters && (
             <div className="mt-4">
-              <Button
-                nativeButton={false}
-                size="sm"
-                className="gap-1.5"
-                render={<Link href="/projects/new" />}
-              >
-                <Plus className="size-4" />
-                <span>Buat Project Pertama</span>
-              </Button>
+              <ProjectCreateDialog
+                brands={brands}
+                smsUsers={smsUsers}
+                isAdmin={userRole === "ADMIN"}
+                currentUserId={currentUserId}
+                trigger={
+                  <Button size="sm" className="gap-1.5">
+                    <Plus className="size-4" />
+                    <span>Buat Project Pertama</span>
+                  </Button>
+                }
+              />
             </div>
           )}
         </div>

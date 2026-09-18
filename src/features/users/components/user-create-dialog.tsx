@@ -268,7 +268,7 @@ export function UserCreateDialog({ onSuccess, trigger }: UserCreateDialogProps) 
             )}
           </div>
 
-          <DialogFooter className="pt-2 gap-2 sm:gap-0">
+          <DialogFooter className="pt-4 mt-6 border-t border-border/60 gap-2.5 sm:gap-2">
             <Button
               type="button"
               variant="outline"

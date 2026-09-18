@@ -219,7 +219,7 @@ export function SmsDashboard({ data }: SmsDashboardProps) {
             </div>
             <div className="flex items-center gap-2">
               <Link
-                href="/projects/new"
+                href="/projects?create=true"
                 className="inline-flex items-center gap-1.5 rounded-md bg-primary px-2.5 py-1 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs"
               >
                 <Plus className="size-3.5" />
@@ -239,7 +239,7 @@ export function SmsDashboard({ data }: SmsDashboardProps) {
               <div className="py-6 text-center text-xs text-muted-foreground space-y-2">
                 <p>Belum ada project yang ditugaskan ke Anda.</p>
                 <Link
-                  href="/projects/new"
+                  href="/projects?create=true"
                   className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs"
                 >
                   <Plus className="size-3.5" />

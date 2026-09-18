@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import { Plus, Eye } from "lucide-react";
+import { Eye } from "lucide-react";
 import { requireActiveProfile } from "@/lib/supabase/auth";
 import { PageHeader } from "@/components/layout/page-header";
 import { ProjectSubnav } from "@/components/layout/project-subnav";
@@ -8,10 +8,12 @@ import {
   getProjects,
   getCreativeProjects,
   getActiveBrandsForProjectSelection,
+  getActiveSMSUsersForSelection,
 } from "@/features/projects/queries";
 import { ProjectFilters } from "@/features/projects/components/project-filters";
 import { ProjectList } from "@/features/projects/components/project-list";
 import { CreativeProjectList } from "@/features/projects/components/creative-project-list";
+import { ProjectCreateDialog } from "@/features/projects/components/project-create-dialog";
 import { Button } from "@/components/ui/button";
 import type { ProjectPhase, PriorityLevel } from "@/types/database";
 
@@ -24,6 +26,7 @@ interface ProjectsPageProps {
     smsOwnerId?: string;
     page?: string;
     view?: string;
+    create?: string;
   }>;
 }
 
@@ -39,7 +42,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
   const pageNum = params.page ? parseInt(params.page, 10) : 1;
   const validPageNum = isNaN(pageNum) ? 1 : pageNum;
 
-  const [paginatedData, creativeData, brands] = await Promise.all([
+  const [paginatedData, creativeData, brands, smsUsers] = await Promise.all([
     !isCreative
       ? getProjects({
           search: params.q,
@@ -64,6 +67,7 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
         })
       : Promise.resolve(null),
     getActiveBrandsForProjectSelection(),
+    getActiveSMSUsersForSelection(),
   ]);
 
   const canCreate =
@@ -108,15 +112,13 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
           )}
 
           {canCreate && (
-            <Button
-              nativeButton={false}
-              size="sm"
-              className="gap-1.5 shrink-0"
-              render={<Link href="/projects/new" />}
-            >
-              <Plus className="size-4" />
-              <span>Buat Project</span>
-            </Button>
+            <ProjectCreateDialog
+              brands={brands}
+              smsUsers={smsUsers}
+              isAdmin={profile.role === "ADMIN"}
+              currentUserId={profile.id}
+              initialOpen={params.create === "true"}
+            />
           )}
         </div>
       </PageHeader>
@@ -140,6 +142,8 @@ export default async function ProjectsPage({ searchParams }: ProjectsPageProps) 
           userRole={profile.role}
           currentUserId={profile.id}
           hasFilters={hasFilters}
+          brands={brands}
+          smsUsers={smsUsers}
         />
       ) : null}
     </div>

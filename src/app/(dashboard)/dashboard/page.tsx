@@ -68,7 +68,7 @@ export default async function DashboardPage() {
       action={
         canCreateProject ? (
           <Link
-            href="/projects/new"
+            href="/projects?create=true"
             className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs"
           >
             <Plus className="size-3.5" />
