@@ -1,5 +1,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { Card } from "@/components/ui/card";
 
 export interface MetricCardProps {
   label: string;
@@ -44,9 +45,9 @@ export function MetricCard({
   const styles = variantStyles[variant];
 
   return (
-    <div
+    <Card
       className={cn(
-        "flex flex-col justify-between rounded-lg border border-border bg-card p-5 shadow-2xs transition-colors",
+        "flex flex-col justify-between p-5 transition-colors h-full min-h-[136px]",
         className
       )}
     >
@@ -61,16 +62,16 @@ export function MetricCard({
         )}
       </div>
 
-      <div className="mt-3">
-        <div className={cn("text-2xl font-bold tracking-tight", styles.value)}>
+      <div className="mt-4">
+        <div className={cn("text-2xl font-bold tracking-tight tabular-nums", styles.value)}>
           {value}
         </div>
         {description && (
-          <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
+          <p className="mt-1 text-xs text-muted-foreground leading-relaxed line-clamp-2">
             {description}
           </p>
         )}
       </div>
-    </div>
+    </Card>
   );
 }
