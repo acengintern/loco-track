@@ -91,10 +91,10 @@ export function LoginForm() {
         <div
           role="alert"
           aria-live="polite"
-          className="flex items-center gap-2 rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-xs text-destructive"
+          className="flex items-center gap-2.5 rounded-lg border border-destructive/25 bg-destructive/10 px-3.5 py-2.5 text-xs text-destructive animate-in fade-in-0 slide-in-from-top-1 duration-200 ease-out"
         >
-          <AlertCircle className="size-3.5 shrink-0" aria-hidden="true" />
-          <span>{errorMessage}</span>
+          <AlertCircle className="size-4 shrink-0" aria-hidden="true" />
+          <span className="font-medium leading-tight">{errorMessage}</span>
         </div>
       )}
 
@@ -116,7 +116,7 @@ export function LoginForm() {
           value={identifier}
           onChange={(e) => setIdentifier(e.target.value)}
           placeholder="Masukkan email atau username"
-          className="h-9 rounded-lg border-border bg-background text-sm placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring"
+          className="h-10 rounded-lg border-border bg-background px-3 text-sm placeholder:text-muted-foreground transition-colors focus-visible:ring-1 focus-visible:ring-ring"
         />
       </div>
 
@@ -135,19 +135,19 @@ export function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Masukkan kata sandi"
-            className="h-9 rounded-lg border-border bg-background pr-10 text-sm placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring"
+            className="h-10 rounded-lg border-border bg-background pr-10 text-sm placeholder:text-muted-foreground transition-colors focus-visible:ring-1 focus-visible:ring-ring"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             disabled={isLoading}
             aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
-            className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground transition-colors hover:text-foreground focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground transition-colors duration-150 hover:text-foreground focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
           >
             {showPassword ? (
-              <EyeOff className="size-4" aria-hidden="true" />
+              <EyeOff className="size-4 transition-transform duration-150" aria-hidden="true" />
             ) : (
-              <Eye className="size-4" aria-hidden="true" />
+              <Eye className="size-4 transition-transform duration-150" aria-hidden="true" />
             )}
           </button>
         </div>
@@ -157,11 +157,11 @@ export function LoginForm() {
         <Button
           type="submit"
           disabled={isLoading}
-          className="w-full h-9 rounded-lg font-medium text-xs shadow-2xs"
+          className="w-full h-10 rounded-lg font-medium text-sm shadow-xs transition-all duration-150 active:scale-[0.99] disabled:pointer-events-none disabled:opacity-60"
         >
           {isLoading ? (
             <span className="inline-flex items-center justify-center gap-2">
-              <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
+              <Loader2 className="size-4 animate-spin" aria-hidden="true" />
               <span>Memproses...</span>
             </span>
           ) : (
