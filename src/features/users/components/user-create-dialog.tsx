@@ -51,6 +51,7 @@ export function UserCreateDialog({ onSuccess, trigger }: UserCreateDialogProps) 
     defaultValues: {
       fullName: "",
       email: "",
+      username: "",
       role: "GRAPHIC_DESIGNER",
       password: "",
       sendInvite: false,
@@ -136,6 +137,30 @@ export function UserCreateDialog({ onSuccess, trigger }: UserCreateDialogProps) 
             {form.formState.errors.fullName && (
               <p className="text-[11px] text-destructive">
                 {form.formState.errors.fullName.message}
+              </p>
+            )}
+          </div>
+
+          {/* Nama Pengguna (Username) */}
+          <div className="space-y-1.5">
+            <label
+              htmlFor="user-username"
+              className="text-xs font-medium text-foreground"
+            >
+              Nama Pengguna (Username) <span className="text-destructive">*</span>
+            </label>
+            <Input
+              id="user-username"
+              placeholder="Contoh: sarah.p"
+              className="h-8 text-xs"
+              {...form.register("username")}
+            />
+            <p className="text-[11px] text-muted-foreground">
+              Digunakan personel untuk masuk ke sistem tanpa mengetik email.
+            </p>
+            {form.formState.errors.username && (
+              <p className="text-[11px] text-destructive">
+                {form.formState.errors.username.message}
               </p>
             )}
           </div>

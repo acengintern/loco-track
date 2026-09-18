@@ -113,10 +113,15 @@ export function UserListTable({
                           {initials}
                         </div>
                         <div className="min-w-0">
-                          <div className="flex items-center gap-1.5">
+                          <div className="flex items-center gap-1.5 flex-wrap">
                             <span className="font-semibold text-foreground truncate">
                               {user.fullName}
                             </span>
+                            {user.username && (
+                              <span className="font-mono text-[11px] text-primary/80">
+                                @{user.username}
+                              </span>
+                            )}
                             {isSelf && (
                               <span className="rounded bg-primary/15 px-1.5 py-0.2 text-[10px] font-bold text-primary">
                                 Anda

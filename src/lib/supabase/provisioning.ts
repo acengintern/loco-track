@@ -13,6 +13,7 @@ export interface ProvisionUserParams {
   password?: string;
   fullName: string;
   role: UserRole;
+  username?: string;
   sendInvite?: boolean;
 }
 
@@ -21,6 +22,7 @@ export interface ProvisionUserResult {
   email: string;
   role: UserRole;
   fullName: string;
+  username?: string | null;
 }
 
 /**
@@ -32,12 +34,13 @@ export async function provisionUser(params: ProvisionUserParams): Promise<Provis
   const admin = createAdminClient();
 
   let userId: string | null = null;
+  const normalizedUsername = params.username ? params.username.trim().toLowerCase() : null;
 
   try {
     // 1. Create or invite user via Supabase Auth Admin API
     if (params.sendInvite || !params.password) {
       const { data: inviteData, error: inviteError } = await admin.auth.admin.inviteUserByEmail(params.email, {
-        data: { full_name: params.fullName },
+        data: { full_name: params.fullName, username: normalizedUsername },
       });
 
       if (inviteError || !inviteData.user) {
@@ -49,7 +52,7 @@ export async function provisionUser(params: ProvisionUserParams): Promise<Provis
         email: params.email,
         password: params.password,
         email_confirm: true,
-        user_metadata: { full_name: params.fullName },
+        user_metadata: { full_name: params.fullName, username: normalizedUsername },
       });
 
       if (createError || !createData.user) {
@@ -64,6 +67,7 @@ export async function provisionUser(params: ProvisionUserParams): Promise<Provis
       full_name: params.fullName,
       email: params.email,
       role: params.role,
+      username: normalizedUsername,
       is_active: true,
     });
 
@@ -76,6 +80,7 @@ export async function provisionUser(params: ProvisionUserParams): Promise<Provis
       email: params.email,
       role: params.role,
       fullName: params.fullName,
+      username: normalizedUsername,
     };
   } catch (err: unknown) {
     // Compensating cleanup: if auth was created but profile failed, delete auth user

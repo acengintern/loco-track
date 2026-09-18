@@ -48,6 +48,7 @@ export function UserEditDialog({
     defaultValues: {
       id: user?.id || "",
       fullName: user?.fullName || "",
+      username: user?.username || "",
       role: user?.role || "GRAPHIC_DESIGNER",
     },
   });
@@ -57,6 +58,7 @@ export function UserEditDialog({
       form.reset({
         id: user.id,
         fullName: user.fullName,
+        username: user.username || "",
         role: user.role,
       });
     }
@@ -96,7 +98,7 @@ export function UserEditDialog({
             Edit Profil & Peran Pengguna
           </DialogTitle>
           <DialogDescription className="text-xs text-muted-foreground">
-            Perbarui nama lengkap atau sesuaikan peran operasional personel agency.
+            Perbarui nama lengkap, username login, atau sesuaikan peran operasional personel agency.
           </DialogDescription>
         </DialogHeader>
 
@@ -111,13 +113,37 @@ export function UserEditDialog({
           {/* Email (Read-only reference) */}
           <div className="space-y-1.5">
             <label className="text-xs font-medium text-muted-foreground">
-              Alamat Email (Identitas Login)
+              Alamat Email (Identitas Login Alternatif)
             </label>
             <Input
               value={user?.email || ""}
               disabled
               className="h-8 text-xs bg-muted/50 cursor-not-allowed opacity-80"
             />
+          </div>
+
+          {/* Nama Pengguna (Username) */}
+          <div className="space-y-1.5">
+            <label
+              htmlFor="edit-user-username"
+              className="text-xs font-medium text-foreground"
+            >
+              Nama Pengguna (Username)
+            </label>
+            <Input
+              id="edit-user-username"
+              placeholder="Contoh: sarah.p"
+              className="h-8 text-xs"
+              {...form.register("username")}
+            />
+            <p className="text-[11px] text-muted-foreground">
+              Digunakan personel untuk masuk ke sistem tanpa mengetik email.
+            </p>
+            {form.formState.errors.username && (
+              <p className="text-[11px] text-destructive">
+                {form.formState.errors.username.message}
+              </p>
+            )}
           </div>
 
           {/* Nama Lengkap */}

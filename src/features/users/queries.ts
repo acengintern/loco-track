@@ -11,6 +11,7 @@ interface ProfileRow {
   id: string;
   full_name: string;
   email: string;
+  username: string | null;
   role: UserRole;
   avatar_url: string | null;
   is_active: boolean;
@@ -75,13 +76,13 @@ export async function getPaginatedUsers(
   let query = supabase
     .from("profiles")
     .select(
-      "id, full_name, email, role, avatar_url, is_active, created_at, updated_at",
+      "id, full_name, email, username, role, avatar_url, is_active, created_at, updated_at",
       { count: "exact" }
     );
 
   if (params.search && params.search.trim().length > 0) {
     const searchTerm = `%${params.search.trim()}%`;
-    query = query.or(`full_name.ilike.${searchTerm},email.ilike.${searchTerm}`);
+    query = query.or(`full_name.ilike.${searchTerm},email.ilike.${searchTerm},username.ilike.${searchTerm}`);
   }
 
   if (params.role && params.role !== "ALL") {
@@ -109,6 +110,7 @@ export async function getPaginatedUsers(
     id: row.id,
     fullName: row.full_name,
     email: row.email,
+    username: row.username,
     role: row.role,
     avatarUrl: row.avatar_url,
     isActive: row.is_active,
@@ -134,7 +136,7 @@ export async function getUserById(id: string): Promise<UserListItem | null> {
 
   const { data, error } = await supabase
     .from("profiles")
-    .select("id, full_name, email, role, avatar_url, is_active, created_at, updated_at")
+    .select("id, full_name, email, username, role, avatar_url, is_active, created_at, updated_at")
     .eq("id", id)
     .maybeSingle();
 
@@ -147,6 +149,7 @@ export async function getUserById(id: string): Promise<UserListItem | null> {
     id: row.id,
     fullName: row.full_name,
     email: row.email,
+    username: row.username,
     role: row.role,
     avatarUrl: row.avatar_url,
     isActive: row.is_active,

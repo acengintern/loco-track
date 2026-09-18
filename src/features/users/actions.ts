@@ -8,6 +8,7 @@ import {
   provisionUser,
   deactivateUser,
   type ProvisionUserResult,
+  type UserRole,
 } from "@/lib/supabase/provisioning";
 import {
   createUserSchema,
@@ -44,26 +45,42 @@ export async function createUserAction(
       };
     }
 
-    const { fullName, email, role, password, sendInvite } = validated.data;
+    const { fullName, email, username, role, password, sendInvite } = validated.data;
+    const normalizedUsername = username.trim().toLowerCase();
 
     // Check if email already exists in profiles
     const supabase = await createClient();
-    const { data: existing } = await supabase
+    const { data: existingEmail } = await supabase
       .from("profiles")
       .select("id")
       .ilike("email", email)
       .maybeSingle();
 
-    if (existing) {
+    if (existingEmail) {
       return {
         success: false,
         error: "Pengguna dengan alamat email tersebut sudah terdaftar.",
       };
     }
 
+    // Check if username already exists in profiles
+    const { data: existingUsername } = await supabase
+      .from("profiles")
+      .select("id")
+      .ilike("username", normalizedUsername)
+      .maybeSingle();
+
+    if (existingUsername) {
+      return {
+        success: false,
+        error: "Nama pengguna tersebut sudah digunakan.",
+      };
+    }
+
     const result = await provisionUser({
       email,
       fullName,
+      username: normalizedUsername,
       role,
       password: password || undefined,
       sendInvite,
@@ -103,14 +120,15 @@ export async function updateUserAction(
       };
     }
 
-    const { id: targetUserId, fullName, role: newRole } = validated.data;
+    const { id: targetUserId, fullName, username, role: newRole } = validated.data;
+    const normalizedUsername = username ? username.trim().toLowerCase() : undefined;
     const supabase = await createClient();
     const admin = createAdminClient();
 
     // Check current target user record
     const { data: targetUser, error: fetchErr } = await supabase
       .from("profiles")
-      .select("id, role, is_active")
+      .select("id, role, is_active, username")
       .eq("id", targetUserId)
       .maybeSingle();
 
@@ -137,14 +155,41 @@ export async function updateUserAction(
       }
     }
 
+    // Check username uniqueness if changed
+    if (normalizedUsername && normalizedUsername !== targetUser.username) {
+      const { data: existingUserWithUsername } = await supabase
+        .from("profiles")
+        .select("id")
+        .ilike("username", normalizedUsername)
+        .neq("id", targetUserId)
+        .maybeSingle();
+
+      if (existingUserWithUsername) {
+        return {
+          success: false,
+          error: "Nama pengguna tersebut sudah digunakan oleh akun lain.",
+        };
+      }
+    }
+
     // 1. Update public.profiles
+    const updatePayload: {
+      full_name: string;
+      role: UserRole;
+      username?: string;
+      updated_at: string;
+    } = {
+      full_name: fullName,
+      role: newRole,
+      updated_at: new Date().toISOString(),
+    };
+    if (normalizedUsername !== undefined) {
+      updatePayload.username = normalizedUsername;
+    }
+
     const { error: profileUpdateError } = await supabase
       .from("profiles")
-      .update({
-        full_name: fullName,
-        role: newRole,
-        updated_at: new Date().toISOString(),
-      })
+      .update(updatePayload)
       .eq("id", targetUserId);
 
     if (profileUpdateError) {
@@ -154,10 +199,14 @@ export async function updateUserAction(
       };
     }
 
-    // 2. Synchronize full_name in Supabase Auth user_metadata
+    // 2. Synchronize in Supabase Auth user_metadata
     try {
+      const metaUpdate: { full_name: string; username?: string } = { full_name: fullName };
+      if (normalizedUsername !== undefined) {
+        metaUpdate.username = normalizedUsername;
+      }
       await admin.auth.admin.updateUserById(targetUserId, {
-        user_metadata: { full_name: fullName },
+        user_metadata: metaUpdate,
       });
     } catch (authSyncErr) {
       console.warn("Gagal menyinkronkan user_metadata di auth:", authSyncErr);

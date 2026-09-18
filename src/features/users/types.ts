@@ -4,6 +4,7 @@ export interface UserListItem {
   id: string;
   fullName: string;
   email: string;
+  username: string | null;
   role: UserRole;
   avatarUrl: string | null;
   isActive: boolean;

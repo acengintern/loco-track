@@ -7,10 +7,11 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Eye, EyeOff, Loader2, AlertCircle } from "lucide-react";
+import { resolveLoginIdentifier } from "./actions";
 
 export function LoginForm() {
   const router = useRouter();
-  const [email, setEmail] = useState("");
+  const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -20,30 +21,44 @@ export function LoginForm() {
     e.preventDefault();
     setErrorMessage(null);
 
-    const trimmedEmail = email.trim();
-    if (!trimmedEmail || !password) {
-      setErrorMessage("Silakan masukkan email dan kata sandi.");
+    const trimmedIdentifier = identifier.trim();
+    if (!trimmedIdentifier || !password) {
+      setErrorMessage("Silakan masukkan nama pengguna atau email dan kata sandi.");
       return;
     }
 
     setIsLoading(true);
 
     try {
+      // 1. Resolve identifier to email if a username was entered
+      let targetEmail = trimmedIdentifier.toLowerCase();
+      if (!trimmedIdentifier.includes("@")) {
+        const resolveRes = await resolveLoginIdentifier(trimmedIdentifier);
+        if (!resolveRes.success || !resolveRes.email) {
+          setErrorMessage(
+            resolveRes.error || "Nama pengguna, email, atau kata sandi tidak valid."
+          );
+          setIsLoading(false);
+          return;
+        }
+        targetEmail = resolveRes.email;
+      }
+
       const supabase = createClient();
 
-      // 1. Authenticate with Supabase Auth
+      // 2. Authenticate with Supabase Auth
       const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-        email: trimmedEmail,
+        email: targetEmail,
         password,
       });
 
       if (authError || !authData.user) {
-        setErrorMessage("Email atau kata sandi tidak valid.");
+        setErrorMessage("Nama pengguna, email, atau kata sandi tidak valid.");
         setIsLoading(false);
         return;
       }
 
-      // 2. Query profile to verify active status
+      // 3. Query profile to verify active status
       const { data: profile, error: profileError } = await supabase
         .from("profiles")
         .select("is_active")
@@ -64,7 +79,7 @@ export function LoginForm() {
         return;
       }
 
-      // 3. Redirect to dashboard on successful login
+      // 4. Redirect to dashboard on successful login
       router.push("/dashboard");
       router.refresh();
     } catch {
@@ -87,19 +102,22 @@ export function LoginForm() {
       )}
 
       <div className="space-y-1.5">
-        <Label htmlFor="email" className="font-medium text-foreground text-xs">
-          Email
+        <Label htmlFor="identifier" className="font-medium text-foreground text-xs">
+          Nama Pengguna atau Email
         </Label>
         <Input
-          id="email"
-          name="email"
-          type="email"
-          autoComplete="email"
+          id="identifier"
+          name="identifier"
+          type="text"
+          autoComplete="username"
+          autoCapitalize="none"
+          autoCorrect="off"
+          spellCheck="false"
           required
           disabled={isLoading}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="nama@agensi.com"
+          value={identifier}
+          onChange={(e) => setIdentifier(e.target.value)}
+          placeholder="username atau nama@agensi.com"
           className="h-9 rounded border-border bg-background text-sm placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-foreground"
         />
       </div>
