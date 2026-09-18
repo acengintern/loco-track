@@ -325,3 +325,101 @@ export function formatActivityDescription(
     }
   }
 }
+
+/**
+ * Produces a human-readable action phrase for audit activity logs.
+ * Example: "membuat project", "mengunggah berkas deliverable", "menyetujui QC internal".
+ * Prevents raw enum strings from ever leaking into user interfaces.
+ */
+export function humanizeActivityAction(
+  eventType: string,
+  metadata?: Record<string, unknown> | null
+): string {
+  const meta = metadata || {};
+
+  switch (eventType) {
+    case "PROJECT_CREATED":
+      return "membuat project";
+    case "PROJECT_STATUS_CHANGED": {
+      const toStatus = meta.to_status ? String(meta.to_status) : undefined;
+      return toStatus ? "memperbarui status project" : "memperbarui status project";
+    }
+    case "PROJECT_UPDATED":
+      return "memperbarui rincian project";
+    case "PROJECT_PUBLISHED":
+      return "mempublikasikan project";
+    case "PROJECT_ARCHIVED":
+      return "mengarsipkan project";
+    case "MEMBER_ADDED": {
+      const name = meta.full_name as string | undefined;
+      return name ? `menambahkan ${name} ke tim project` : "menambahkan anggota tim";
+    }
+    case "MEMBER_REMOVED": {
+      const name = meta.full_name as string | undefined;
+      return name ? `menghapus ${name} dari tim project` : "menghapus anggota tim";
+    }
+    case "BRIEF_CREATED":
+      return "membuat brief project";
+    case "BRIEF_UPDATED":
+      return "memperbarui brief project";
+    case "CONTENT_PLAN_CREATED":
+      return "menambahkan content plan";
+    case "CONTENT_PLAN_UPDATED":
+      return "memperbarui content plan";
+    case "SCRIPT_CREATED":
+      return "membuat naskah project";
+    case "SCRIPT_UPDATED":
+      return "memperbarui naskah project";
+    case "SCRIPT_READY":
+      return "menandai naskah siap produksi";
+    case "TASK_CREATED": {
+      const title = (meta.title || meta.task_title || meta.name) as string | undefined;
+      return title ? `membuat task "${title}"` : "membuat task baru";
+    }
+    case "TASK_STATUS_CHANGED": {
+      const title = (meta.title || meta.task_title) as string | undefined;
+      return title ? `memperbarui status task "${title}"` : "memperbarui status task";
+    }
+    case "TASK_ASSIGNED": {
+      const assignee = (meta.assignee_name || meta.assigned_to_name) as string | undefined;
+      return assignee ? `menugaskan task kepada ${assignee}` : "menugaskan task";
+    }
+    case "TASK_REASSIGNED": {
+      const newAssignee = (meta.new_assignee_name || meta.assignee_name) as string | undefined;
+      return newAssignee ? `mengalihkan task ke ${newAssignee}` : "mengalihkan penugasan task";
+    }
+    case "TASK_STARTED":
+      return "memulai pengerjaan task";
+    case "TASK_UPDATED":
+      return "memperbarui data task";
+    case "TASK_ARCHIVED":
+      return "mengarsipkan task";
+    case "DELIVERABLE_UPLOADED":
+    case "FILE_UPLOADED":
+      return "mengunggah berkas deliverable";
+    case "FILE_VERSION_BUMPED":
+      return "memperbarui versi berkas deliverable";
+    case "FILE_DELETED":
+      return "menghapus berkas deliverable";
+    case "INTERNAL_QC_STARTED":
+      return "memulai pemeriksaan QC internal";
+    case "QC_APPROVED":
+    case "INTERNAL_QC_APPROVED":
+      return "menyetujui QC internal";
+    case "QC_REJECTED":
+    case "INTERNAL_QC_REJECTED":
+    case "REVISION_REQUESTED":
+      return "mengajukan catatan revisi";
+    case "REVISION_RESOLVED":
+      return "menyelesaikan revisi";
+    case "CLIENT_REVIEW_ROUND_STARTED":
+      return "membuka sesi review klien";
+    case "CLIENT_FEEDBACK_RECORDED":
+      return "mencatat hasil review klien";
+    case "CLIENT_REVISION_DISPATCHED":
+      return "meneruskan revisi dari klien";
+    default:
+      return formatActivityTitle(eventType).toLowerCase();
+  }
+}
+

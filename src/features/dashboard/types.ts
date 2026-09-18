@@ -5,24 +5,48 @@ export interface MetricItem {
   variant?: "default" | "warning" | "destructive" | "success";
 }
 
+export interface UserRoleDistributionItem {
+  role: string;
+  label: string;
+  count: number;
+}
+
+export interface AdminAccessChangeEvent {
+  id: string;
+  actorName: string;
+  actionLabel: string;
+  targetUserName: string;
+  targetUserRole?: string;
+  contextName?: string;
+  createdAt: string;
+}
+
+export interface AdminRecentActivityItem {
+  id: string;
+  eventType: string;
+  actionPhrase: string;
+  projectName: string;
+  projectId?: string;
+  actorName: string;
+  createdAt: string;
+  metadata?: Record<string, unknown>;
+}
+
 export interface AdminDashboardData {
-  activeProjectsCount: number;
-  overdueProjectsCount: number;
   activeUsersCount: number;
+  inactiveUsersCount: number;
+  activeProjectsCount: number;
+  auditActivity7DaysCount: number;
+  overdueProjectsCount: number;
   publishedProjectsCount: number;
+  userDistribution: UserRoleDistributionItem[];
+  recentAccessChanges: AdminAccessChangeEvent[];
   workflowDistribution: Array<{
     status: string;
     label: string;
     count: number;
   }>;
-  recentActivity: Array<{
-    id: string;
-    eventType: string;
-    projectName: string;
-    actorName: string;
-    createdAt: string;
-    metadata: Record<string, unknown>;
-  }>;
+  recentActivity: AdminRecentActivityItem[];
 }
 
 export interface CreativeDirectorDashboardData {

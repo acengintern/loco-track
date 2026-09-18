@@ -1,6 +1,12 @@
 import { createClient } from "@/lib/supabase/server";
+import { ROLE_LABELS } from "@/constants/navigation";
+import type { UserRole } from "@/lib/supabase/provisioning";
+import { humanizeActivityAction } from "@/features/activity/helpers";
 import type {
   AdminDashboardData,
+  UserRoleDistributionItem,
+  AdminAccessChangeEvent,
+  AdminRecentActivityItem,
   CreativeDirectorDashboardData,
   AccountExecutiveDashboardData,
   SmsDashboardData,
@@ -42,12 +48,21 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
   const supabase = await createClient();
   const today = getTodayIsoDate();
 
+  // 7 days ago timestamp for explicit 7-day audit activity calculation
+  const sevenDaysAgo = new Date();
+  sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+  const sevenDaysAgoIso = sevenDaysAgo.toISOString();
+
   const [
     { count: activeProjectsCount },
     { count: overdueProjectsCount },
     { count: activeUsersCount },
+    { count: inactiveUsersCount },
+    { count: auditActivity7DaysCount },
     { count: publishedProjectsCount },
+    { data: profileRows },
     { data: statusRows },
+    { data: accessEventRows },
     { data: recentActivityRows },
   ] = await Promise.all([
     // 1. Active Projects Count
@@ -71,20 +86,37 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
       .select("id", { count: "exact", head: true })
       .eq("is_active", true),
 
-    // 4. Published Projects Count
+    // 4. Inactive Users Count
+    supabase
+      .from("profiles")
+      .select("id", { count: "exact", head: true })
+      .eq("is_active", false),
+
+    // 5. 7-Day Audit Activity Count (from real activity_logs)
+    supabase
+      .from("activity_logs")
+      .select("id", { count: "exact", head: true })
+      .gte("created_at", sevenDaysAgoIso),
+
+    // 6. Published Projects Count
     supabase
       .from("projects")
       .select("id", { count: "exact", head: true })
       .is("deleted_at", null)
       .eq("status", "PUBLISHED"),
 
-    // 5. Workflow Distribution across all projects
+    // 7. All Profiles for Role Distribution & Account Creation Audit
+    supabase
+      .from("profiles")
+      .select("id, full_name, username, role, is_active, created_at"),
+
+    // 8. Workflow Statuses across all active projects
     supabase
       .from("projects")
       .select("status")
       .is("deleted_at", null),
 
-    // 6. Recent Activity Log (10 items)
+    // 9. Recent Access / Team Membership Governance Events
     supabase
       .from("activity_logs")
       .select(`
@@ -92,13 +124,101 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
         event_type,
         created_at,
         metadata,
-        project:project_id(name),
-        actor:user_id(full_name)
+        project:project_id(id, name),
+        actor:user_id(id, full_name)
+      `)
+      .in("event_type", ["MEMBER_ADDED", "MEMBER_REMOVED"])
+      .order("created_at", { ascending: false })
+      .limit(10),
+
+    // 10. Recent General Activity Log (10 items)
+    supabase
+      .from("activity_logs")
+      .select(`
+        id,
+        event_type,
+        created_at,
+        metadata,
+        project:project_id(id, name),
+        actor:user_id(id, full_name)
       `)
       .order("created_at", { ascending: false })
       .limit(10),
   ]);
 
+  // A. User Role Distribution
+  const roleOrder: Array<{ role: UserRole; label: string }> = [
+    { role: "ADMIN", label: "Administrator" },
+    { role: "CREATIVE_DIRECTOR", label: "Creative Director" },
+    { role: "ACCOUNT_EXECUTIVE", label: "Account Executive" },
+    { role: "SOCIAL_MEDIA_SPECIALIST", label: "Social Media Specialist" },
+    { role: "GRAPHIC_DESIGNER", label: "Graphic Designer" },
+    { role: "VIDEO_EDITOR", label: "Video Editor" },
+  ];
+
+  const roleCounts: Record<string, number> = {
+    ADMIN: 0,
+    CREATIVE_DIRECTOR: 0,
+    ACCOUNT_EXECUTIVE: 0,
+    SOCIAL_MEDIA_SPECIALIST: 0,
+    GRAPHIC_DESIGNER: 0,
+    VIDEO_EDITOR: 0,
+  };
+
+  (profileRows || []).forEach((row) => {
+    if (roleCounts[row.role] !== undefined) {
+      roleCounts[row.role] += 1;
+    }
+  });
+
+  const userDistribution: UserRoleDistributionItem[] = roleOrder.map((item) => ({
+    role: item.role,
+    label: item.label,
+    count: roleCounts[item.role] || 0,
+  }));
+
+  // B. Recent Access Changes (Governance Events)
+  const accessEvents: AdminAccessChangeEvent[] = (accessEventRows || []).map((row) => {
+    const proj = Array.isArray(row.project) ? row.project[0] : row.project;
+    const actor = Array.isArray(row.actor) ? row.actor[0] : row.actor;
+    const meta = (row.metadata as Record<string, unknown>) || {};
+    const isAdded = row.event_type === "MEMBER_ADDED";
+    const targetRole = meta.role
+      ? ROLE_LABELS[meta.role as UserRole] || String(meta.role)
+      : undefined;
+
+    return {
+      id: row.id,
+      actorName: (actor as { full_name: string } | null)?.full_name || "Administrator",
+      actionLabel: isAdded ? "Akses tim project diberikan" : "Akses tim project dicabut",
+      targetUserName: (meta.full_name as string) || "Anggota Tim",
+      targetUserRole: targetRole,
+      contextName: (proj as { name: string } | null)?.name
+        ? `Project: ${(proj as { name: string }).name}`
+        : "Project Operasional",
+      createdAt: row.created_at,
+    };
+  });
+
+  // Recent user registrations from profiles
+  const userCreations: AdminAccessChangeEvent[] = [...(profileRows || [])]
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, 5)
+    .map((p) => ({
+      id: `user-create-${p.id}`,
+      actorName: "Administrator",
+      actionLabel: "Pendaftaran akun personel",
+      targetUserName: p.full_name,
+      targetUserRole: ROLE_LABELS[p.role as UserRole] || p.role,
+      contextName: p.username ? `@${p.username}` : "Akun Sistem",
+      createdAt: p.created_at,
+    }));
+
+  const recentAccessChanges: AdminAccessChangeEvent[] = [...accessEvents, ...userCreations]
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 8);
+
+  // C. Workflow Status Distribution
   const statusMap: Record<string, number> = {};
   (statusRows || []).forEach((row) => {
     statusMap[row.status] = (statusMap[row.status] || 0) + 1;
@@ -121,24 +241,34 @@ export async function getAdminDashboardData(): Promise<AdminDashboardData> {
     count: statusMap[item.status] || 0,
   }));
 
-  const recentActivity = (recentActivityRows || []).map((row) => {
+  // D. Humanized Recent Operational Activity
+  const recentActivity: AdminRecentActivityItem[] = (recentActivityRows || []).map((row) => {
     const proj = Array.isArray(row.project) ? row.project[0] : row.project;
     const actor = Array.isArray(row.actor) ? row.actor[0] : row.actor;
+    const meta = (row.metadata as Record<string, unknown>) || {};
+    const actionPhrase = humanizeActivityAction(row.event_type, meta);
+
     return {
       id: row.id,
       eventType: row.event_type,
+      actionPhrase,
       projectName: (proj as { name: string } | null)?.name || "Project Operasional",
+      projectId: (proj as { id: string } | null)?.id,
       actorName: (actor as { full_name: string } | null)?.full_name || "Sistem",
       createdAt: row.created_at,
-      metadata: (row.metadata as Record<string, unknown>) || {},
+      metadata: meta,
     };
   });
 
   return {
-    activeProjectsCount: activeProjectsCount || 0,
-    overdueProjectsCount: overdueProjectsCount || 0,
     activeUsersCount: activeUsersCount || 0,
+    inactiveUsersCount: inactiveUsersCount || 0,
+    activeProjectsCount: activeProjectsCount || 0,
+    auditActivity7DaysCount: auditActivity7DaysCount || 0,
+    overdueProjectsCount: overdueProjectsCount || 0,
     publishedProjectsCount: publishedProjectsCount || 0,
+    userDistribution,
+    recentAccessChanges,
     workflowDistribution,
     recentActivity,
   };

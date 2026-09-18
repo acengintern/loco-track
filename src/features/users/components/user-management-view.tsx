@@ -19,6 +19,7 @@ interface UserManagementViewProps {
   currentSearch?: string;
   currentRole?: string;
   currentStatus?: string;
+  initialCreateOpen?: boolean;
 }
 
 export function UserManagementView({
@@ -27,6 +28,7 @@ export function UserManagementView({
   currentSearch,
   currentRole,
   currentStatus,
+  initialCreateOpen,
 }: UserManagementViewProps) {
   const router = useRouter();
 
@@ -85,6 +87,7 @@ export function UserManagementView({
 
         <div className="shrink-0 flex items-center justify-end">
           <UserCreateDialog
+            defaultOpen={initialCreateOpen}
             onSuccess={handleActionSuccess}
             trigger={
               <Button size="sm" className="h-8 text-xs gap-1.5 shadow-2xs">

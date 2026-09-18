@@ -39,10 +39,15 @@ const ROLE_DESCRIPTIONS: Record<UserRole, string> = {
 interface UserCreateDialogProps {
   onSuccess?: () => void;
   trigger?: React.ReactNode;
+  defaultOpen?: boolean;
 }
 
-export function UserCreateDialog({ onSuccess, trigger }: UserCreateDialogProps) {
-  const [open, setOpen] = React.useState(false);
+export function UserCreateDialog({
+  onSuccess,
+  trigger,
+  defaultOpen = false,
+}: UserCreateDialogProps) {
+  const [open, setOpen] = React.useState(defaultOpen);
   const [serverError, setServerError] = React.useState<string | null>(null);
   const [isPending, setIsPending] = React.useState(false);
 

@@ -4,12 +4,13 @@ import {
   FolderKanban,
   AlertTriangle,
   Users,
-  CheckCircle2,
   Activity,
   ArrowRight,
   Plus,
   Building2,
   Shield,
+  Settings,
+  UserCheck,
 } from "lucide-react";
 import { MetricCard } from "./metric-card";
 import type { AdminDashboardData } from "../types";
@@ -19,10 +20,42 @@ interface AdminDashboardProps {
 }
 
 export function AdminDashboard({ data }: AdminDashboardProps) {
+  // Compute maximum user count across roles for proportionate horizontal bars
+  const maxRoleCount = Math.max(
+    1,
+    ...data.userDistribution.map((item) => item.count)
+  );
+
+  // Compute maximum workflow count across statuses for proportionate horizontal bars
+  const maxWorkflowCount = Math.max(
+    1,
+    ...data.workflowDistribution.map((item) => item.count)
+  );
+
   return (
     <div className="space-y-8">
-      {/* Metric Cards Grid */}
+      {/* 1. Metric Cards Grid (Prioritizing Governance) */}
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {/* Metric 1: Pengguna Aktif */}
+        <Link
+          href="/users"
+          className="block rounded-lg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring group"
+        >
+          <MetricCard
+            label="Pengguna Aktif"
+            value={data.activeUsersCount}
+            description={
+              data.inactiveUsersCount > 0
+                ? `${data.activeUsersCount} personel aktif, ${data.inactiveUsersCount} nonaktif`
+                : "Akun personel aktif dengan akses operasional"
+            }
+            variant="default"
+            icon={<Users className="size-4" />}
+            className="group-hover:border-primary/40 transition-colors"
+          />
+        </Link>
+
+        {/* Metric 2: Project Aktif */}
         <Link
           href="/projects"
           className="block rounded-lg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring group"
@@ -37,6 +70,22 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
           />
         </Link>
 
+        {/* Metric 3: Aktivitas Audit 7 Hari */}
+        <Link
+          href="/activity"
+          className="block rounded-lg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring group"
+        >
+          <MetricCard
+            label="Aktivitas Audit 7 Hari"
+            value={data.auditActivity7DaysCount}
+            description="Total catatan log sistem dalam 7 hari terakhir"
+            variant="default"
+            icon={<Activity className="size-4" />}
+            className="group-hover:border-primary/40 transition-colors"
+          />
+        </Link>
+
+        {/* Metric 4: Project Terlambat */}
         <Link
           href="/projects"
           className="block rounded-lg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring group"
@@ -50,48 +99,20 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
             className="group-hover:border-primary/40 transition-colors"
           />
         </Link>
-
-        <Link
-          href="/users"
-          className="block rounded-lg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring group"
-        >
-          <MetricCard
-            label="Pengguna Aktif"
-            value={data.activeUsersCount}
-            description="Akun personel aktif dengan hak akses operasional"
-            variant="default"
-            icon={<Users className="size-4" />}
-            className="group-hover:border-primary/40 transition-colors"
-          />
-        </Link>
-
-        <Link
-          href="/projects"
-          className="block rounded-lg focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring group"
-        >
-          <MetricCard
-            label="Project Dipublikasikan"
-            value={data.publishedProjectsCount}
-            description="Total siklus project yang telah selesai dipublikasikan"
-            variant="success"
-            icon={<CheckCircle2 className="size-4" />}
-            className="group-hover:border-primary/40 transition-colors"
-          />
-        </Link>
       </div>
 
-      {/* Admin Quick Action Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-border bg-card p-4 shadow-2xs">
-        <div className="flex items-center gap-2.5">
-          <div className="flex size-8 items-center justify-center rounded-md bg-primary/10 text-primary">
-            <Shield className="size-4" />
+      {/* 2. Pusat Kendali Administrasi (Compact Command Bar) */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-lg border border-border bg-card p-4 shadow-2xs">
+        <div className="flex items-center gap-3">
+          <div className="flex size-9 shrink-0 items-center justify-center rounded-md bg-primary/10 text-primary">
+            <Shield className="size-4.5" />
           </div>
           <div>
             <h3 className="text-xs font-semibold text-foreground">
               Pusat Kendali Administrasi
             </h3>
             <p className="text-[11px] text-muted-foreground">
-              Akses cepat tata kelola pengguna, entitas bisnis, dan pencatatan audit
+              Akses cepat tata kelola pengguna, entitas bisnis, log audit, dan pengaturan
             </p>
           </div>
         </div>
@@ -102,7 +123,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
             className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors shadow-2xs"
           >
             <Users className="size-3.5 text-primary" />
-            <span>Kelola Personel</span>
+            <span>Kelola Pengguna</span>
           </Link>
 
           <Link
@@ -122,21 +143,172 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
           </Link>
 
           <Link
-            href="/projects?create=true"
-            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs"
+            href="/settings"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors shadow-2xs"
           >
-            <Plus className="size-3.5" />
+            <Settings className="size-3.5 text-primary" />
+            <span>Settings</span>
+          </Link>
+
+          <Link
+            href="/projects?create=true"
+            className="inline-flex items-center gap-1.5 rounded-md border border-border/80 bg-muted/50 px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors shadow-2xs"
+          >
+            <Plus className="size-3.5 text-muted-foreground" />
             <span>Buat Project</span>
           </Link>
         </div>
       </div>
 
-      {/* Two-Column Operational Layout */}
+      {/* 3. Governance Row (2 Columns: Distribusi Pengguna & Perubahan Akses Terbaru) */}
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
-        {/* Workflow Distribution */}
+        {/* Governance Column 1: Distribusi Pengguna */}
+        <section
+          aria-labelledby="user-distribution-heading"
+          className="rounded-lg border border-border bg-card p-6 shadow-2xs lg:col-span-6 flex flex-col"
+        >
+          <div className="flex items-center justify-between border-b border-border pb-4">
+            <div>
+              <h2
+                id="user-distribution-heading"
+                className="text-base font-semibold text-foreground"
+              >
+                Distribusi Pengguna
+              </h2>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Sebaran akun personel berdasarkan peran akses operasional
+              </p>
+            </div>
+            <Link
+              href="/users"
+              className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-xs"
+            >
+              Kelola Pengguna <ArrowRight className="size-3" />
+            </Link>
+          </div>
+
+          <div className="mt-4 flex-1 space-y-3">
+            {data.userDistribution.length === 0 ? (
+              <p className="py-8 text-center text-xs text-muted-foreground">
+                Belum ada data pengguna yang terdaftar.
+              </p>
+            ) : (
+              data.userDistribution.map((item) => {
+                const percentage =
+                  item.count > 0
+                    ? Math.max(6, Math.round((item.count / maxRoleCount) * 100))
+                    : 0;
+
+                return (
+                  <Link
+                    key={item.role}
+                    href={`/users?role=${item.role}`}
+                    className="group block rounded-md p-1.5 hover:bg-muted/40 transition-colors"
+                  >
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <span className="font-medium text-foreground group-hover:text-primary transition-colors">
+                        {item.label}
+                      </span>
+                      <span className="inline-flex items-center rounded-sm bg-muted px-2 py-0.5 text-xs font-semibold tabular-nums text-foreground">
+                        {item.count}
+                      </span>
+                    </div>
+                    <div className="h-1.5 w-full rounded-full bg-muted/60 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-primary/70 group-hover:bg-primary transition-all duration-300"
+                        style={{ width: `${percentage}%` }}
+                      />
+                    </div>
+                  </Link>
+                );
+              })
+            )}
+          </div>
+        </section>
+
+        {/* Governance Column 2: Perubahan Akses Terbaru */}
+        <section
+          aria-labelledby="recent-access-heading"
+          className="rounded-lg border border-border bg-card p-6 shadow-2xs lg:col-span-6 flex flex-col"
+        >
+          <div className="flex items-center justify-between border-b border-border pb-4">
+            <div>
+              <h2
+                id="recent-access-heading"
+                className="text-base font-semibold text-foreground"
+              >
+                Perubahan Akses Terbaru
+              </h2>
+              <p className="text-xs text-muted-foreground mt-0.5">
+                Catatan penambahan, pencabutan, dan penetapan akses personel
+              </p>
+            </div>
+            <Link
+              href="/activity"
+              className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-xs"
+            >
+              Buka Audit Log <ArrowRight className="size-3" />
+            </Link>
+          </div>
+
+          <div className="mt-4 flex-1">
+            {data.recentAccessChanges.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-10 text-center">
+                <UserCheck className="size-8 text-muted-foreground/50 mb-2" />
+                <p className="text-xs text-muted-foreground">
+                  Belum ada perubahan akses terbaru.
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2.5">
+                {data.recentAccessChanges.map((event) => (
+                  <div
+                    key={event.id}
+                    className="flex flex-col gap-1 rounded-md border border-border/50 bg-background/50 p-3 text-xs"
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-1.5 truncate">
+                        <span className="font-semibold text-foreground truncate">
+                          {event.targetUserName}
+                        </span>
+                        {event.targetUserRole && (
+                          <span className="inline-flex items-center rounded-xs bg-muted px-1.5 py-0.2 text-[10px] font-medium text-muted-foreground shrink-0">
+                            {event.targetUserRole}
+                          </span>
+                        )}
+                      </div>
+                      <span className="text-[11px] text-muted-foreground shrink-0 tabular-nums">
+                        {new Date(event.createdAt).toLocaleString("id-ID", {
+                          dateStyle: "short",
+                          timeStyle: "short",
+                        })}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between gap-2 text-muted-foreground text-[11px]">
+                      <span className="text-foreground/80 font-medium">
+                        {event.actionLabel}
+                      </span>
+                      {event.contextName && (
+                        <span className="truncate max-w-[200px] text-muted-foreground">
+                          {event.contextName}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      </div>
+
+      {/* 4. Operational Row (2 Columns: Distribusi Status Workflow & Aktivitas Operasional) */}
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+        {/* Operational Column 1: Distribusi Status Workflow */}
         <section
           aria-labelledby="workflow-distribution-heading"
-          className="rounded-lg border border-border bg-card p-6 shadow-2xs lg:col-span-6"
+          className="rounded-lg border border-border bg-card p-6 shadow-2xs lg:col-span-6 flex flex-col"
         >
           <div className="flex items-center justify-between border-b border-border pb-4">
             <div>
@@ -152,40 +324,54 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
             </div>
             <Link
               href="/projects"
-              className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+              className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-xs"
             >
               Lihat Project <ArrowRight className="size-3" />
             </Link>
           </div>
 
-          <div className="mt-4 divide-y divide-border/60">
+          <div className="mt-4 flex-1 space-y-2.5">
             {data.workflowDistribution.length === 0 ? (
-              <p className="py-6 text-center text-xs text-muted-foreground">
-                Belum ada data distribusi workflow.
+              <p className="py-8 text-center text-xs text-muted-foreground">
+                Belum ada data project dalam workflow.
               </p>
             ) : (
-              data.workflowDistribution.map((item) => (
-                <div
-                  key={item.status}
-                  className="flex items-center justify-between py-2.5 text-sm"
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span className="size-2 rounded-full bg-primary/70" />
-                    <span className="font-medium text-foreground">{item.label}</span>
+              data.workflowDistribution.map((item) => {
+                const percentage =
+                  item.count > 0
+                    ? Math.max(6, Math.round((item.count / maxWorkflowCount) * 100))
+                    : 0;
+
+                return (
+                  <div key={item.status} className="p-1">
+                    <div className="flex items-center justify-between text-xs mb-1.5">
+                      <div className="flex items-center gap-2">
+                        <span className="size-1.5 rounded-full bg-primary/70 shrink-0" />
+                        <span className="font-medium text-foreground">
+                          {item.label}
+                        </span>
+                      </div>
+                      <span className="inline-flex items-center rounded-sm bg-muted px-2 py-0.5 text-xs font-semibold tabular-nums text-foreground">
+                        {item.count}
+                      </span>
+                    </div>
+                    <div className="h-1.5 w-full rounded-full bg-muted/60 overflow-hidden">
+                      <div
+                        className="h-full rounded-full bg-primary/60"
+                        style={{ width: `${percentage}%` }}
+                      />
+                    </div>
                   </div>
-                  <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-xs font-semibold tabular-nums text-foreground">
-                    {item.count || 0}
-                  </span>
-                </div>
-              ))
+                );
+              })
             )}
           </div>
         </section>
 
-        {/* Recent Activity Log */}
+        {/* Operational Column 2: Aktivitas Operasional Terkini */}
         <section
           aria-labelledby="recent-activity-heading"
-          className="rounded-lg border border-border bg-card p-6 shadow-2xs lg:col-span-6"
+          className="rounded-lg border border-border bg-card p-6 shadow-2xs lg:col-span-6 flex flex-col"
         >
           <div className="flex items-center justify-between border-b border-border pb-4">
             <div>
@@ -196,27 +382,27 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
                 Aktivitas Operasional Terkini
               </h2>
               <p className="text-xs text-muted-foreground mt-0.5">
-                10 catatan audit terakhir dari sistem
+                10 catatan riwayat aksi operasional terbaru dari seluruh project
               </p>
             </div>
             <Link
               href="/activity"
-              className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
+              className="inline-flex items-center gap-1 text-xs font-medium text-primary hover:underline focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-xs"
             >
               Buka Audit Log <ArrowRight className="size-3" />
             </Link>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-4 flex-1">
             {data.recentActivity.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center">
-                <Activity className="size-8 text-muted-foreground/60 mb-2" />
-                <p className="text-sm font-medium text-muted-foreground">
-                  Belum ada catatan aktivitas sistem.
+                <Activity className="size-8 text-muted-foreground/50 mb-2" />
+                <p className="text-xs text-muted-foreground">
+                  Belum ada aktivitas operasional yang tercatat.
                 </p>
               </div>
             ) : (
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {data.recentActivity.map((act) => (
                   <div
                     key={act.id}
@@ -233,14 +419,11 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
                         })}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 text-muted-foreground">
+                    <div className="flex items-center gap-1.5 text-muted-foreground text-[11px]">
                       <span className="font-medium text-foreground/80">
                         {act.actorName}
                       </span>
-                      <span>&bull;</span>
-                      <span className="font-mono text-[11px] text-muted-foreground">
-                        {act.eventType}
-                      </span>
+                      <span>{act.actionPhrase}</span>
                     </div>
                   </div>
                 ))}

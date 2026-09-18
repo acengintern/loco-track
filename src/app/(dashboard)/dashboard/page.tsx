@@ -1,6 +1,6 @@
 import * as React from "react";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, UserPlus } from "lucide-react";
 import { requireActiveProfile } from "@/lib/supabase/auth";
 import { DashboardShell } from "@/features/dashboard/components/dashboard-shell";
 import { AdminDashboard } from "@/features/dashboard/components/admin-dashboard";
@@ -58,24 +58,35 @@ export default async function DashboardPage() {
     }
   }
 
-  const canCreateProject =
-    profile.role === "ADMIN" || profile.role === "SOCIAL_MEDIA_SPECIALIST";
+  let headerAction: React.ReactNode = undefined;
+
+  if (profile.role === "ADMIN") {
+    headerAction = (
+      <Link
+        href="/users?create=true"
+        className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs"
+      >
+        <UserPlus className="size-3.5" />
+        <span>Tambah Pengguna</span>
+      </Link>
+    );
+  } else if (profile.role === "SOCIAL_MEDIA_SPECIALIST") {
+    headerAction = (
+      <Link
+        href="/projects?create=true"
+        className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs"
+      >
+        <Plus className="size-3.5" />
+        <span>Buat Project</span>
+      </Link>
+    );
+  }
 
   return (
     <DashboardShell
       fullName={profile.fullName}
       role={profile.role}
-      action={
-        canCreateProject ? (
-          <Link
-            href="/projects?create=true"
-            className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs"
-          >
-            <Plus className="size-3.5" />
-            <span>Buat Project</span>
-          </Link>
-        ) : undefined
-      }
+      action={headerAction}
     >
       {content}
     </DashboardShell>

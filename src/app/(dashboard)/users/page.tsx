@@ -12,12 +12,13 @@ interface UsersPageProps {
     role?: string;
     status?: string;
     page?: string;
+    create?: string;
   }>;
 }
 
 export default async function UsersPage({ searchParams }: UsersPageProps) {
   const profile = await requireRole(ROUTE_PERMISSIONS["/users"]);
-  const { q, role, status, page } = await searchParams;
+  const { q, role, status, page, create } = await searchParams;
 
   const currentPage = parseInt(page || "1", 10) || 1;
   const filterRole = role ? (role as UserRole | "ALL") : "ALL";
@@ -44,6 +45,7 @@ export default async function UsersPage({ searchParams }: UsersPageProps) {
         currentSearch={q}
         currentRole={role}
         currentStatus={status}
+        initialCreateOpen={create === "true"}
       />
     </div>
   );
