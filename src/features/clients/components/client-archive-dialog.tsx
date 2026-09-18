@@ -87,6 +87,7 @@ export function ClientArchiveDialog({
             size="sm"
             disabled={isPending}
             onClick={() => handleOpenChange(false)}
+            className="h-8 text-xs"
           >
             Batal
           </Button>
@@ -96,6 +97,7 @@ export function ClientArchiveDialog({
             size="sm"
             disabled={isPending}
             onClick={handleArchive}
+            className="h-8 text-xs"
           >
             {isPending ? "Mengarsipkan..." : "Ya, Arsipkan"}
           </Button>

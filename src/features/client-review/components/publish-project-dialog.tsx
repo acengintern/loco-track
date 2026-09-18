@@ -78,8 +78,8 @@ export function PublishProjectDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleModalClose()}>
-      <DialogContent className="sm:max-w-md max-h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
-        <DialogHeader className="px-6 py-4 border-b border-border shrink-0">
+      <DialogContent className="sm:max-w-md max-h-[calc(100dvh-3.5rem)] flex flex-col p-0 gap-0 overflow-hidden shadow-2xl">
+        <DialogHeader className="px-6 py-5 border-b border-border/80 bg-card shrink-0">
           <div className="flex items-center gap-2 text-primary">
             <Globe className="size-4" />
             <span className="font-semibold text-xs tracking-wide uppercase">
@@ -136,13 +136,14 @@ export function PublishProjectDialog({
             </div>
           </div>
 
-          <DialogFooter className="px-6 py-4 border-t border-border bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 shrink-0">
+          <DialogFooter className="px-6 py-4.5 sm:py-5 border-t border-border bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 shrink-0 mt-0">
             <Button
               type="button"
               variant="outline"
               size="sm"
               onClick={handleModalClose}
               disabled={isSubmitting}
+              className="h-8 text-xs"
             >
               Batal
             </Button>
@@ -150,7 +151,7 @@ export function PublishProjectDialog({
               type="submit"
               size="sm"
               disabled={isSubmitting || !url.trim()}
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
+              className="h-8 text-xs gap-1.5 bg-primary text-primary-foreground hover:bg-primary/90"
             >
               {isSubmitting ? (
                 <>

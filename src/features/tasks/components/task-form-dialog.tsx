@@ -281,7 +281,7 @@ export function TaskFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="w-[calc(100vw-1.5rem)] sm:w-full sm:max-w-3xl md:max-w-4xl lg:max-w-5xl max-h-[88vh] flex flex-col p-0 gap-0 overflow-hidden rounded-xl shadow-2xl">
+      <DialogContent className="w-[calc(100vw-1.5rem)] sm:w-full sm:max-w-3xl md:max-w-4xl lg:max-w-5xl max-h-[calc(100dvh-3.5rem)] flex flex-col p-0 gap-0 overflow-hidden rounded-xl shadow-2xl">
         {/* Dialog Header */}
         <DialogHeader className="px-6 sm:px-8 py-5 sm:py-6 border-b border-border/80 bg-card shrink-0">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pr-8">

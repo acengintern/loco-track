@@ -142,7 +142,7 @@ export function TaskReassignDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-xl md:max-w-2xl p-0 gap-0 overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xl">
+      <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-xl md:max-w-2xl max-h-[calc(100dvh-3.5rem)] flex flex-col p-0 gap-0 overflow-hidden rounded-2xl border border-border/80 bg-card shadow-xl">
         {/* Header with generous spacing and calm breathing room */}
         <DialogHeader className="px-6 py-6 sm:px-8 sm:py-7 border-b border-border/60 bg-card shrink-0">
           <div className="flex items-start sm:items-center gap-4 sm:gap-4.5">
@@ -162,8 +162,8 @@ export function TaskReassignDialog({
           </div>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit} className="flex flex-col">
-          <div className="px-6 py-7 sm:px-8 sm:py-8 space-y-6 sm:space-y-7">
+        <form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+          <div className="flex-1 overflow-y-auto px-6 py-7 sm:px-8 sm:py-8 space-y-6 sm:space-y-7">
             {serverError && (
               <div
                 role="alert"
@@ -267,7 +267,7 @@ export function TaskReassignDialog({
           </div>
 
           {/* Generous Dialog Footer with proper padding and button gaps */}
-          <DialogFooter className="px-6 py-5 sm:px-8 sm:py-6 border-t border-border/70 bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3 shrink-0">
+          <DialogFooter className="px-6 py-5 sm:px-8 sm:py-6 border-t border-border/70 bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3 shrink-0 mt-0">
             <Button
               type="button"
               variant="outline"

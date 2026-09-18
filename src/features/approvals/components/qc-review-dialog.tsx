@@ -239,8 +239,8 @@ export function QcReviewDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && handleModalClose()}>
-      <DialogContent className="sm:max-w-3xl max-h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
-        <DialogHeader className="px-6 py-4 border-b border-border shrink-0">
+      <DialogContent className="sm:max-w-3xl max-h-[calc(100dvh-3.5rem)] flex flex-col p-0 gap-0 overflow-hidden shadow-2xl">
+        <DialogHeader className="px-6 py-5 border-b border-border/80 bg-card shrink-0">
           <div className="flex flex-wrap items-center justify-between gap-2">
             <div className="flex items-center gap-2">
               <span className="font-mono text-xs font-semibold text-primary">
@@ -494,7 +494,7 @@ export function QcReviewDialog({
         </div>
 
         {/* Decision & Action Footer */}
-        <div className="px-6 py-4 border-t border-border bg-muted/20 shrink-0">
+        <div className="px-6 py-4.5 sm:py-5 border-t border-border bg-muted/20 shrink-0 mt-0">
           {!isCreativeDirector ? (
             <div className="rounded-md border border-border/80 bg-muted/40 p-3 text-xs text-muted-foreground flex items-center justify-between gap-3">
               <span>Mode peninjauan monitoring (Read-only). Keputusan QC resmi hanya dapat diterbitkan oleh Creative Director.</span>

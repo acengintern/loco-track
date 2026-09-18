@@ -250,8 +250,8 @@ export function ProjectTeamSection({
 
       {/* Add Member Dialog */}
       <Dialog open={isAddOpen} onOpenChange={setIsAddOpen}>
-        <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-lg p-0 gap-0 overflow-hidden rounded-xl border border-border/80 bg-card shadow-lg">
-          <DialogHeader className="px-6 pt-5 pb-4 border-b border-border/70 bg-card shrink-0">
+        <DialogContent className="w-[calc(100vw-2rem)] sm:max-w-lg max-h-[calc(100dvh-3.5rem)] flex flex-col p-0 gap-0 overflow-hidden rounded-xl border border-border/80 bg-card shadow-2xl">
+          <DialogHeader className="px-6 py-5 border-b border-border/70 bg-card shrink-0">
             <div className="flex items-center gap-3">
               <div className="flex size-9 items-center justify-center rounded-lg bg-primary/10 text-primary shrink-0">
                 <UserPlus className="size-4.5" />
@@ -321,7 +321,7 @@ export function ProjectTeamSection({
               )}
             </div>
 
-            <DialogFooter className="px-6 py-4 border-t border-border/70 bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 shrink-0">
+            <DialogFooter className="px-6 py-4.5 sm:py-5 border-t border-border/70 bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 shrink-0 mt-0">
               <Button
                 type="button"
                 variant="outline"

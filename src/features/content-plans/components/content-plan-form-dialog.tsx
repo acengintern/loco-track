@@ -118,9 +118,9 @@ export function ContentPlanFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
+      <DialogContent className="sm:max-w-xl max-h-[calc(100dvh-3.5rem)] flex flex-col p-0 gap-0 overflow-hidden shadow-2xl">
         {/* Header */}
-        <DialogHeader className="px-6 py-4 border-b border-border bg-card shrink-0">
+        <DialogHeader className="px-6 py-5 border-b border-border/80 bg-card shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="flex size-8 items-center justify-center rounded-md bg-primary/10 text-primary">
               <Layers className="size-4" />
@@ -285,13 +285,14 @@ export function ContentPlanFormDialog({
           </div>
 
           {/* Dialog Footer */}
-          <DialogFooter className="px-6 py-3.5 border-t border-border bg-muted/20 flex items-center justify-end gap-2 shrink-0">
+          <DialogFooter className="px-6 py-4.5 sm:py-5 border-t border-border bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 shrink-0 mt-0">
             <Button
               type="button"
               variant="outline"
               size="sm"
               onClick={handleClose}
               disabled={isSubmitting}
+              className="h-8 text-xs"
             >
               Batal
             </Button>
@@ -299,6 +300,7 @@ export function ContentPlanFormDialog({
               type="submit"
               size="sm"
               disabled={isSubmitting}
+              className="h-8 text-xs gap-1.5"
             >
               {isSubmitting ? (
                 <>

@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Loader2 } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/components/ui/toast";
 
@@ -115,8 +116,8 @@ export function ClientFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-md max-h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
-        <DialogHeader className="px-6 py-4 border-b border-border shrink-0">
+      <DialogContent className="sm:max-w-md max-h-[calc(100dvh-3.5rem)] flex flex-col p-0 gap-0 overflow-hidden shadow-2xl">
+        <DialogHeader className="px-6 py-5 border-b border-border/80 bg-card shrink-0">
           <DialogTitle className="text-base font-semibold">
             {isEditing ? "Edit Data Client" : "Tambah Client Baru"}
           </DialogTitle>
@@ -252,22 +253,33 @@ export function ClientFormDialog({
             </div>
           </div>
 
-          <DialogFooter className="px-6 py-4 border-t border-border bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 shrink-0">
+          <DialogFooter className="px-6 py-4.5 sm:py-5 border-t border-border bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 shrink-0 mt-0">
             <Button
               type="button"
               variant="outline"
               size="sm"
               disabled={isSubmitting}
               onClick={() => onOpenChange(false)}
+              className="h-8 text-xs"
             >
               Batal
             </Button>
-            <Button type="submit" size="sm" disabled={isSubmitting}>
-              {isSubmitting
-                ? "Menyimpan..."
-                : isEditing
-                ? "Simpan Perubahan"
-                : "Buat Client"}
+            <Button
+              type="submit"
+              size="sm"
+              disabled={isSubmitting}
+              className="h-8 text-xs gap-1.5"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="size-3.5 animate-spin" />
+                  <span>Menyimpan...</span>
+                </>
+              ) : isEditing ? (
+                <span>Simpan Perubahan</span>
+              ) : (
+                <span>Buat Client</span>
+              )}
             </Button>
           </DialogFooter>
         </form>

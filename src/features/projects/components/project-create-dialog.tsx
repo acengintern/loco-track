@@ -411,7 +411,7 @@ export function ProjectCreateDialog({
           </div>
 
           {/* Dialog Footer - Generous padding with ample bottom space */}
-          <DialogFooter className="px-6 py-4 border-t border-border bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 shrink-0 mt-0">
+          <DialogFooter className="px-6 py-4.5 sm:py-5 border-t border-border bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 shrink-0 mt-0">
             <Button
               type="button"
               variant="outline"

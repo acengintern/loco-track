@@ -12,6 +12,7 @@ import { updateProjectAction } from "../actions";
 import type { ProjectDetail } from "../types";
 import { PROJECT_PRIORITY_LABELS } from "./project-badges";
 import { formatBrandOptionLabel } from "@/constants/labels";
+import { Loader2 } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -148,12 +149,12 @@ export function ProjectEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="sm:max-w-xl max-h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
-        <DialogHeader className="px-6 py-4 border-b border-border shrink-0">
+      <DialogContent className="sm:max-w-xl max-h-[calc(100dvh-3.5rem)] flex flex-col p-0 gap-0 overflow-hidden shadow-2xl">
+        <DialogHeader className="px-6 py-5 border-b border-border/80 bg-card shrink-0">
           <DialogTitle className="text-base font-semibold">
             Edit Metadata Project
           </DialogTitle>
-          <DialogDescription className="text-xs text-muted-foreground">
+          <DialogDescription className="text-xs text-muted-foreground mt-0.5">
             Perbarui parameter operasional project ({project.project_code}).
           </DialogDescription>
         </DialogHeader>
@@ -337,18 +338,31 @@ export function ProjectEditDialog({
             </div>
           </div>
 
-          <DialogFooter className="px-6 py-4 border-t border-border bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 shrink-0">
+          <DialogFooter className="px-6 py-4.5 sm:py-5 border-t border-border bg-muted/20 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2.5 shrink-0 mt-0">
             <Button
               type="button"
               variant="outline"
               size="sm"
               disabled={isSubmitting}
               onClick={() => handleOpenChange(false)}
+              className="h-8 text-xs"
             >
               Batal
             </Button>
-            <Button type="submit" size="sm" disabled={isSubmitting}>
-              {isSubmitting ? "Menyimpan..." : "Simpan Perubahan"}
+            <Button
+              type="submit"
+              size="sm"
+              disabled={isSubmitting}
+              className="h-8 text-xs gap-1.5"
+            >
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="size-3.5 animate-spin" />
+                  <span>Menyimpan...</span>
+                </>
+              ) : (
+                <span>Simpan Perubahan</span>
+              )}
             </Button>
           </DialogFooter>
         </form>

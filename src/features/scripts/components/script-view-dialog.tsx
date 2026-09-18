@@ -37,9 +37,9 @@ export function ScriptViewDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-2xl max-h-[90vh] flex flex-col p-0 gap-0 overflow-hidden">
+      <DialogContent className="sm:max-w-2xl max-h-[calc(100dvh-3.5rem)] flex flex-col p-0 gap-0 overflow-hidden shadow-2xl">
         {/* Header */}
-        <DialogHeader className="px-6 py-4 border-b border-border bg-card shrink-0">
+        <DialogHeader className="px-6 py-5 border-b border-border/80 bg-card shrink-0">
           <div className="flex items-center gap-2.5">
             <div className="flex size-8 items-center justify-center rounded-md bg-primary/10 text-primary">
               <FileText className="size-4" />
@@ -147,12 +147,13 @@ export function ScriptViewDialog({
         </div>
 
         {/* Footer */}
-        <DialogFooter className="px-6 py-3.5 border-t border-border bg-muted/20 flex items-center justify-end shrink-0">
+        <DialogFooter className="px-6 py-4.5 sm:py-5 border-t border-border bg-muted/20 flex items-center justify-end shrink-0 mt-0">
           <Button
             type="button"
             variant="outline"
             size="sm"
             onClick={() => onOpenChange(false)}
+            className="h-8 text-xs"
           >
             Tutup
           </Button>
