@@ -23,20 +23,19 @@ export function LoginForm() {
 
     const trimmedIdentifier = identifier.trim();
     if (!trimmedIdentifier || !password) {
-      setErrorMessage("Silakan masukkan nama pengguna atau email dan kata sandi.");
+      setErrorMessage("Email/username atau kata sandi tidak sesuai.");
       return;
     }
 
     setIsLoading(true);
 
     try {
-      // 1. Resolve identifier to email if a username was entered
       let targetEmail = trimmedIdentifier.toLowerCase();
       if (!trimmedIdentifier.includes("@")) {
         const resolveRes = await resolveLoginIdentifier(trimmedIdentifier);
         if (!resolveRes.success || !resolveRes.email) {
           setErrorMessage(
-            resolveRes.error || "Nama pengguna, email, atau kata sandi tidak valid."
+            resolveRes.error || "Email/username atau kata sandi tidak sesuai."
           );
           setIsLoading(false);
           return;
@@ -46,19 +45,18 @@ export function LoginForm() {
 
       const supabase = createClient();
 
-      // 2. Authenticate with Supabase Auth
-      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
-        email: targetEmail,
-        password,
-      });
+      const { data: authData, error: authError } =
+        await supabase.auth.signInWithPassword({
+          email: targetEmail,
+          password,
+        });
 
       if (authError || !authData.user) {
-        setErrorMessage("Nama pengguna, email, atau kata sandi tidak valid.");
+        setErrorMessage("Email/username atau kata sandi tidak sesuai.");
         setIsLoading(false);
         return;
       }
 
-      // 3. Query profile to verify active status
       const { data: profile, error: profileError } = await supabase
         .from("profiles")
         .select("is_active")
@@ -79,7 +77,6 @@ export function LoginForm() {
         return;
       }
 
-      // 4. Redirect to dashboard on successful login
       router.push("/dashboard");
       router.refresh();
     } catch {
@@ -94,16 +91,16 @@ export function LoginForm() {
         <div
           role="alert"
           aria-live="polite"
-          className="flex items-start gap-2.5 rounded border border-destructive/20 bg-destructive/5 p-3 text-destructive text-xs leading-relaxed"
+          className="flex items-center gap-2 rounded-lg border border-destructive/20 bg-destructive/10 px-3 py-2 text-xs text-destructive"
         >
-          <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true" />
+          <AlertCircle className="size-3.5 shrink-0" aria-hidden="true" />
           <span>{errorMessage}</span>
         </div>
       )}
 
-      <div className="space-y-1.5">
-        <Label htmlFor="identifier" className="font-medium text-foreground text-xs">
-          Nama Pengguna atau Email
+      <div className="space-y-2">
+        <Label htmlFor="identifier" className="text-xs font-medium text-foreground">
+          Email atau username
         </Label>
         <Input
           id="identifier"
@@ -114,17 +111,18 @@ export function LoginForm() {
           autoCorrect="off"
           spellCheck="false"
           required
+          autoFocus
           disabled={isLoading}
           value={identifier}
           onChange={(e) => setIdentifier(e.target.value)}
-          placeholder="username atau nama@agensi.com"
-          className="h-9 rounded border-border bg-background text-sm placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-foreground"
+          placeholder="Masukkan email atau username"
+          className="h-9 rounded-lg border-border bg-background text-sm placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring"
         />
       </div>
 
-      <div className="space-y-1.5">
-        <Label htmlFor="password" className="font-medium text-foreground text-xs">
-          Kata Sandi
+      <div className="space-y-2">
+        <Label htmlFor="password" className="text-xs font-medium text-foreground">
+          Kata sandi
         </Label>
         <div className="relative">
           <Input
@@ -137,38 +135,40 @@ export function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Masukkan kata sandi"
-            className="h-9 rounded border-border bg-background pr-10 text-sm placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-foreground"
+            className="h-9 rounded-lg border-border bg-background pr-10 text-sm placeholder:text-muted-foreground focus-visible:ring-1 focus-visible:ring-ring"
           />
           <button
             type="button"
             onClick={() => setShowPassword(!showPassword)}
             disabled={isLoading}
             aria-label={showPassword ? "Sembunyikan kata sandi" : "Tampilkan kata sandi"}
-            className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground transition-colors hover:text-foreground focus:outline-none focus-visible:ring-1 focus-visible:ring-foreground"
+            className="absolute inset-y-0 right-0 flex items-center pr-3 text-muted-foreground transition-colors hover:text-foreground focus:outline-hidden focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
           >
             {showPassword ? (
-              <EyeOff className="h-4 w-4" aria-hidden="true" />
+              <EyeOff className="size-4" aria-hidden="true" />
             ) : (
-              <Eye className="h-4 w-4" aria-hidden="true" />
+              <Eye className="size-4" aria-hidden="true" />
             )}
           </button>
         </div>
       </div>
 
-      <Button
-        type="submit"
-        disabled={isLoading}
-        className="mt-2 h-9 w-full rounded bg-foreground font-medium text-background text-xs transition-opacity hover:opacity-90"
-      >
-        {isLoading ? (
-          <span className="flex items-center justify-center gap-2">
-            <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-            <span>Memverifikasi...</span>
-          </span>
-        ) : (
-          "Masuk"
-        )}
-      </Button>
+      <div className="pt-2">
+        <Button
+          type="submit"
+          disabled={isLoading}
+          className="w-full h-9 rounded-lg font-medium text-xs shadow-2xs"
+        >
+          {isLoading ? (
+            <span className="inline-flex items-center justify-center gap-2">
+              <Loader2 className="size-3.5 animate-spin" aria-hidden="true" />
+              <span>Memproses...</span>
+            </span>
+          ) : (
+            "Masuk"
+          )}
+        </Button>
+      </div>
     </form>
   );
 }

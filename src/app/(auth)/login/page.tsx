@@ -5,7 +5,7 @@ import { LoginForm } from "./login-form";
 
 export const metadata: Metadata = {
   title: "Masuk | LOCO TRACK",
-  description: "Masuk ke workspace operasional produksi konten LOCO TRACK.",
+  description: "Masuk ke LOCO TRACK.",
 };
 
 interface LoginPageProps {
@@ -25,35 +25,25 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4 py-12 text-foreground sm:px-6">
-      <div className="w-full max-w-sm space-y-6">
-        {/* Brand Header */}
-        <div className="space-y-2 text-center">
-          <div className="inline-flex items-center justify-center">
-            <span className="flex h-8 w-8 items-center justify-center rounded border border-border bg-foreground font-semibold text-background text-xs tracking-wider">
-              LT
-            </span>
+    <main className="flex min-h-screen w-full items-center justify-center bg-background px-4 py-8 sm:px-6">
+      <div className="w-full max-w-[400px] rounded-xl border border-border bg-card p-6 shadow-2xs sm:p-7">
+        <div className="flex items-center gap-2.5 select-none">
+          <div className="flex size-7 items-center justify-center rounded-md bg-primary font-bold text-primary-foreground text-xs tracking-wider shrink-0">
+            LT
           </div>
-          <div className="space-y-1">
-            <h1 className="font-semibold text-lg tracking-tight text-foreground sm:text-xl">
-              Masuk ke workspace
-            </h1>
-            <p className="text-muted-foreground text-xs leading-relaxed">
-              Kelola produksi konten dari brief hingga publish.
-            </p>
-          </div>
+          <span className="font-bold text-xs tracking-wider text-foreground uppercase">
+            LOCO TRACK
+          </span>
         </div>
 
-        {/* Form Card */}
-        <div className="rounded border border-border bg-card p-6 shadow-none sm:p-7">
+        <h1 className="mt-5 font-semibold text-lg tracking-tight text-foreground">
+          Masuk
+        </h1>
+
+        <div className="mt-6">
           <LoginForm />
         </div>
-
-        {/* Security & Access Notice */}
-        <p className="text-center text-[11px] text-muted-foreground leading-relaxed">
-          Akses terbatas untuk personel internal terdaftar.
-        </p>
       </div>
-    </div>
+    </main>
   );
 }

@@ -20,7 +20,7 @@ export async function resolveLoginIdentifier(
 ): Promise<ResolveIdentifierResult> {
   const trimmed = identifier.trim();
   if (!trimmed) {
-    return { success: false, error: "Nama pengguna atau alamat email wajib diisi." };
+    return { success: false, error: "Email/username atau kata sandi tidak sesuai." };
   }
 
   // Direct email address returns immediately
@@ -32,7 +32,7 @@ export async function resolveLoginIdentifier(
   if (!/^[a-zA-Z0-9_.-]{3,30}$/.test(trimmed)) {
     return {
       success: false,
-      error: "Nama pengguna atau kata sandi tidak valid.",
+      error: "Email/username atau kata sandi tidak sesuai.",
     };
   }
 
@@ -47,7 +47,7 @@ export async function resolveLoginIdentifier(
     if (error || !profile) {
       return {
         success: false,
-        error: "Nama pengguna atau kata sandi tidak valid.",
+        error: "Email/username atau kata sandi tidak sesuai.",
       };
     }
 
