@@ -118,16 +118,16 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
   const hasNeverHadTasks = data.totalAssignedTasksCount === 0;
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* 1. REVISED 4 METRIC CARDS */}
-      <div className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-4">
         {/* Card 1: Tugas Aktif Saya */}
         <MetricCard
           label="Tugas Aktif Saya"
           value={data.myActiveTasksCount}
           description="Tugas dalam alur produksi Anda"
           variant="default"
-          icon={<CheckSquare className="size-4" />}
+          icon={<CheckSquare className="size-5" />}
         />
 
         {/* Card 2: Perlu Revisi */}
@@ -136,7 +136,7 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
           value={data.revisionRequestedCount}
           description="Perbaikan yang perlu ditindaklanjuti"
           variant={data.revisionRequestedCount > 0 ? "warning" : "default"}
-          icon={<RotateCcw className="size-4" />}
+          icon={<RotateCcw className="size-5" />}
         />
 
         {/* Card 3: Deadline Dekat / Terlambat */}
@@ -155,7 +155,7 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
                 ? "warning"
                 : "default"
           }
-          icon={<Clock className="size-4" />}
+          icon={<Clock className="size-5" />}
         />
 
         {/* Card 4: Menunggu Review QC */}
@@ -164,39 +164,39 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
           value={data.inReviewCount}
           description="Deliverable sedang direview QC"
           variant="default"
-          icon={<Eye className="size-4" />}
+          icon={<Eye className="size-5" />}
         />
       </div>
 
       {/* 2. PRIORITAS SAYA HARI INI (Main Actionable Section) */}
       <section
         aria-labelledby="priority-tasks-heading"
-        className="rounded-lg border border-border bg-card p-5 sm:p-6 shadow-2xs space-y-4"
+        className="rounded-lg border border-border bg-card p-6 sm:p-7 shadow-2xs space-y-5"
       >
-        <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-3.5">
+        <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-4 sm:pb-5">
           <div>
             <h2
               id="priority-tasks-heading"
-              className="text-sm sm:text-base font-semibold text-foreground flex items-center gap-2"
+              className="text-lg sm:text-[19px] font-semibold text-foreground flex items-center gap-2.5"
             >
               <span>Prioritas Saya Hari Ini</span>
               {data.priorityTasks.length > 0 && (
-                <Badge variant="secondary" className="font-mono text-xs">
+                <Badge variant="secondary" className="font-mono text-xs px-2.5 py-0.5">
                   {data.priorityTasks.length} antrean
                 </Badge>
               )}
             </h2>
-            <p className="text-xs text-muted-foreground mt-0.5">
+            <p className="text-sm text-muted-foreground mt-1">
               Fokus pengerjaan dengan urgensi tertinggi berdasarkan instruksi revisi dan tenggat waktu
             </p>
           </div>
 
           <Link
             href="/tasks"
-            className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground shrink-0 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground shrink-0 transition-colors"
           >
             <span>Semua Tugas Saya</span>
-            <ArrowRight className="size-3.5" />
+            <ArrowRight className="size-4" />
           </Link>
         </div>
 
@@ -326,43 +326,43 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
       {data.recentFeedbacks.length > 0 && (
         <section
           aria-labelledby="recent-feedback-heading"
-          className="rounded-lg border border-border bg-card p-5 sm:p-6 shadow-2xs space-y-4"
+          className="rounded-lg border border-border bg-card p-6 sm:p-7 shadow-2xs space-y-5"
         >
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-3.5">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-4 sm:pb-5">
             <div>
               <h2
                 id="recent-feedback-heading"
-                className="text-sm sm:text-base font-semibold text-foreground flex items-center gap-2"
+                className="text-lg sm:text-[19px] font-semibold text-foreground flex items-center gap-2.5"
               >
-                <MessageSquareQuote className="size-4 text-muted-foreground" />
+                <MessageSquareQuote className="size-5 text-muted-foreground" />
                 <span>Feedback Terbaru</span>
               </h2>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="text-sm text-muted-foreground mt-1">
                 Catatan perbaikan resmi dari Creative Director dan Klien untuk tugas Anda
               </p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             {data.recentFeedbacks.map((fb) => (
               <div
                 key={fb.id}
-                className="flex flex-col justify-between rounded-md border border-border bg-background/60 p-4 text-xs space-y-3 shadow-2xs hover:border-border/80 transition-colors"
+                className="flex flex-col justify-between rounded-md border border-border bg-background/60 p-4 sm:p-5 text-sm space-y-3.5 shadow-2xs hover:border-border/80 transition-colors"
               >
-                <div className="space-y-1.5">
+                <div className="space-y-2">
                   <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0 flex-1">
-                      <span className="font-semibold text-foreground block truncate">
+                      <span className="font-semibold text-foreground block truncate text-sm sm:text-base">
                         {fb.taskTitle}
                       </span>
-                      <p className="text-[11px] text-muted-foreground truncate">
+                      <p className="text-xs text-muted-foreground truncate mt-0.5">
                         {fb.projectName} {fb.version ? `(v${fb.version})` : ""}
                       </p>
                     </div>
 
                     {/* Differentiated Source Label */}
                     <span
-                      className={`inline-flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-semibold shrink-0 ${
+                      className={`inline-flex items-center gap-1 rounded px-2.5 py-0.5 text-xs font-semibold shrink-0 ${
                         fb.source === "CLIENT"
                           ? "bg-purple-500/10 text-purple-700 dark:text-purple-400 border border-purple-500/20"
                           : "bg-amber-500/10 text-amber-700 dark:text-amber-400 border border-amber-500/20"
@@ -373,21 +373,21 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
                   </div>
 
                   {/* Feedback Preview notes (capped at 2 lines) */}
-                  <p className="text-[11px] text-foreground/90 bg-muted/40 p-2.5 rounded border border-border/40 line-clamp-2 leading-relaxed">
+                  <p className="text-xs sm:text-sm text-foreground/90 bg-muted/40 p-3 rounded border border-border/40 line-clamp-2 leading-relaxed">
                     &quot;{fb.notes}&quot;
                   </p>
                 </div>
 
-                <div className="flex items-center justify-between pt-2 border-t border-border/40 text-[11px]">
+                <div className="flex items-center justify-between pt-2.5 border-t border-border/40 text-xs">
                   <span className="text-muted-foreground">
                     {formatRelativeTimestamp(fb.createdAt)}
                   </span>
                   <Link
                     href={`/projects/${fb.projectId}?tab=tasks`}
-                    className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:underline"
                   >
                     <span>Buka Tugas</span>
-                    <ArrowRight className="size-3" />
+                    <ArrowRight className="size-3.5" />
                   </Link>
                 </div>
               </div>
@@ -400,63 +400,63 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
       {data.myProjects.length > 0 && (
         <section
           aria-labelledby="my-projects-heading"
-          className="rounded-lg border border-border bg-card p-5 sm:p-6 shadow-2xs space-y-4"
+          className="rounded-lg border border-border bg-card p-6 sm:p-7 shadow-2xs space-y-5"
         >
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-3.5">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-4 sm:pb-5">
             <div>
               <h2
                 id="my-projects-heading"
-                className="text-sm sm:text-base font-semibold text-foreground flex items-center gap-2"
+                className="text-lg sm:text-[19px] font-semibold text-foreground flex items-center gap-2.5"
               >
-                <FolderKanban className="size-4 text-muted-foreground" />
+                <FolderKanban className="size-5 text-muted-foreground" />
                 <span>Project Saya</span>
               </h2>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="text-sm text-muted-foreground mt-1">
                 Daftar project aktif yang menugaskan Anda dalam tim produksi
               </p>
             </div>
             <Link
               href="/projects"
-              className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground shrink-0 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground shrink-0 transition-colors"
             >
               <span>Lihat Semua Project</span>
-              <ArrowRight className="size-3.5" />
+              <ArrowRight className="size-4" />
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {data.myProjects.map((proj) => {
               const deadlineInfo = formatHumanDeadline(proj.myNearestDeadline);
 
               return (
                 <div
                   key={proj.id}
-                  className="rounded-md border border-border bg-background/50 p-3.5 space-y-2.5 flex flex-col justify-between shadow-2xs hover:bg-background transition-colors"
+                  className="rounded-md border border-border bg-background/50 p-4 space-y-3 flex flex-col justify-between shadow-2xs hover:bg-background transition-colors"
                 >
-                  <div className="space-y-1">
+                  <div className="space-y-1.5">
                     <div className="flex items-center justify-between gap-1.5">
-                      <span className="font-mono text-[10px] text-muted-foreground bg-muted px-1.5 py-0.2 rounded border border-border">
+                      <span className="font-mono text-xs text-muted-foreground bg-muted px-2 py-0.5 rounded border border-border">
                         {proj.projectCode}
                       </span>
                       {proj.hasActiveRevision && (
-                        <span className="inline-flex items-center gap-0.5 text-[10px] font-semibold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.2 rounded border border-amber-500/20">
-                          <AlertCircle className="size-2.5" />
+                        <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-600 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                          <AlertCircle className="size-3" />
                           <span>Revisi</span>
                         </span>
                       )}
                     </div>
-                    <h3 className="font-semibold text-xs text-foreground truncate">
+                    <h3 className="font-semibold text-sm text-foreground truncate mt-1">
                       {proj.name}
                     </h3>
-                    <p className="text-[11px] text-muted-foreground truncate">
+                    <p className="text-xs text-muted-foreground truncate">
                       {proj.clientName} • {proj.brandName}
                     </p>
                   </div>
 
-                  <div className="space-y-1.5 pt-2 border-t border-border/50 text-[11px]">
+                  <div className="space-y-1.5 pt-2.5 border-t border-border/50 text-xs">
                     <div className="flex items-center justify-between text-muted-foreground">
                       <span>Tugas saya:</span>
-                      <span className="font-medium text-foreground">
+                      <span className="font-medium text-foreground text-sm">
                         {proj.myActiveTasksCount} aktif
                       </span>
                     </div>
@@ -465,10 +465,10 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
                       <span
                         className={
                           deadlineInfo.isOverdue
-                            ? "font-semibold text-destructive"
+                            ? "font-semibold text-destructive text-sm"
                             : deadlineInfo.isUrgent
-                              ? "font-semibold text-amber-600 dark:text-amber-400"
-                              : "font-medium text-foreground"
+                              ? "font-semibold text-amber-600 dark:text-amber-400 text-sm"
+                              : "font-medium text-foreground text-sm"
                         }
                       >
                         {deadlineInfo.text}
@@ -476,11 +476,11 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
                     </div>
                   </div>
 
-                  <div className="pt-2 border-t border-border flex items-center gap-1.5">
+                  <div className="pt-2.5 border-t border-border flex items-center gap-2">
                     <Button
                       nativeButton={false}
                       size="sm"
-                      className="w-full h-7 text-xs"
+                      className="w-full h-8 text-sm"
                       render={<Link href={`/projects/${proj.id}?tab=tasks`} />}
                     >
                       <span>Lihat Task</span>
@@ -489,11 +489,11 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
                       nativeButton={false}
                       variant="ghost"
                       size="sm"
-                      className="h-7 text-xs text-muted-foreground px-2"
+                      className="h-8 text-sm text-muted-foreground px-2.5"
                       render={<Link href={`/projects/${proj.id}`} />}
                       aria-label={`Buka project ${proj.name}`}
                     >
-                      <ExternalLink className="size-3" />
+                      <ExternalLink className="size-3.5" />
                     </Button>
                   </div>
                 </div>
@@ -507,39 +507,39 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
       {hasActiveTasks ? (
         <section
           aria-labelledby="active-tasks-heading"
-          className="rounded-lg border border-border bg-card p-5 sm:p-6 shadow-2xs space-y-4"
+          className="rounded-lg border border-border bg-card p-6 sm:p-7 shadow-2xs space-y-5"
         >
-          <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-3.5">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-4 sm:pb-5">
             <div>
               <h2
                 id="active-tasks-heading"
-                className="text-sm sm:text-base font-semibold text-foreground flex items-center gap-2"
+                className="text-lg sm:text-[19px] font-semibold text-foreground flex items-center gap-2.5"
               >
-                <CheckSquare className="size-4 text-muted-foreground" />
+                <CheckSquare className="size-5 text-muted-foreground" />
                 <span>Daftar Tugas Aktif Saya</span>
               </h2>
-              <p className="text-xs text-muted-foreground mt-0.5">
+              <p className="text-sm text-muted-foreground mt-1">
                 Semua tugas produksi Anda yang sedang berjalan dalam alur kerja
               </p>
             </div>
             <Link
               href="/tasks"
-              className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground shrink-0 transition-colors"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground shrink-0 transition-colors"
             >
               <span>Kelola di Halaman Tugas</span>
-              <ArrowRight className="size-3.5" />
+              <ArrowRight className="size-4" />
             </Link>
           </div>
 
           <div className="overflow-x-auto no-scrollbar">
-            <table className="w-full min-w-[620px] text-left text-xs border-collapse">
+            <table className="w-full min-w-[620px] text-left text-sm border-collapse">
               <thead>
-                <tr className="border-b border-border/80 text-muted-foreground">
-                  <th className="py-2.5 pr-4 font-medium">Judul Tugas</th>
-                  <th className="py-2.5 pr-4 font-medium">Project</th>
-                  <th className="py-2.5 pr-4 font-medium">Status</th>
-                  <th className="py-2.5 pr-4 font-medium">Tenggat</th>
-                  <th className="py-2.5 text-right font-medium">Aksi</th>
+                <tr className="border-b border-border/80 text-xs sm:text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+                  <th className="py-3.5 pr-4">Judul Tugas</th>
+                  <th className="py-3.5 pr-4">Project</th>
+                  <th className="py-3.5 pr-4">Status</th>
+                  <th className="py-3.5 pr-4">Tenggat</th>
+                  <th className="py-3.5 text-right">Aksi</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-border/50">
@@ -548,14 +548,14 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
 
                   return (
                     <tr key={t.taskId} className="hover:bg-muted/30 transition-colors">
-                      <td className="py-3 pr-4 font-medium text-foreground">
+                      <td className="py-3.5 pr-4 font-medium text-foreground">
                         {t.taskTitle}
                       </td>
-                      <td className="py-3 pr-4 text-muted-foreground">
+                      <td className="py-3.5 pr-4 text-muted-foreground">
                         {t.projectName}
                       </td>
-                      <td className="py-3 pr-4">
-                        <span className="inline-flex items-center rounded-md bg-muted px-2 py-0.5 text-[11px] font-medium text-foreground/80">
+                      <td className="py-3.5 pr-4">
+                        <span className="inline-flex items-center rounded-md bg-muted px-2.5 py-0.5 text-xs font-medium text-foreground/80">
                           {t.status === "TODO"
                             ? "Todo"
                             : t.status === "IN_PROGRESS"
@@ -567,26 +567,26 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
                                   : t.status}
                         </span>
                       </td>
-                      <td className="py-3 pr-4">
+                      <td className="py-3.5 pr-4">
                         <span
                           className={
                             deadlineInfo.isOverdue
-                              ? "font-semibold text-destructive"
+                              ? "font-semibold text-destructive text-sm"
                               : deadlineInfo.isUrgent
-                                ? "font-semibold text-amber-600 dark:text-amber-400"
-                                : "text-muted-foreground"
+                                ? "font-semibold text-amber-600 dark:text-amber-400 text-sm"
+                                : "text-muted-foreground text-sm"
                           }
                         >
                           {deadlineInfo.text}
                         </span>
                       </td>
-                      <td className="py-3 text-right">
+                      <td className="py-3.5 text-right">
                         <Link
                           href={`/projects/${t.projectId}?tab=tasks`}
-                          className="inline-flex items-center gap-1 text-xs font-semibold text-primary hover:underline"
+                          className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
                         >
                           <span>Buka</span>
-                          <ExternalLink className="size-3" />
+                          <ExternalLink className="size-3.5" />
                         </Link>
                       </td>
                     </tr>
@@ -601,18 +601,18 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
         data.recentCompletedTasks.length > 0 && (
           <section
             aria-labelledby="recent-completed-heading"
-            className="rounded-lg border border-border bg-card p-5 sm:p-6 shadow-2xs space-y-3"
+            className="rounded-lg border border-border bg-card p-6 sm:p-7 shadow-2xs space-y-4"
           >
-            <div className="flex items-center justify-between border-b border-border pb-3">
+            <div className="flex items-center justify-between border-b border-border pb-4">
               <div>
                 <h2
                   id="recent-completed-heading"
-                  className="text-sm font-semibold text-foreground flex items-center gap-2"
+                  className="text-lg sm:text-[19px] font-semibold text-foreground flex items-center gap-2.5"
                 >
-                  <CheckCircle2 className="size-4 text-emerald-600 dark:text-emerald-400" />
+                  <CheckCircle2 className="size-5 text-emerald-600 dark:text-emerald-400" />
                   <span>Tugas yang Baru Selesai</span>
                 </h2>
-                <p className="text-xs text-muted-foreground mt-0.5">
+                <p className="text-sm text-muted-foreground mt-1">
                   Riwayat pengerjaan terakhir yang telah Anda selesaikan
                 </p>
               </div>
@@ -622,13 +622,13 @@ export function CreativeDashboard({ data }: CreativeDashboardProps) {
               {data.recentCompletedTasks.map((t) => (
                 <div
                   key={t.taskId}
-                  className="py-2.5 flex items-center justify-between text-xs"
+                  className="py-3.5 flex items-center justify-between text-sm"
                 >
                   <div>
                     <span className="font-medium text-foreground">{t.taskTitle}</span>
                     <span className="text-muted-foreground ml-2">({t.projectName})</span>
                   </div>
-                  <span className="text-[11px] text-muted-foreground">
+                  <span className="text-xs text-muted-foreground">
                     Selesai {formatRelativeTimestamp(t.completedAt)}
                   </span>
                 </div>

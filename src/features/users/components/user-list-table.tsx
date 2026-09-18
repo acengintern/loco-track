@@ -74,14 +74,14 @@ export function UserListTable({
       {/* Desktop & Tablet Table */}
       <div className="hidden md:block rounded-lg border border-border bg-card shadow-2xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs border-collapse">
+          <table className="w-full text-left text-sm border-collapse">
             <thead>
               <tr className="border-b border-border bg-muted/30 text-muted-foreground">
-                <th className="py-3 px-4 font-medium">Personel</th>
-                <th className="py-3 px-4 font-medium">Peran Akses</th>
-                <th className="py-3 px-4 font-medium">Status Akun</th>
-                <th className="py-3 px-4 font-medium">Terdaftar</th>
-                <th className="py-3 px-4 font-medium text-right">Aksi</th>
+                <th className="py-3.5 px-4 font-semibold text-sm">Personel</th>
+                <th className="py-3.5 px-4 font-semibold text-sm">Peran Akses</th>
+                <th className="py-3.5 px-4 font-semibold text-sm">Status Akun</th>
+                <th className="py-3.5 px-4 font-semibold text-sm">Terdaftar</th>
+                <th className="py-3.5 px-4 font-semibold text-sm text-right">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border/60">
@@ -112,28 +112,28 @@ export function UserListTable({
                     )}
                   >
                     {/* Personel Name & Email */}
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 sm:py-4 px-4">
                       <div className="flex items-center gap-3">
-                        <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-xs font-semibold">
+                        <div className="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary text-sm font-semibold">
                           {initials}
                         </div>
                         <div className="min-w-0">
                           <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="font-semibold text-foreground truncate">
+                            <span className="font-semibold text-foreground text-sm sm:text-[15px] truncate">
                               {user.fullName}
                             </span>
                             {user.username && (
-                              <span className="font-mono text-[11px] text-primary/80">
+                              <span className="font-mono text-xs text-primary/80">
                                 @{user.username}
                               </span>
                             )}
                             {isSelf && (
-                              <span className="rounded bg-primary/15 px-1.5 py-0.2 text-[10px] font-bold text-primary">
+                              <span className="rounded bg-primary/15 px-1.5 py-0.5 text-[11px] font-bold text-primary">
                                 Anda
                               </span>
                             )}
                           </div>
-                          <span className="text-xs text-muted-foreground truncate block">
+                          <span className="text-xs sm:text-sm text-muted-foreground truncate block mt-0.5">
                             {user.email}
                           </span>
                         </div>
@@ -141,10 +141,10 @@ export function UserListTable({
                     </td>
 
                     {/* Role */}
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 sm:py-4 px-4">
                       <span
                         className={cn(
-                          "inline-flex items-center rounded-md border px-2 py-0.5 text-[11px] font-medium whitespace-nowrap",
+                          "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-medium whitespace-nowrap",
                           ROLE_BADGE_STYLES[user.role] || "border-border bg-muted"
                         )}
                       >
@@ -153,27 +153,27 @@ export function UserListTable({
                     </td>
 
                     {/* Status */}
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 sm:py-4 px-4">
                       {user.isActive ? (
-                        <span className="inline-flex items-center gap-1 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
-                          <span className="size-1.5 rounded-full bg-emerald-500" />
+                        <span className="inline-flex items-center gap-1.5 text-sm text-emerald-600 dark:text-emerald-400 font-medium">
+                          <span className="size-2 rounded-full bg-emerald-500" />
                           <span>Aktif</span>
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground font-medium">
-                          <span className="size-1.5 rounded-full bg-muted-foreground/60" />
+                        <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground font-medium">
+                          <span className="size-2 rounded-full bg-muted-foreground/60" />
                           <span>Nonaktif</span>
                         </span>
                       )}
                     </td>
 
                     {/* Registration Date */}
-                    <td className="py-3 px-4 text-muted-foreground tabular-nums">
+                    <td className="py-3.5 sm:py-4 px-4 text-muted-foreground text-xs sm:text-sm tabular-nums">
                       {formattedDate}
                     </td>
 
                     {/* Actions Menu */}
-                    <td className="py-3 px-4 text-right">
+                    <td className="py-3.5 sm:py-4 px-4 text-right">
                       <DropdownMenu>
                         <Tooltip>
                           <TooltipTrigger
@@ -196,20 +196,20 @@ export function UserListTable({
                             Opsi pengguna
                           </TooltipContent>
                         </Tooltip>
-                        <DropdownMenuContent align="end" className="w-48 text-xs">
+                        <DropdownMenuContent align="end" className="w-52 text-sm">
                           <DropdownMenuItem
                             onClick={() => onEdit(user)}
-                            className="gap-2 cursor-pointer"
+                            className="gap-2.5 cursor-pointer text-sm py-2"
                           >
-                            <Edit2 className="size-3.5" />
+                            <Edit2 className="size-4" />
                             <span>Edit Profil & Peran</span>
                           </DropdownMenuItem>
 
                           <DropdownMenuItem
                             onClick={() => onResetPassword(user)}
-                            className="gap-2 cursor-pointer"
+                            className="gap-2.5 cursor-pointer text-sm py-2"
                           >
-                            <KeyRound className="size-3.5" />
+                            <KeyRound className="size-4" />
                             <span>Atur Ulang Sandi</span>
                           </DropdownMenuItem>
 
@@ -219,7 +219,7 @@ export function UserListTable({
                             <DropdownMenuItem
                               onClick={() => onToggleStatus(user)}
                               className={cn(
-                                "gap-2 cursor-pointer",
+                                "gap-2.5 cursor-pointer text-sm py-2",
                                 user.isActive
                                   ? "text-destructive focus:text-destructive"
                                   : "text-emerald-600 focus:text-emerald-600 dark:text-emerald-400"
@@ -227,12 +227,12 @@ export function UserListTable({
                             >
                               {user.isActive ? (
                                 <>
-                                  <UserX className="size-3.5" />
+                                  <UserX className="size-4" />
                                   <span>Nonaktifkan Akun</span>
                                 </>
                               ) : (
                                 <>
-                                  <UserCheck className="size-3.5" />
+                                  <UserCheck className="size-4" />
                                   <span>Aktifkan Akun</span>
                                 </>
                               )}
@@ -285,17 +285,17 @@ export function UserListTable({
                   </div>
                   <div>
                     <div className="flex items-center gap-1.5">
-                      <h4 className="text-xs font-semibold text-foreground">
+                      <h4 className="text-sm font-semibold text-foreground">
                         {user.fullName}
                       </h4>
                       {isSelf && (
-                        <span className="rounded bg-primary/15 px-1.5 py-0.2 text-[10px] font-bold text-primary">
+                        <span className="rounded bg-primary/15 px-1.5 py-0.5 text-[11px] font-bold text-primary">
                           Anda
                         </span>
                       )}
                     </div>
-                    <p className="text-[11px] text-muted-foreground flex items-center gap-1">
-                      <Mail className="size-3 shrink-0" />
+                    <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                      <Mail className="size-3.5 shrink-0" />
                       <span className="truncate">{user.email}</span>
                     </p>
                   </div>
@@ -303,31 +303,31 @@ export function UserListTable({
 
                 {/* Status indicator */}
                 {user.isActive ? (
-                  <span className="inline-flex items-center gap-1 text-[11px] text-emerald-600 dark:text-emerald-400 font-medium">
-                    <span className="size-1.5 rounded-full bg-emerald-500" />
+                  <span className="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 font-medium">
+                    <span className="size-2 rounded-full bg-emerald-500" />
                     <span>Aktif</span>
                   </span>
                 ) : (
-                  <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground font-medium">
-                    <span className="size-1.5 rounded-full bg-muted-foreground/60" />
+                  <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground font-medium">
+                    <span className="size-2 rounded-full bg-muted-foreground/60" />
                     <span>Nonaktif</span>
                   </span>
                 )}
               </div>
 
               {/* Meta: Role and Registration Date */}
-              <div className="flex items-center justify-between gap-2 border-t border-border/60 pt-2.5 text-[11px]">
+              <div className="flex items-center justify-between gap-2 border-t border-border/60 pt-3 text-xs">
                 <span
                   className={cn(
-                    "inline-flex items-center rounded-md border px-2 py-0.5 text-[10px] font-medium",
+                    "inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-medium",
                     ROLE_BADGE_STYLES[user.role] || "border-border bg-muted"
                   )}
                 >
                   {ROLE_LABELS[user.role] || user.role}
                 </span>
 
-                <span className="text-muted-foreground flex items-center gap-1 tabular-nums">
-                  <Clock className="size-3" />
+                <span className="text-muted-foreground flex items-center gap-1.5 tabular-nums">
+                  <Clock className="size-3.5" />
                   <span>{formattedDate}</span>
                 </span>
               </div>
@@ -338,9 +338,9 @@ export function UserListTable({
                   variant="outline"
                   size="sm"
                   onClick={() => onEdit(user)}
-                  className="flex-1 h-8 text-xs gap-1"
+                  className="flex-1 h-9 text-sm gap-1.5"
                 >
-                  <Edit2 className="size-3" />
+                  <Edit2 className="size-3.5" />
                   <span>Edit</span>
                 </Button>
 
@@ -348,9 +348,9 @@ export function UserListTable({
                   variant="outline"
                   size="sm"
                   onClick={() => onResetPassword(user)}
-                  className="flex-1 h-8 text-xs gap-1"
+                  className="flex-1 h-9 text-sm gap-1.5"
                 >
-                  <KeyRound className="size-3" />
+                  <KeyRound className="size-3.5" />
                   <span>Sandi</span>
                 </Button>
 
@@ -359,13 +359,13 @@ export function UserListTable({
                     variant={user.isActive ? "destructive" : "secondary"}
                     size="sm"
                     onClick={() => onToggleStatus(user)}
-                    className="h-8 text-xs px-2.5"
+                    className="h-9 text-sm px-3"
                     title={user.isActive ? "Nonaktifkan akun" : "Aktifkan akun"}
                   >
                     {user.isActive ? (
-                      <UserX className="size-3.5" />
+                      <UserX className="size-4" />
                     ) : (
-                      <UserCheck className="size-3.5" />
+                      <UserCheck className="size-4" />
                     )}
                   </Button>
                 )}

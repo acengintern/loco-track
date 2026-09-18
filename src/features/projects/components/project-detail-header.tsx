@@ -39,36 +39,36 @@ export function ProjectDetailHeader({
   const [isEditOpen, setIsEditOpen] = React.useState(false);
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-4">
       <Link
         href="/projects"
         className={buttonVariants({
           variant: "ghost",
           size: "sm",
           className:
-            "gap-1.5 text-xs text-muted-foreground hover:text-foreground pl-0",
+            "gap-2 text-sm text-muted-foreground hover:text-foreground pl-0",
         })}
       >
-        <ArrowLeft className="size-3.5" />
+        <ArrowLeft className="size-4" />
         <span>Kembali ke Direktori Project</span>
       </Link>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-        <div className="space-y-1.5">
+        <div className="space-y-2">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-xs font-semibold bg-muted px-2 py-0.5 rounded border border-border">
+            <span className="font-mono text-xs font-semibold bg-muted px-2.5 py-1 rounded border border-border">
               {project.project_code}
             </span>
             <ProjectStatusBadge status={project.status} />
             <ProjectPriorityBadge priority={project.priority} />
           </div>
 
-          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-foreground">
+          <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             {project.name}
           </h1>
 
-          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Building2 className="size-3.5" />
+          <div className="flex items-center gap-2 text-sm text-muted-foreground">
+            <Building2 className="size-4" />
             <Link
               href={`/clients/${project.brand.client.id}`}
               className="hover:underline text-foreground/80 font-medium"
@@ -85,7 +85,7 @@ export function ProjectDetailHeader({
           </div>
         </div>
 
-        <div className="flex items-center gap-2 shrink-0">
+        <div className="flex items-center gap-2.5 shrink-0">
           {isAdmin && (
             <Link
               href={
@@ -97,10 +97,10 @@ export function ProjectDetailHeader({
                 variant: "outline",
                 size: "sm",
                 className:
-                  "gap-1.5 text-xs h-8 text-muted-foreground hover:text-foreground",
+                  "gap-2 text-sm h-10 px-4 text-muted-foreground hover:text-foreground",
               })}
             >
-              <Eye className="size-3.5" />
+              <Eye className="size-4" />
               <span>{isCreativePreview ? "Mode Admin" : "Mode Kreatif"}</span>
             </Link>
           )}
@@ -110,9 +110,9 @@ export function ProjectDetailHeader({
               onClick={() => setIsEditOpen(true)}
               variant="outline"
               size="sm"
-              className="gap-1.5 text-xs h-8"
+              className="gap-2 text-sm h-10 px-4"
             >
-              <Edit2 className="size-3.5" />
+              <Edit2 className="size-4" />
               <span>Edit Project</span>
             </Button>
           )}

@@ -321,11 +321,11 @@ export function TaskList({
     <TooltipProvider delay={200}>
       <div className="space-y-4">
         {/* Filter and Action Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div className="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-2">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5">
+          <div className="flex flex-1 flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
             {/* Creative Quick Filter: All vs My Tasks */}
             {isCreativeRole && (
-              <div className="inline-flex rounded-md border border-border bg-muted/40 p-0.5 text-xs shrink-0 self-start sm:self-center">
+              <div className="inline-flex rounded-lg border border-border bg-muted/40 p-1 text-sm shrink-0 self-start sm:self-center">
                 <button
                   type="button"
                   onClick={() => {
@@ -333,7 +333,7 @@ export function TaskList({
                     setSelectedTaskIds([]);
                   }}
                   className={cn(
-                    "rounded px-2.5 py-1 font-medium transition-colors cursor-pointer",
+                    "rounded-md px-3 py-1.5 font-medium transition-colors cursor-pointer text-sm",
                     !onlyMyTasks
                       ? "bg-background text-foreground shadow-2xs font-semibold"
                       : "text-muted-foreground hover:text-foreground"
@@ -348,7 +348,7 @@ export function TaskList({
                     setSelectedTaskIds([]);
                   }}
                   className={cn(
-                    "rounded px-2.5 py-1 font-medium transition-colors cursor-pointer",
+                    "rounded-md px-3 py-1.5 font-medium transition-colors cursor-pointer text-sm",
                     onlyMyTasks
                       ? "bg-background text-foreground shadow-2xs font-semibold"
                       : "text-muted-foreground hover:text-foreground"
@@ -361,7 +361,7 @@ export function TaskList({
 
             {/* Search */}
             <div className="relative flex-1 max-w-sm">
-              <Search className="absolute left-2.5 top-2.5 size-3.5 text-muted-foreground pointer-events-none" />
+              <Search className="absolute left-3 top-3 size-4 text-muted-foreground pointer-events-none" />
               <Input
                 type="search"
                 value={searchTerm}
@@ -370,7 +370,7 @@ export function TaskList({
                   setSelectedTaskIds([]);
                 }}
                 placeholder="Cari judul tugas, PIC, atau catatan..."
-                className="pl-8 text-xs h-8"
+                className="pl-9.5 text-sm h-10"
               />
             </div>
 
@@ -384,7 +384,7 @@ export function TaskList({
                 }
               }}
             >
-              <SelectTrigger className="h-8 text-xs min-w-36" aria-label="Filter status tugas">
+              <SelectTrigger className="h-10 text-sm min-w-40" aria-label="Filter status tugas">
                 <SelectValue placeholder="Semua Status">
                   {statusFilterLabel}
                 </SelectValue>
@@ -410,7 +410,7 @@ export function TaskList({
                 }
               }}
             >
-              <SelectTrigger className="h-8 text-xs min-w-32" aria-label="Filter tipe tugas">
+              <SelectTrigger className="h-10 text-sm min-w-36" aria-label="Filter tipe tugas">
                 <SelectValue placeholder="Semua Tipe">
                   {typeFilterLabel}
                 </SelectValue>
@@ -424,35 +424,35 @@ export function TaskList({
             </Select>
           </div>
 
-          <div className="flex items-center gap-2 shrink-0">
+          <div className="flex items-center gap-2.5 shrink-0">
             {/* View Mode Switcher: Board (Kanban) vs Table */}
-            <div className="inline-flex items-center rounded-lg border border-border bg-muted/40 p-0.5">
+            <div className="inline-flex items-center rounded-lg border border-border bg-muted/40 p-1">
               <button
                 type="button"
                 onClick={() => setViewMode("kanban")}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer",
+                  "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer",
                   viewMode === "kanban"
                     ? "bg-card text-foreground font-semibold shadow-2xs"
                     : "text-muted-foreground hover:text-foreground"
                 )}
                 aria-label="Tampilan Board Kanban"
               >
-                <Kanban className="size-3.5" />
+                <Kanban className="size-4" />
                 <span>Board</span>
               </button>
               <button
                 type="button"
                 onClick={() => setViewMode("table")}
                 className={cn(
-                  "inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition-colors cursor-pointer",
+                  "inline-flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer",
                   viewMode === "table"
                     ? "bg-card text-foreground font-semibold shadow-2xs"
                     : "text-muted-foreground hover:text-foreground"
                 )}
                 aria-label="Tampilan Tabel"
               >
-                <TableIcon className="size-3.5" />
+                <TableIcon className="size-4" />
                 <span>Tabel</span>
               </button>
             </div>
@@ -461,9 +461,9 @@ export function TaskList({
               <button
                 type="button"
                 onClick={handleCreate}
-                className="inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs cursor-pointer"
+                className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 h-10 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs cursor-pointer"
               >
-                <Plus className="size-3.5" />
+                <Plus className="size-4" />
                 <span>Tambah Tugas</span>
               </button>
             )}
@@ -472,16 +472,16 @@ export function TaskList({
 
         {/* Empty State */}
         {filteredTasks.length === 0 ? (
-          <div className="rounded-lg border border-border bg-card p-8 text-center shadow-2xs">
-            <div className="mx-auto flex size-10 items-center justify-center rounded-full bg-muted text-muted-foreground mb-3">
-              <CheckSquare className="size-5" />
+          <div className="rounded-lg border border-border bg-card p-12 text-center shadow-2xs">
+            <div className="mx-auto flex size-12 items-center justify-center rounded-full bg-muted text-muted-foreground mb-4">
+              <CheckSquare className="size-6" />
             </div>
-            <h3 className="text-sm font-semibold text-foreground">
+            <h3 className="text-base font-semibold text-foreground">
               {searchTerm || statusFilter !== "ALL" || typeFilter !== "ALL"
                 ? "Tugas tidak ditemukan."
                 : "Belum ada tugas produksi."}
             </h3>
-            <p className="mt-1 text-xs text-muted-foreground max-w-sm mx-auto leading-relaxed">
+            <p className="mt-1 text-sm text-muted-foreground max-w-sm mx-auto leading-relaxed">
               {searchTerm || statusFilter !== "ALL" || typeFilter !== "ALL"
                 ? "Coba sesuaikan kata kunci atau filter pencarian Anda."
                 : canManage
@@ -494,9 +494,9 @@ export function TaskList({
                 <button
                   type="button"
                   onClick={handleCreate}
-                  className="inline-flex items-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs cursor-pointer"
+                  className="inline-flex items-center gap-2 rounded-md bg-primary px-4 h-10 text-sm font-semibold text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs cursor-pointer"
                 >
-                  <Plus className="size-3.5" />
+                  <Plus className="size-4" />
                   <span>Buat Tugas Pertama</span>
                 </button>
               </div>
@@ -526,7 +526,7 @@ export function TaskList({
             <div className="hidden md:block rounded-lg border border-border bg-card shadow-2xs overflow-hidden">
               {/* Contextual Bulk Action Bar */}
               {selectedTaskIds.length > 0 && (
-                <div className="flex flex-wrap items-center justify-between gap-2.5 border-b border-primary/20 bg-primary/5 px-4 py-2.5 text-xs text-foreground">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-primary/20 bg-primary/5 px-5 py-3 text-sm text-foreground">
                   <div className="flex items-center gap-2">
                     <span className="inline-flex size-2 rounded-full bg-primary animate-pulse" />
                     <span className="font-semibold text-foreground">
@@ -534,38 +534,38 @@ export function TaskList({
                     </span>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2.5">
                     {canManage ? (
                       <>
                         <button
                           type="button"
                           onClick={() => setIsBulkAssignOpen(true)}
-                          className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium text-foreground hover:bg-accent transition-colors shadow-2xs cursor-pointer"
+                          className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent transition-colors shadow-2xs cursor-pointer"
                         >
-                          <UserCheck className="size-3.5 text-primary" />
+                          <UserCheck className="size-4 text-primary" />
                           <span>Tugaskan PIC</span>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => setIsBulkPriorityOpen(true)}
-                          className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium text-foreground hover:bg-accent transition-colors shadow-2xs cursor-pointer"
+                          className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground hover:bg-accent transition-colors shadow-2xs cursor-pointer"
                         >
-                          <SlidersHorizontal className="size-3.5 text-amber-500" />
+                          <SlidersHorizontal className="size-4 text-amber-500" />
                           <span>Ubah Prioritas</span>
                         </button>
 
                         <button
                           type="button"
                           onClick={() => setIsBulkDeleteOpen(true)}
-                          className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-destructive/10 px-2.5 py-1 text-xs font-medium text-destructive hover:bg-destructive/20 transition-colors shadow-2xs cursor-pointer"
+                          className="inline-flex items-center gap-1.5 rounded-md border border-destructive/30 bg-destructive/10 px-3 py-1.5 text-sm font-medium text-destructive hover:bg-destructive/20 transition-colors shadow-2xs cursor-pointer"
                         >
-                          <Trash2 className="size-3.5" />
+                          <Trash2 className="size-4" />
                           <span>Hapus ({selectedTaskIds.length})</span>
                         </button>
                       </>
                     ) : (
-                      <span className="text-[11px] text-muted-foreground italic">
+                      <span className="text-xs text-muted-foreground italic">
                         Aksi massal hanya diizinkan untuk Operator SMS / Administrator
                       </span>
                     )}
@@ -573,10 +573,10 @@ export function TaskList({
                     <button
                       type="button"
                       onClick={() => setSelectedTaskIds([])}
-                      className="inline-flex items-center gap-1 rounded-md px-2 py-1 text-xs text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer ml-1"
+                      className="inline-flex items-center gap-1 rounded-md px-2.5 py-1.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted transition-colors cursor-pointer ml-1"
                       aria-label="Batal pilih semua tugas"
                     >
-                      <X className="size-3.5" />
+                      <X className="size-4" />
                       <span>Batal</span>
                     </button>
                   </div>
@@ -587,15 +587,15 @@ export function TaskList({
               <div className="overflow-x-auto w-full no-scrollbar">
                 <table
                   className={cn(
-                    "w-full text-left text-xs border-collapse",
-                    showProjectColumn ? "min-w-[1250px]" : "min-w-[1150px]"
+                    "w-full text-left text-sm border-collapse",
+                    showProjectColumn ? "min-w-[1300px]" : "min-w-[1200px]"
                   )}
                 >
-                  <thead className="border-b border-border bg-muted/40 text-[11px] uppercase tracking-wider font-semibold text-muted-foreground">
+                  <thead className="border-b border-border bg-muted/40 text-xs font-semibold text-muted-foreground">
                     <tr>
                       {/* Checkbox Column (only for managers) */}
                       {canManage && (
-                        <th className="w-12 min-w-[48px] max-w-[48px] px-3 py-3 text-center">
+                        <th className="w-12 min-w-[48px] max-w-[48px] px-4 py-3.5 text-center">
                           <Checkbox
                             checked={allVisibleSelected}
                             onCheckedChange={toggleSelectAll}
@@ -605,16 +605,16 @@ export function TaskList({
                       )}
 
                       {/* Column Headers with Explicit Hierarchy */}
-                      <th className="w-[300px] min-w-[280px] max-w-[340px] px-4 py-3">Tugas & PIC</th>
+                      <th className="w-[300px] min-w-[280px] max-w-[340px] px-4 py-3.5">Tugas & PIC</th>
                       {showProjectColumn && (
-                        <th className="w-[180px] min-w-[160px] max-w-[200px] px-4 py-3">Proyek</th>
+                        <th className="w-[180px] min-w-[160px] max-w-[200px] px-4 py-3.5">Proyek</th>
                       )}
-                      <th className="w-[130px] min-w-[120px] px-4 py-3 whitespace-nowrap">Tipe</th>
-                      <th className="w-[110px] min-w-[100px] px-4 py-3 whitespace-nowrap">Prioritas</th>
-                      <th className="w-[140px] min-w-[130px] px-4 py-3 whitespace-nowrap">Status</th>
-                      <th className="w-[170px] min-w-[160px] px-4 py-3 whitespace-nowrap">Tenggat Waktu</th>
-                      <th className="w-[220px] min-w-[180px] max-w-[240px] px-4 py-3">Referensi</th>
-                      <th className="w-[120px] min-w-[110px] px-4 py-3 text-right whitespace-nowrap">Aksi</th>
+                      <th className="w-[130px] min-w-[120px] px-4 py-3.5 whitespace-nowrap">Tipe</th>
+                      <th className="w-[110px] min-w-[100px] px-4 py-3.5 whitespace-nowrap">Prioritas</th>
+                      <th className="w-[140px] min-w-[130px] px-4 py-3.5 whitespace-nowrap">Status</th>
+                      <th className="w-[170px] min-w-[160px] px-4 py-3.5 whitespace-nowrap">Tenggat Waktu</th>
+                      <th className="w-[220px] min-w-[180px] max-w-[240px] px-4 py-3.5">Referensi</th>
+                      <th className="w-[120px] min-w-[110px] px-4 py-3.5 text-right whitespace-nowrap">Aksi</th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-border">
@@ -625,13 +625,13 @@ export function TaskList({
                         <tr
                           key={task.id}
                           className={cn(
-                            "hover:bg-muted/20 transition-colors",
+                            "hover:bg-muted/20 transition-colors text-sm",
                             isSelected && "bg-primary/5 hover:bg-primary/10"
                           )}
                         >
                           {/* Row Checkbox (only for managers) */}
                           {canManage && (
-                            <td className="w-12 min-w-[48px] max-w-[48px] px-3 py-3 text-center">
+                            <td className="w-12 min-w-[48px] max-w-[48px] px-4 py-3.5 sm:py-4 text-center">
                               <Checkbox
                                 checked={isSelected}
                                 onCheckedChange={() => toggleSelectTask(task.id)}
@@ -641,11 +641,11 @@ export function TaskList({
                           )}
 
                           {/* Task Title & PIC: Protected line-clamp-2 & Tooltip */}
-                          <td className="w-[300px] min-w-[280px] max-w-[340px] px-4 py-3">
+                          <td className="w-[300px] min-w-[280px] max-w-[340px] px-4 py-3.5 sm:py-4">
                             <Tooltip>
                               <TooltipTrigger
                                 render={
-                                  <div className="font-semibold text-foreground text-xs line-clamp-2 leading-relaxed cursor-help">
+                                  <div className="font-semibold text-foreground text-sm line-clamp-2 leading-snug cursor-help">
                                     {task.title}
                                   </div>
                                 }
@@ -656,10 +656,10 @@ export function TaskList({
                               </TooltipContent>
                             </Tooltip>
 
-                            <div className="mt-1 flex items-center gap-1.5 text-[11px] text-muted-foreground truncate">
+                            <div className="mt-1 flex items-center gap-1.5 text-xs text-muted-foreground truncate">
                               {task.current_assignee ? (
-                                <span className="inline-flex items-center gap-1 truncate">
-                                  <span className="size-1.5 rounded-full bg-emerald-500 shrink-0" />
+                                <span className="inline-flex items-center gap-1.5 truncate">
+                                  <span className="size-2 rounded-full bg-emerald-500 shrink-0" />
                                   <span className="truncate">PIC: {task.current_assignee.full_name}</span>
                                 </span>
                               ) : (
@@ -670,14 +670,14 @@ export function TaskList({
                             </div>
 
                             {task.status === "REVISION_REQUESTED" && (
-                              <div className="mt-1 inline-flex items-center gap-1 text-[11px] font-medium text-amber-700 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
-                                <AlertTriangle className="size-3 shrink-0" />
+                              <div className="mt-1.5 inline-flex items-center gap-1 text-xs font-medium text-amber-700 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                                <AlertTriangle className="size-3.5 shrink-0" />
                                 <span>Perlu revisi</span>
                               </div>
                             )}
 
                             {task.notes && (
-                              <p className="mt-1 text-[11px] text-muted-foreground/80 line-clamp-1 truncate">
+                              <p className="mt-1 text-xs text-muted-foreground/80 line-clamp-1 truncate">
                                 {task.notes}
                               </p>
                             )}
@@ -685,17 +685,17 @@ export function TaskList({
 
                           {/* Project Column (when rendered on My Tasks) */}
                           {showProjectColumn && (
-                            <td className="w-[180px] min-w-[160px] max-w-[200px] px-4 py-3 truncate">
+                            <td className="w-[180px] min-w-[160px] max-w-[200px] px-4 py-3.5 sm:py-4 truncate">
                               {task.project ? (
                                 <Tooltip>
                                   <TooltipTrigger
                                     render={
                                       <Link
                                         href={`/projects/${task.project.id}?tab=tasks`}
-                                        className="inline-flex items-center gap-1 font-medium text-foreground hover:underline truncate"
+                                        className="inline-flex items-center gap-1.5 font-medium text-foreground hover:underline truncate text-sm"
                                       >
-                                        <Building2 className="size-3 text-muted-foreground shrink-0" />
-                                        <span className="font-mono text-[11px] truncate">
+                                        <Building2 className="size-3.5 text-muted-foreground shrink-0" />
+                                        <span className="font-mono text-xs truncate">
                                           {task.project.project_code}
                                         </span>
                                       </Link>
@@ -713,28 +713,28 @@ export function TaskList({
                           )}
 
                           {/* Task Type */}
-                          <td className="w-[130px] min-w-[120px] px-4 py-3 whitespace-nowrap">
+                          <td className="w-[130px] min-w-[120px] px-4 py-3.5 sm:py-4 whitespace-nowrap">
                             <TaskTypeBadge taskType={task.task_type as TaskType} />
                           </td>
 
                           {/* Priority */}
-                          <td className="w-[110px] min-w-[100px] px-4 py-3 whitespace-nowrap">
+                          <td className="w-[110px] min-w-[100px] px-4 py-3.5 sm:py-4 whitespace-nowrap">
                             <TaskPriorityBadge priority={task.priority} />
                           </td>
 
                           {/* Status */}
-                          <td className="w-[140px] min-w-[130px] px-4 py-3 whitespace-nowrap">
+                          <td className="w-[140px] min-w-[130px] px-4 py-3.5 sm:py-4 whitespace-nowrap">
                             <div className="flex flex-col gap-1 items-start">
                               <TaskStatusBadge status={task.status as TaskStatus} />
                               {task.status === "APPROVED" && task.latest_client_review?.verdict === "APPROVED" && (
-                                <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-1.5 py-0.2 text-[10px] font-semibold">
-                                  <CheckCircle2 className="size-2.5" />
+                                <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2 py-0.5 text-xs font-semibold">
+                                  <CheckCircle2 className="size-3" />
                                   <span>ACC Klien</span>
                                 </span>
                               )}
                               {task.status === "COMPLETED" && task.publication_url && (
-                                <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-1.5 py-0.2 text-[10px] font-semibold">
-                                  <Globe className="size-2.5" />
+                                <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2 py-0.5 text-xs font-semibold">
+                                  <Globe className="size-3" />
                                   <span>Tayang</span>
                                 </span>
                               )}
@@ -742,19 +742,19 @@ export function TaskList({
                           </td>
 
                           {/* Deadline */}
-                          <td className="w-[170px] min-w-[160px] px-4 py-3 whitespace-nowrap">
+                          <td className="w-[170px] min-w-[160px] px-4 py-3.5 sm:py-4 whitespace-nowrap">
                             <DeadlineBadge deadline={task.deadline} />
                           </td>
 
                           {/* References */}
-                          <td className="w-[220px] min-w-[180px] max-w-[240px] px-4 py-3">
-                            <div className="space-y-1 text-[11px] text-muted-foreground">
+                          <td className="w-[220px] min-w-[180px] max-w-[240px] px-4 py-3.5 sm:py-4">
+                            <div className="space-y-1 text-xs text-muted-foreground">
                               {task.content_plan && (
                                 <Tooltip>
                                   <TooltipTrigger
                                     render={
-                                      <div className="flex items-center gap-1 truncate cursor-help">
-                                        <Layers className="size-3 text-primary shrink-0" />
+                                      <div className="flex items-center gap-1.5 truncate cursor-help">
+                                        <Layers className="size-3.5 text-primary shrink-0" />
                                         <span className="truncate font-medium text-foreground">
                                           {formatContentPlanLabel(task.content_plan)}
                                         </span>
@@ -771,8 +771,8 @@ export function TaskList({
                                 <Tooltip>
                                   <TooltipTrigger
                                     render={
-                                      <div className="flex items-center gap-1 truncate cursor-help">
-                                        <FileText className="size-3 text-emerald-500 shrink-0" />
+                                      <div className="flex items-center gap-1.5 truncate cursor-help">
+                                        <FileText className="size-3.5 text-emerald-500 shrink-0" />
                                         <span className="truncate">
                                           {formatScriptLabel(task.script)}
                                         </span>
@@ -792,8 +792,8 @@ export function TaskList({
                           </td>
 
                           {/* Actions */}
-                          <td className="w-[120px] min-w-[110px] px-4 py-3 text-right whitespace-nowrap">
-                            <div className="inline-flex items-center justify-end gap-1.5">
+                          <td className="w-[120px] min-w-[110px] px-4 py-3.5 sm:py-4 text-right whitespace-nowrap">
+                            <div className="inline-flex items-center justify-end gap-1">
                               {/* Status Transition Button */}
                               <TaskStatusControl
                                 task={task}
@@ -823,9 +823,9 @@ export function TaskList({
                                           ? `Lihat file deliverable ${task.title}`
                                           : `Kelola file deliverable ${task.title}`
                                       }
-                                      className="rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+                                      className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
                                     >
-                                      <Layers className="size-3.5" />
+                                      <Layers className="size-4" />
                                       <span className="sr-only">
                                         {userRole === "SOCIAL_MEDIA_SPECIALIST"
                                           ? "Lihat Deliverable"
@@ -858,9 +858,9 @@ export function TaskList({
                                               ? `Alihkan penugasan tugas ${task.title}`
                                               : `Tugaskan PIC untuk ${task.title}`
                                           }
-                                          className="rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+                                          className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
                                         >
-                                          <UserCheck className="size-3.5" />
+                                          <UserCheck className="size-4" />
                                           <span className="sr-only">
                                             {task.current_assignee_id
                                               ? "Alihkan Penugasan"
@@ -890,9 +890,9 @@ export function TaskList({
                                           type="button"
                                           onClick={() => handleEdit(task)}
                                           aria-label={`Edit metadata tugas ${task.title}`}
-                                          className="rounded p-1 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+                                          className="rounded-md p-1.5 text-muted-foreground hover:bg-accent hover:text-foreground transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
                                         >
-                                          <Edit3 className="size-3.5" />
+                                          <Edit3 className="size-4" />
                                           <span className="sr-only">Edit Tugas</span>
                                         </button>
                                       }
@@ -916,9 +916,9 @@ export function TaskList({
                                           type="button"
                                           onClick={() => handleArchive(task)}
                                           aria-label={`Arsipkan tugas ${task.title}`}
-                                          className="rounded p-1 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
+                                          className="rounded-md p-1.5 text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors focus:outline-none focus:ring-1 focus:ring-ring cursor-pointer"
                                         >
-                                          <Trash2 className="size-3.5" />
+                                          <Trash2 className="size-4" />
                                           <span className="sr-only">Arsipkan</span>
                                         </button>
                                       }
@@ -963,30 +963,30 @@ export function TaskList({
                   <div
                     key={task.id}
                     className={cn(
-                      "rounded-lg border border-border bg-card p-4 space-y-3 shadow-2xs text-xs",
+                      "rounded-lg border border-border bg-card p-4 sm:p-5 space-y-3.5 shadow-2xs text-sm",
                       isSelected && "border-primary/40 bg-primary/5"
                     )}
                   >
-                    <div className="flex items-start justify-between gap-2">
-                      <div className="flex items-start gap-2.5 min-w-0 flex-1">
+                    <div className="flex items-start justify-between gap-2.5">
+                      <div className="flex items-start gap-3 min-w-0 flex-1">
                         {canManage && (
                           <Checkbox
                             checked={isSelected}
                             onCheckedChange={() => toggleSelectTask(task.id)}
                             aria-label={`Pilih tugas: ${task.title}`}
-                            className="mt-0.5"
+                            className="mt-1"
                           />
                         )}
                         <div className="min-w-0 flex-1">
-                          <h4 className="font-semibold text-foreground leading-snug break-words">
+                          <h4 className="font-semibold text-foreground text-sm sm:text-base leading-snug break-words">
                             {task.title}
                           </h4>
                           {showProjectColumn && task.project && (
                             <Link
                               href={`/projects/${task.project.id}?tab=tasks`}
-                              className="inline-flex items-center gap-1 font-medium text-primary hover:underline text-[11px] mt-0.5"
+                              className="inline-flex items-center gap-1.5 font-medium text-primary hover:underline text-xs mt-1"
                             >
-                              <Building2 className="size-3" />
+                              <Building2 className="size-3.5" />
                               <span>
                                 {task.project.project_code} - {task.project.name}
                               </span>
@@ -997,38 +997,38 @@ export function TaskList({
                       <div className="flex flex-col gap-1 items-end shrink-0">
                         <TaskStatusBadge status={task.status as TaskStatus} />
                         {task.status === "APPROVED" && task.latest_client_review?.verdict === "APPROVED" && (
-                          <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-1.5 py-0.2 text-[10px] font-semibold">
-                            <CheckCircle2 className="size-2.5" />
+                          <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2 py-0.5 text-xs font-semibold">
+                            <CheckCircle2 className="size-3" />
                             <span>ACC Klien</span>
                           </span>
                         )}
                         {task.status === "COMPLETED" && task.publication_url && (
-                          <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-1.5 py-0.2 text-[10px] font-semibold">
-                            <Globe className="size-2.5" />
+                          <span className="inline-flex items-center gap-1 rounded bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 px-2 py-0.5 text-xs font-semibold">
+                            <Globe className="size-3" />
                             <span>Tayang</span>
                           </span>
                         )}
                       </div>
                     </div>
 
-                    <div className={cn("flex flex-wrap items-center gap-1.5", canManage && "pl-6")}>
+                    <div className={cn("flex flex-wrap items-center gap-2", canManage && "pl-7")}>
                       <TaskTypeBadge taskType={task.task_type as TaskType} />
                       <TaskPriorityBadge priority={task.priority} />
                       {task.status === "REVISION_REQUESTED" && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-medium text-amber-700 dark:text-amber-400 bg-amber-500/10 px-1.5 py-0.5 rounded border border-amber-500/20">
-                          <AlertTriangle className="size-3 shrink-0" />
+                        <span className="inline-flex items-center gap-1 text-xs font-medium text-amber-700 dark:text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
+                          <AlertTriangle className="size-3.5 shrink-0" />
                           <span>Perlu revisi</span>
                         </span>
                       )}
                     </div>
 
                     {task.notes && (
-                      <p className={cn("text-[11px] text-muted-foreground bg-muted/20 p-2 rounded border border-border/40", canManage && "ml-6")}>
+                      <p className={cn("text-xs text-muted-foreground bg-muted/20 p-2.5 rounded border border-border/40", canManage && "ml-7")}>
                         {task.notes}
                       </p>
                     )}
 
-                    <div className={cn("space-y-1 text-[11px] text-muted-foreground border-t border-border/60 pt-2", canManage && "pl-6")}>
+                    <div className={cn("space-y-1.5 text-xs text-muted-foreground border-t border-border/60 pt-2.5", canManage && "pl-7")}>
                       <div className="flex items-center justify-between">
                         <span>PIC:</span>
                         <span className="font-medium text-foreground">
@@ -1042,7 +1042,7 @@ export function TaskList({
                     </div>
 
                     {/* Mobile Action Buttons */}
-                    <div className={cn("flex items-center justify-between border-t border-border/60 pt-2", canManage && "pl-6")}>
+                    <div className={cn("flex items-center justify-between border-t border-border/60 pt-2.5", canManage && "pl-7")}>
                       <TaskStatusControl
                         task={task}
                         projectId={task.project_id}
@@ -1059,13 +1059,13 @@ export function TaskList({
                         onOpenPublish={() => setPublishTask(task)}
                       />
 
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2.5">
                         <button
                           type="button"
                           onClick={() => setDeliverableTask(task)}
-                          className="inline-flex items-center gap-1 text-[11px] text-sky-600 dark:text-sky-400 hover:underline font-medium cursor-pointer"
+                          className="inline-flex items-center gap-1 text-xs text-sky-600 dark:text-sky-400 hover:underline font-medium cursor-pointer"
                         >
-                          <Layers className="size-3" />
+                          <Layers className="size-3.5" />
                           <span>
                             {userRole === "SOCIAL_MEDIA_SPECIALIST"
                               ? "Lihat Deliverable"
@@ -1082,25 +1082,25 @@ export function TaskList({
                               <button
                                 type="button"
                                 onClick={() => handleOpenReassign(task)}
-                                className="inline-flex items-center gap-1 text-[11px] text-primary hover:underline font-medium cursor-pointer"
+                                className="inline-flex items-center gap-1 text-xs text-primary hover:underline font-medium cursor-pointer"
                               >
-                                <UserCheck className="size-3" />
+                                <UserCheck className="size-3.5" />
                                 <span>{task.current_assignee_id ? "PIC" : "Tugaskan"}</span>
                               </button>
                               <button
                                 type="button"
                                 onClick={() => handleEdit(task)}
-                                className="inline-flex items-center gap-1 text-[11px] text-muted-foreground hover:text-foreground font-medium cursor-pointer"
+                                className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground font-medium cursor-pointer"
                               >
-                                <Edit3 className="size-3" />
+                                <Edit3 className="size-3.5" />
                                 <span>Edit</span>
                               </button>
                               <button
                                 type="button"
                                 onClick={() => handleArchive(task)}
-                                className="inline-flex items-center gap-1 text-[11px] text-destructive hover:underline font-medium cursor-pointer"
+                                className="inline-flex items-center gap-1 text-xs text-destructive hover:underline font-medium cursor-pointer"
                               >
-                                <Trash2 className="size-3" />
+                                <Trash2 className="size-3.5" />
                                 <span>Hapus</span>
                               </button>
                             </>

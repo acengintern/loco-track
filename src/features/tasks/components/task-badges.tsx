@@ -27,7 +27,7 @@ export function TaskStatusBadge({ status }: TaskStatusBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center rounded px-2 py-0.5 text-[10px] font-semibold border ${
+      className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold border ${
         colorStyles[status] || "border-border bg-muted text-muted-foreground"
       }`}
     >
@@ -54,7 +54,7 @@ export function TaskTypeBadge({ taskType }: TaskTypeBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center rounded px-1.5 py-0.2 text-[10px] font-medium border ${
+      className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs font-medium border ${
         colorStyles[taskType] || "border-border bg-muted text-muted-foreground"
       }`}
     >
@@ -79,7 +79,7 @@ export function TaskPriorityBadge({ priority }: TaskPriorityBadgeProps) {
 
   return (
     <span
-      className={`inline-flex items-center rounded px-1.5 py-0.2 text-[10px] border ${
+      className={`inline-flex items-center rounded-md px-2 py-0.5 text-xs border ${
         colorStyles[priority] || "text-muted-foreground border-border"
       }`}
     >
@@ -105,8 +105,8 @@ export function DeadlineBadge({ deadline }: DeadlineBadgeProps) {
 
   if (diffDays < 0) {
     return (
-      <span className="inline-flex items-center gap-1 text-[11px] font-medium text-destructive">
-        <Clock className="size-3" />
+      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-destructive">
+        <Clock className="size-3.5" />
         <span>Terlambat {Math.abs(diffDays)} hari ({formattedDate})</span>
       </span>
     );
@@ -114,8 +114,8 @@ export function DeadlineBadge({ deadline }: DeadlineBadgeProps) {
 
   if (diffDays === 0) {
     return (
-      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-600 dark:text-amber-400">
-        <Clock className="size-3" />
+      <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-amber-600 dark:text-amber-400">
+        <Clock className="size-3.5" />
         <span>Batas waktu hari ini</span>
       </span>
     );
@@ -123,16 +123,16 @@ export function DeadlineBadge({ deadline }: DeadlineBadgeProps) {
 
   if (diffDays <= 2) {
     return (
-      <span className="inline-flex items-center gap-1 text-[11px] font-medium text-amber-600 dark:text-amber-400">
-        <Clock className="size-3" />
+      <span className="inline-flex items-center gap-1.5 text-xs font-medium text-amber-600 dark:text-amber-400">
+        <Clock className="size-3.5" />
         <span>{diffDays} hari lagi ({formattedDate})</span>
       </span>
     );
   }
 
   return (
-    <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground">
-      <Clock className="size-3" />
+    <span className="inline-flex items-center gap-1.5 text-xs text-muted-foreground">
+      <Clock className="size-3.5" />
       <span>{diffDays} hari lagi ({formattedDate})</span>
     </span>
   );

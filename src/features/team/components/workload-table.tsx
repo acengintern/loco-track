@@ -69,36 +69,36 @@ export function WorkloadTable({ data }: WorkloadTableProps) {
   }, [selectedMember]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 sm:space-y-8">
       {/* 1. Metric Cards Grid */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
         <MetricCard
           label="Personel Kreatif Aktif"
           value={data.totalActiveCreatives}
           description="Desainer grafis dan video editor yang aktif dalam tim"
           variant="default"
-          icon={<Users className="size-4" />}
+          icon={<Users className="size-5" />}
         />
         <MetricCard
           label="Total Tugas Berjalan"
           value={data.totalActiveTasks}
           description="Total akumulasi tugas yang sedang dikerjakan tim kreatif"
           variant="default"
-          icon={<CheckSquare className="size-4" />}
+          icon={<CheckSquare className="size-5" />}
         />
         <MetricCard
           label="Mendekati Deadline"
           value={data.totalDueSoonTasks}
           description="Tugas dengan batas waktu dalam 7 hari ke depan"
           variant={data.totalDueSoonTasks > 0 ? "warning" : "default"}
-          icon={<Clock className="size-4" />}
+          icon={<Clock className="size-5" />}
         />
         <MetricCard
           label="Melewati Deadline"
           value={data.totalOverdueTasks}
           description="Tugas aktif yang telah melewati batas waktu yang ditentukan"
           variant={data.totalOverdueTasks > 0 ? "destructive" : "default"}
-          icon={<AlertTriangle className="size-4" />}
+          icon={<AlertTriangle className="size-5" />}
         />
       </div>
 
@@ -116,14 +116,14 @@ export function WorkloadTable({ data }: WorkloadTableProps) {
         aria-labelledby="team-workload-heading"
         className="rounded-lg border border-border bg-card shadow-2xs"
       >
-        <div className="border-b border-border p-6">
+        <div className="border-b border-border p-6 sm:p-7">
           <h2
             id="team-workload-heading"
-            className="text-base font-semibold text-foreground"
+            className="text-lg sm:text-[19px] font-semibold text-foreground"
           >
             Matriks Distribusi Beban Kerja
           </h2>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-sm text-muted-foreground mt-1">
             Data penugasan faktual per individu tanpa skor kapasitas spekulatif
           </p>
         </div>
@@ -131,18 +131,18 @@ export function WorkloadTable({ data }: WorkloadTableProps) {
         <div className="overflow-x-auto">
           {data.members.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
-              <Users className="size-8 text-muted-foreground/60 mb-2" />
+              <Users className="size-10 text-muted-foreground/60 mb-2.5" />
               <p className="text-sm font-medium text-foreground">
                 Tidak ada personel kreatif yang aktif.
               </p>
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-sm text-muted-foreground mt-1">
                 Pastikan akun desainer atau editor telah diaktifkan oleh Administrator.
               </p>
             </div>
           ) : (
             <table className="w-full text-left text-sm min-w-[950px]">
               <thead>
-                <tr className="border-b border-border/80 bg-muted/40 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+                <tr className="border-b border-border/80 bg-muted/40 text-xs sm:text-sm font-semibold uppercase tracking-wider text-muted-foreground">
                   <th className="py-3.5 pl-6 pr-4 w-[220px] min-w-[180px]">Personel</th>
                   <th className="py-3.5 px-4 w-[160px] min-w-[140px] whitespace-nowrap">Peran</th>
                   <th className="py-3.5 px-4 text-center w-[90px] min-w-[80px] whitespace-nowrap">Total Tugas</th>
@@ -159,69 +159,69 @@ export function WorkloadTable({ data }: WorkloadTableProps) {
                 {data.members.map((member) => (
                   <tr
                     key={member.id}
-                    className="hover:bg-muted/30 transition-colors"
+                    className="hover:bg-muted/30 transition-colors text-sm"
                   >
-                    <td className="py-3.5 pl-6 pr-4">
+                    <td className="py-3.5 sm:py-4 pl-6 pr-4">
                       <div className="flex flex-col min-w-0">
-                        <span className="font-semibold text-foreground truncate">
+                        <span className="font-semibold text-foreground truncate text-sm sm:text-[15px]">
                           {member.fullName}
                         </span>
-                        <span className="text-xs text-muted-foreground truncate">
+                        <span className="text-xs text-muted-foreground truncate mt-0.5">
                           {member.email}
                         </span>
                       </div>
                     </td>
-                    <td className="py-3.5 px-4 whitespace-nowrap">
-                      <span className="inline-flex items-center rounded-md border border-border bg-muted/60 px-2 py-0.5 text-xs font-medium text-foreground">
+                    <td className="py-3.5 sm:py-4 px-4 whitespace-nowrap">
+                      <span className="inline-flex items-center rounded-md border border-border bg-muted/60 px-2.5 py-0.5 text-xs font-medium text-foreground">
                         {member.role === "GRAPHIC_DESIGNER"
                           ? "Graphic Designer"
                           : "Video Editor"}
                       </span>
                     </td>
-                    <td className="py-3.5 px-4 text-center font-bold tabular-nums text-foreground">
+                    <td className="py-3.5 sm:py-4 px-4 text-center font-bold tabular-nums text-foreground">
                       {member.totalActiveTasks}
                     </td>
-                    <td className="py-3.5 px-4 text-center tabular-nums text-muted-foreground">
+                    <td className="py-3.5 sm:py-4 px-4 text-center tabular-nums text-muted-foreground">
                       {member.todoCount}
                     </td>
-                    <td className="py-3.5 px-4 text-center tabular-nums text-foreground">
+                    <td className="py-3.5 sm:py-4 px-4 text-center tabular-nums text-foreground">
                       {member.inProgressCount}
                     </td>
-                    <td className="py-3.5 px-4 text-center tabular-nums">
+                    <td className="py-3.5 sm:py-4 px-4 text-center tabular-nums">
                       {member.revisionCount > 0 ? (
-                        <span className="inline-flex items-center rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-semibold text-amber-700 dark:text-amber-400">
+                        <span className="inline-flex items-center rounded-full bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-700 dark:text-amber-400">
                           {member.revisionCount}
                         </span>
                       ) : (
                         <span className="text-muted-foreground">0</span>
                       )}
                     </td>
-                    <td className="py-3.5 px-4 text-center tabular-nums text-muted-foreground">
+                    <td className="py-3.5 sm:py-4 px-4 text-center tabular-nums text-muted-foreground">
                       {member.inReviewCount}
                     </td>
-                    <td className="py-3.5 px-4 text-center tabular-nums">
+                    <td className="py-3.5 sm:py-4 px-4 text-center tabular-nums">
                       {member.dueSoonCount > 0 ? (
-                        <span className="inline-flex items-center rounded-full bg-amber-500/10 px-2 py-0.5 text-xs font-semibold text-amber-700 dark:text-amber-400">
+                        <span className="inline-flex items-center rounded-full bg-amber-500/10 px-2.5 py-0.5 text-xs font-semibold text-amber-700 dark:text-amber-400">
                           {member.dueSoonCount}
                         </span>
                       ) : (
                         <span className="text-muted-foreground">0</span>
                       )}
                     </td>
-                    <td className="py-3.5 px-4 text-center tabular-nums">
+                    <td className="py-3.5 sm:py-4 px-4 text-center tabular-nums">
                       {member.overdueCount > 0 ? (
-                        <span className="inline-flex items-center rounded-full bg-destructive/10 px-2 py-0.5 text-xs font-semibold text-destructive">
+                        <span className="inline-flex items-center rounded-full bg-destructive/10 px-2.5 py-0.5 text-xs font-semibold text-destructive">
                           {member.overdueCount}
                         </span>
                       ) : (
                         <span className="text-muted-foreground">0</span>
                       )}
                     </td>
-                    <td className="py-3.5 pl-4 pr-6 text-right whitespace-nowrap">
+                    <td className="py-3.5 sm:py-4 pl-4 pr-6 text-right whitespace-nowrap">
                       <button
                         type="button"
                         onClick={() => setSelectedMember(member)}
-                        className="inline-flex items-center gap-1 rounded-md border border-border bg-background px-2.5 py-1 text-xs font-medium text-foreground hover:bg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+                        className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-sm font-medium text-foreground hover:bg-muted focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring transition-colors shadow-2xs"
                       >
                         Detail ({member.totalActiveTasks})
                       </button>

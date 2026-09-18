@@ -58,20 +58,20 @@ export function ClientList({ clients, userRole, searchQuery = "" }: ClientListPr
   return (
     <div className="space-y-4">
       {/* Search and Action Bar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col gap-3.5 sm:flex-row sm:items-center sm:justify-between">
         <form onSubmit={handleSearchSubmit} className="relative flex-1 max-w-sm">
-          <Search className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" />
+          <Search className="absolute left-3 top-3 size-4 text-muted-foreground" />
           <Input
             type="search"
             placeholder="Cari nama client atau kontak..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-8 text-xs h-9"
+            className="pl-9.5 text-sm h-10"
           />
         </form>
 
         {canCreateOrEdit && (
-          <Button onClick={handleOpenCreate} size="sm" className="gap-1.5 shrink-0">
+          <Button onClick={handleOpenCreate} size="sm" className="gap-2 shrink-0 h-10 px-4 text-sm">
             <Plus className="size-4" />
             <span>Tambah Client</span>
           </Button>
@@ -94,7 +94,7 @@ export function ClientList({ clients, userRole, searchQuery = "" }: ClientListPr
           </p>
           {canCreateOrEdit && !searchQuery && (
             <div className="mt-4">
-              <Button onClick={handleOpenCreate} size="sm" variant="outline" className="gap-1.5">
+              <Button onClick={handleOpenCreate} size="sm" variant="outline" className="gap-2 h-10 px-4 text-sm">
                 <Plus className="size-4" />
                 <span>Buat Client Pertama</span>
               </Button>
@@ -106,67 +106,67 @@ export function ClientList({ clients, userRole, searchQuery = "" }: ClientListPr
           {/* Desktop Table */}
           <div className="hidden md:block overflow-hidden rounded-lg border border-border bg-card shadow-2xs">
             <div className="overflow-x-auto w-full">
-              <table className="w-full text-left text-xs border-collapse min-w-[950px]">
+              <table className="w-full text-left text-sm border-collapse min-w-[950px]">
                 <thead>
                   <tr className="border-b border-border bg-muted/30 text-muted-foreground">
-                    <th className="py-2.5 px-4 font-medium w-[240px] min-w-[200px]">Perusahaan Client</th>
-                    <th className="py-2.5 px-4 font-medium w-[180px] min-w-[150px]">Kontak Utama</th>
-                    <th className="py-2.5 px-4 font-medium w-[200px] min-w-[180px]">Email / Telepon</th>
-                    <th className="py-2.5 px-4 font-medium text-center w-[90px] min-w-[80px] whitespace-nowrap">Brand</th>
-                    <th className="py-2.5 px-4 font-medium text-center w-[90px] min-w-[80px] whitespace-nowrap">Status</th>
-                    <th className="py-2.5 px-4 font-medium w-[140px] min-w-[120px] whitespace-nowrap">Diperbarui</th>
-                    <th className="py-2.5 px-4 font-medium text-right w-[100px] min-w-[90px] whitespace-nowrap">Aksi</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm w-[240px] min-w-[200px]">Perusahaan Client</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm w-[180px] min-w-[150px]">Kontak Utama</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm w-[200px] min-w-[180px]">Email / Telepon</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm text-center w-[90px] min-w-[80px] whitespace-nowrap">Brand</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm text-center w-[90px] min-w-[80px] whitespace-nowrap">Status</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm w-[140px] min-w-[120px] whitespace-nowrap">Diperbarui</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm text-right w-[100px] min-w-[90px] whitespace-nowrap">Aksi</th>
                   </tr>
                 </thead>
               <tbody className="divide-y divide-border/60">
                 {clients.map((client) => (
-                  <tr key={client.id} className="hover:bg-accent/30 transition-colors">
-                    <td className="py-3 px-4">
-                      <div className="font-semibold text-foreground">
+                  <tr key={client.id} className="hover:bg-accent/30 transition-colors text-sm">
+                    <td className="py-3.5 sm:py-4 px-4">
+                      <div className="font-semibold text-foreground text-sm sm:text-[15px]">
                         <Link
                           href={`/clients/${client.id}`}
                           className="hover:underline flex items-center gap-1.5"
                         >
                           <span>{client.name}</span>
-                          <ExternalLink className="size-3 text-muted-foreground" />
+                          <ExternalLink className="size-3.5 text-muted-foreground" />
                         </Link>
                       </div>
                       {client.description && (
-                        <p className="text-[11px] text-muted-foreground line-clamp-1 max-w-xs mt-0.5">
+                        <p className="text-xs text-muted-foreground line-clamp-1 max-w-xs mt-0.5">
                           {client.description}
                         </p>
                       )}
                     </td>
-                    <td className="py-3 px-4 text-muted-foreground font-medium">
+                    <td className="py-3.5 sm:py-4 px-4 text-muted-foreground font-medium text-sm">
                       {client.contact_name || <span className="text-muted-foreground/50">-</span>}
                     </td>
-                    <td className="py-3 px-4">
+                    <td className="py-3.5 sm:py-4 px-4">
                       <div className="space-y-0.5">
                         {client.contact_email && (
-                          <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                            <Mail className="size-3 shrink-0" />
+                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Mail className="size-3.5 shrink-0" />
                             <span className="truncate max-w-[150px]">{client.contact_email}</span>
                           </div>
                         )}
                         {client.contact_phone && (
-                          <div className="flex items-center gap-1 text-[11px] text-muted-foreground">
-                            <Phone className="size-3 shrink-0" />
+                          <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                            <Phone className="size-3.5 shrink-0" />
                             <span>{client.contact_phone}</span>
                           </div>
                         )}
                         {!client.contact_email && !client.contact_phone && (
-                          <span className="text-muted-foreground/50">-</span>
+                          <span className="text-muted-foreground/50 text-xs">-</span>
                         )}
                       </div>
                     </td>
-                    <td className="py-3 px-4 text-center">
-                      <span className="inline-flex items-center justify-center rounded-full bg-muted px-2 py-0.5 text-[11px] font-semibold text-foreground">
+                    <td className="py-3.5 sm:py-4 px-4 text-center">
+                      <span className="inline-flex items-center justify-center rounded-full bg-muted px-2.5 py-0.5 text-xs font-semibold text-foreground">
                         {client.brands_count ?? 0}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-center">
+                    <td className="py-3.5 sm:py-4 px-4 text-center">
                       <span
-                        className={`inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-semibold ${
+                        className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold ${
                           client.is_active
                             ? "bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 border border-emerald-500/20"
                             : "bg-muted text-muted-foreground border border-border"
@@ -175,15 +175,15 @@ export function ClientList({ clients, userRole, searchQuery = "" }: ClientListPr
                         {client.is_active ? "Aktif" : "Nonaktif"}
                       </span>
                     </td>
-                    <td className="py-3 px-4 text-muted-foreground text-[11px]">
+                    <td className="py-3.5 sm:py-4 px-4 text-muted-foreground text-xs sm:text-sm">
                       {new Date(client.updated_at).toLocaleDateString("id-ID", {
                         day: "numeric",
                         month: "short",
                         year: "numeric",
                       })}
                     </td>
-                    <td className="py-3 px-4 text-right">
-                      <div className="inline-flex items-center gap-1">
+                    <td className="py-3.5 sm:py-4 px-4 text-right">
+                      <div className="inline-flex items-center gap-1.5">
                         {canCreateOrEdit && (
                           <Tooltip>
                             <TooltipTrigger
@@ -194,7 +194,7 @@ export function ClientList({ clients, userRole, searchQuery = "" }: ClientListPr
                                   onClick={() => handleOpenEdit(client)}
                                   aria-label={`Edit ${client.name}`}
                                 >
-                                  <Edit2 className="size-3.5 text-muted-foreground hover:text-foreground" />
+                                  <Edit2 className="size-4 text-muted-foreground hover:text-foreground" />
                                 </Button>
                               }
                             />
@@ -214,7 +214,7 @@ export function ClientList({ clients, userRole, searchQuery = "" }: ClientListPr
                                   aria-label={`Arsipkan ${client.name}`}
                                   className="text-destructive/70 hover:text-destructive"
                                 >
-                                  <Archive className="size-3.5" />
+                                  <Archive className="size-4" />
                                 </Button>
                               }
                             />

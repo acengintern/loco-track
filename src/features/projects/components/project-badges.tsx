@@ -55,7 +55,7 @@ export function ProjectStatusBadge({ status }: { status: ProjectPhase }) {
 
   return (
     <span
-      className={`inline-flex items-center rounded-md px-2 py-0.5 text-[11px] font-medium border ${colorClasses}`}
+      className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-semibold border ${colorClasses}`}
     >
       {label}
     </span>
@@ -86,7 +86,7 @@ export function ProjectPriorityBadge({ priority }: { priority: PriorityLevel }) 
 
   return (
     <span
-      className={`inline-flex items-center rounded-md px-2 py-0.5 text-[10px] font-medium border ${colorClasses}`}
+      className={`inline-flex items-center rounded-md px-2.5 py-0.5 text-xs font-medium border ${colorClasses}`}
     >
       {label}
     </span>

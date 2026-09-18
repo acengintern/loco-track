@@ -131,52 +131,52 @@ export function ProjectPlanningSummary({
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5 space-y-4 shadow-2xs">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border pb-3">
+    <div className="rounded-lg border border-border bg-card p-6 sm:p-7 space-y-5 shadow-2xs">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-border pb-4">
         <div>
-          <h3 className="text-sm font-semibold text-foreground">
+          <h3 className="text-base sm:text-lg font-semibold text-foreground">
             Status Kesiapan Perencanaan
           </h3>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <p className="text-sm text-muted-foreground mt-0.5">
             Indikator faktual kelengkapan dokumen pra-produksi.
           </p>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-[11px] text-muted-foreground font-medium">Fase Aktif:</span>
-          <span className="inline-flex items-center rounded border border-primary/20 bg-primary/10 px-2 py-0.5 text-[11px] font-semibold text-primary uppercase tracking-wider">
+          <span className="text-xs text-muted-foreground font-medium">Fase Aktif:</span>
+          <span className="inline-flex items-center rounded-md border border-primary/20 bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary uppercase tracking-wider">
             {projectStatus.replace("_", " ")}
           </span>
         </div>
       </div>
 
       {actionError && (
-        <div className="flex items-center gap-2 rounded border border-destructive/30 bg-destructive/10 p-3 text-xs text-destructive">
-          <AlertCircle className="size-4 shrink-0" />
+        <div className="flex items-center gap-2.5 rounded-lg border border-destructive/30 bg-destructive/10 p-3.5 text-sm text-destructive">
+          <AlertCircle className="size-4.5 shrink-0" />
           <span>{actionError}</span>
         </div>
       )}
 
       {/* Discrete, Factual Completeness Indicators */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 text-sm">
         {/* 1. Brief */}
-        <div className="rounded-md border border-border bg-muted/20 p-3 space-y-1">
+        <div className="rounded-md border border-border bg-muted/20 p-4 space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground font-medium flex items-center gap-1.5">
-              <FileText className="size-3.5 text-primary" />
+            <span className="text-muted-foreground font-medium flex items-center gap-2 text-sm">
+              <FileText className="size-4 text-primary" />
               Project Brief
             </span>
             {hasBrief ? (
-              <span className="text-[10px] font-semibold text-emerald-500 bg-emerald-500/10 px-1.5 py-0.2 rounded border border-emerald-500/20">
+              <span className="text-xs font-semibold text-emerald-500 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20">
                 LENGKAP
               </span>
             ) : (
-              <span className="text-[10px] font-semibold text-amber-500 bg-amber-500/10 px-1.5 py-0.2 rounded border border-amber-500/20">
+              <span className="text-xs font-semibold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">
                 BELUM DIISI
               </span>
             )}
           </div>
-          <p className="text-[11px] text-muted-foreground">
+          <p className="text-xs text-muted-foreground leading-relaxed">
             {hasBrief
               ? "Objektif, audiens sasaran, dan pesan utama tercatat."
               : "Wajib diisi sebelum masuk perencanaan konten."}
@@ -184,14 +184,14 @@ export function ProjectPlanningSummary({
         </div>
 
         {/* 2. Content Plans */}
-        <div className="rounded-md border border-border bg-muted/20 p-3 space-y-1">
+        <div className="rounded-md border border-border bg-muted/20 p-4 space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground font-medium flex items-center gap-1.5">
-              <Calendar className="size-3.5 text-primary" />
+            <span className="text-muted-foreground font-medium flex items-center gap-2 text-sm">
+              <Calendar className="size-4 text-primary" />
               Content Plan
             </span>
             <span
-              className={`text-[10px] font-semibold px-1.5 py-0.2 rounded border ${
+              className={`text-xs font-semibold px-2 py-0.5 rounded border ${
                 contentPlansCount > 0
                   ? "text-emerald-500 bg-emerald-500/10 border-emerald-500/20"
                   : "text-amber-500 bg-amber-500/10 border-amber-500/20"
@@ -200,7 +200,7 @@ export function ProjectPlanningSummary({
               {contentPlansCount} ITEM
             </span>
           </div>
-          <p className="text-[11px] text-muted-foreground">
+          <p className="text-xs text-muted-foreground leading-relaxed">
             {contentPlansCount > 0
               ? `${contentPlansCount} rencana editorial terjadwal.`
               : "Minimal 1 content plan sebelum naskah siap."}
@@ -208,19 +208,19 @@ export function ProjectPlanningSummary({
         </div>
 
         {/* 3. Scripts */}
-        <div className="rounded-md border border-border bg-muted/20 p-3 space-y-1">
+        <div className="rounded-md border border-border bg-muted/20 p-4 space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-muted-foreground font-medium flex items-center gap-1.5">
-              <Layers className="size-3.5 text-primary" />
+            <span className="text-muted-foreground font-medium flex items-center gap-2 text-sm">
+              <Layers className="size-4 text-primary" />
               Naskah (Scripts)
             </span>
             {scriptNotRequired ? (
-              <span className="text-[10px] font-semibold text-sky-500 bg-sky-500/10 px-1.5 py-0.2 rounded border border-sky-500/20">
+              <span className="text-xs font-semibold text-sky-500 bg-sky-500/10 px-2 py-0.5 rounded border border-sky-500/20">
                 TIDAK DIPERLUKAN
               </span>
             ) : (
               <span
-                className={`text-[10px] font-semibold px-1.5 py-0.2 rounded border ${
+                className={`text-xs font-semibold px-2 py-0.5 rounded border ${
                   scriptsCount > 0 && unreadyScriptsCount === 0
                     ? "text-emerald-500 bg-emerald-500/10 border-emerald-500/20"
                     : "text-amber-500 bg-amber-500/10 border-amber-500/20"
@@ -230,7 +230,7 @@ export function ProjectPlanningSummary({
               </span>
             )}
           </div>
-          <p className="text-[11px] text-muted-foreground">
+          <p className="text-xs text-muted-foreground leading-relaxed">
             {scriptNotRequired
               ? `Script tidak diperlukan (${readyScriptsCount}/${scriptsCount} naskah tersedia).`
               : scriptsCount === 0
@@ -245,10 +245,10 @@ export function ProjectPlanningSummary({
       {/* Script Not Required Configuration */}
       {canManage && (isBriefReceived || isContentPlanning) ? (
         /* Editable in Planning Phases for ADMIN / Owner SMS */
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-md border border-border bg-background p-3 text-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3.5 rounded-lg border border-border bg-background p-4 text-sm">
           <div className="space-y-0.5">
             <span className="font-medium text-foreground">Script tidak diperlukan</span>
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               Aktifkan bila format konten proyek ini (seperti desain grafis statis) tidak membutuhkan naskah tertulis.
             </p>
           </div>
@@ -258,24 +258,24 @@ export function ProjectPlanningSummary({
             onClick={() => setIsToggleConfirmOpen(true)}
             disabled={isTogglingScript}
             aria-pressed={scriptNotRequired}
-            className="inline-flex items-center gap-2 rounded border border-border px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50 shrink-0 self-start sm:self-auto transition-colors cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-md border border-border px-3.5 h-10 text-sm font-medium text-foreground hover:bg-muted focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50 shrink-0 self-start sm:self-auto transition-colors cursor-pointer"
           >
             {isTogglingScript ? (
-              <Loader2 className="size-3.5 animate-spin" />
+              <Loader2 className="size-4 animate-spin" />
             ) : scriptNotRequired ? (
-              <ToggleRight className="size-4 text-primary" />
+              <ToggleRight className="size-4.5 text-primary" />
             ) : (
-              <ToggleLeft className="size-4 text-muted-foreground" />
+              <ToggleLeft className="size-4.5 text-muted-foreground" />
             )}
             <span>{scriptNotRequired ? "Aktif" : "Tidak Aktif"}</span>
           </button>
         </div>
       ) : (
         /* Read-Only Status after SCRIPT_READY or for Non-Managing Team Members */
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 rounded-md border border-border bg-muted/20 p-3 text-xs">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 rounded-lg border border-border bg-muted/20 p-4 text-sm">
           <div className="space-y-0.5">
             <span className="font-medium text-foreground">Script tidak diperlukan</span>
-            <p className="text-[11px] text-muted-foreground">
+            <p className="text-xs text-muted-foreground">
               {scriptNotRequired
                 ? "Mode ini aktif. Proyek dapat dilanjutkan ke tahap produksi tanpa penulisan naskah."
                 : "Mode ini tidak aktif. Proyek memerlukan naskah berstatus READY sebelum produksi."}
@@ -283,7 +283,7 @@ export function ProjectPlanningSummary({
           </div>
 
           <span
-            className={`inline-flex items-center px-2 py-0.5 rounded text-[11px] font-semibold border shrink-0 self-start sm:self-auto ${
+            className={`inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold border shrink-0 self-start sm:self-auto ${
               scriptNotRequired
                 ? "border-sky-500/30 bg-sky-500/10 text-sky-600 dark:text-sky-400"
                 : "border-border bg-muted/50 text-muted-foreground"
@@ -296,8 +296,8 @@ export function ProjectPlanningSummary({
 
       {/* Phase Transition Actions */}
       {canManage && isBriefReceived && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-border">
-          <div className="text-xs text-muted-foreground">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-border">
+          <div className="text-sm text-muted-foreground">
             {!canAdvanceToContentPlanning
               ? "Lengkapi formulir brief pada tab Brief untuk membuka fase perencanaan konten."
               : "Brief telah siap. Anda dapat memulai penyusunan jadwal editorial dan naskah."}
@@ -306,22 +306,22 @@ export function ProjectPlanningSummary({
             type="button"
             onClick={() => handleTransition("CONTENT_PLANNING")}
             disabled={!canAdvanceToContentPlanning || isTransitioning}
-            className="inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50 shrink-0"
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 h-10 text-sm font-semibold text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50 shrink-0 cursor-pointer"
           >
-            {isTransitioning && <Loader2 className="size-3.5 animate-spin" />}
+            {isTransitioning && <Loader2 className="size-4 animate-spin" />}
             <span>Mulai Perencanaan Konten</span>
-            <ArrowRight className="size-3.5" />
+            <ArrowRight className="size-4" />
           </button>
         </div>
       )}
 
       {canManage && isContentPlanning && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-2 border-t border-border">
-          <div className="text-xs text-muted-foreground">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pt-3 border-t border-border">
+          <div className="text-sm text-muted-foreground">
             {!canAdvanceToScriptReady ? (
-              <div className="space-y-0.5 text-amber-500">
-                <span className="font-medium">Syarat menuju Naskah Siap belum terpenuhi:</span>
-                <ul className="list-disc list-inside text-[11px] text-muted-foreground">
+              <div className="space-y-1 text-amber-500">
+                <span className="font-medium text-sm">Syarat menuju Naskah Siap belum terpenuhi:</span>
+                <ul className="list-disc list-inside text-xs text-muted-foreground">
                   {!hasBrief && <li>Brief belum diisi</li>}
                   {contentPlansCount === 0 && <li>Minimal 1 content plan harus dibuat</li>}
                   {!scriptConditionMet && !scriptNotRequired && (
@@ -337,7 +337,7 @@ export function ProjectPlanningSummary({
                 </ul>
               </div>
             ) : (
-              <span className="text-emerald-500 font-medium">
+              <span className="text-emerald-500 font-medium text-sm">
                 Seluruh syarat perencanaan terpenuhi. Proyek siap dimajukan ke status Naskah Siap.
               </span>
             )}
@@ -346,18 +346,18 @@ export function ProjectPlanningSummary({
             type="button"
             onClick={() => handleTransition("SCRIPT_READY")}
             disabled={!canAdvanceToScriptReady || isTransitioning}
-            className="inline-flex items-center justify-center gap-1.5 rounded-md bg-primary px-3 py-1.5 text-xs font-medium text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50 shrink-0"
+            className="inline-flex items-center justify-center gap-2 rounded-md bg-primary px-4 h-10 text-sm font-semibold text-primary-foreground hover:bg-primary/90 focus:outline-none focus:ring-1 focus:ring-ring disabled:opacity-50 shrink-0 cursor-pointer"
           >
-            {isTransitioning && <Loader2 className="size-3.5 animate-spin" />}
+            {isTransitioning && <Loader2 className="size-4 animate-spin" />}
             <span>Tandai Naskah Siap</span>
-            <CheckCircle2 className="size-3.5" />
+            <CheckCircle2 className="size-4" />
           </button>
         </div>
       )}
 
       {isScriptReady && (
-        <div className="flex items-center gap-2 rounded-md border border-emerald-500/20 bg-emerald-500/10 p-3 text-xs text-emerald-500">
-          <CheckCircle2 className="size-4 shrink-0" />
+        <div className="flex items-center gap-2.5 rounded-lg border border-emerald-500/20 bg-emerald-500/10 p-4 text-sm text-emerald-500">
+          <CheckCircle2 className="size-4.5 shrink-0" />
           <span>
             Perencanaan kreatif selesai (SCRIPT_READY). Proyek siap memasuki tahap produksi tugas pada Phase 7.
           </span>
@@ -365,8 +365,8 @@ export function ProjectPlanningSummary({
       )}
 
       {isLocked && (
-        <div className="flex items-center gap-2 rounded-md border border-amber-500/30 bg-amber-500/10 p-3 text-xs text-amber-500">
-          <ShieldAlert className="size-4 shrink-0" />
+        <div className="flex items-center gap-2.5 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-sm text-amber-500">
+          <ShieldAlert className="size-4.5 shrink-0" />
           <span>
             Dokumen perencanaan terkunci (T-004). Perubahan brief, content plan, atau naskah hanya dapat dilakukan melalui prosedur revisi luar biasa.
           </span>

@@ -113,14 +113,14 @@ export function NotificationCenterView({
   return (
     <div className="space-y-4">
       {/* Filter Toolbar */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-border pb-3.5">
         {/* Read Status Tabs */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <button
             type="button"
             onClick={() => handleTabChange("all")}
             className={cn(
-              "px-3 py-1.5 text-xs font-medium rounded-md transition-colors",
+              "px-3.5 py-2 text-sm font-medium rounded-md transition-colors",
               currentReadStatus === "all"
                 ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -132,7 +132,7 @@ export function NotificationCenterView({
             type="button"
             onClick={() => handleTabChange("unread")}
             className={cn(
-              "px-3 py-1.5 text-xs font-medium rounded-md transition-colors flex items-center gap-1.5",
+              "px-3.5 py-2 text-sm font-medium rounded-md transition-colors flex items-center gap-2",
               currentReadStatus === "unread"
                 ? "bg-primary text-primary-foreground font-semibold shadow-2xs"
                 : "text-muted-foreground hover:text-foreground hover:bg-muted"
@@ -142,7 +142,7 @@ export function NotificationCenterView({
             {unreadCount > 0 && (
               <span
                 className={cn(
-                  "px-1.5 py-0.2 rounded-full text-[10px] font-bold",
+                  "px-2 py-0.5 rounded-full text-xs font-bold",
                   currentReadStatus === "unread"
                     ? "bg-primary-foreground text-primary"
                     : "bg-primary text-primary-foreground"
@@ -155,12 +155,12 @@ export function NotificationCenterView({
         </div>
 
         {/* Category Filter & Mark All Read */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2.5">
           <Select
             value={currentCategory || "ALL"}
             onValueChange={handleCategoryChange}
           >
-            <SelectTrigger className="h-8 text-xs min-w-40" aria-label="Filter kategori notifikasi">
+            <SelectTrigger className="h-10 text-sm min-w-44" aria-label="Filter kategori notifikasi">
               <SelectValue placeholder="Semua Kategori" />
             </SelectTrigger>
             <SelectContent>
@@ -178,12 +178,12 @@ export function NotificationCenterView({
               size="sm"
               onClick={handleMarkAllRead}
               disabled={isMarkingAll}
-              className="h-8 text-xs gap-1.5"
+              className="h-10 text-sm px-3.5 gap-2"
             >
               {isMarkingAll ? (
-                <Loader2 className="size-3.5 animate-spin" />
+                <Loader2 className="size-4 animate-spin" />
               ) : (
-                <CheckCheck className="size-3.5" />
+                <CheckCheck className="size-4" />
               )}
               <span>Tandai semua dibaca</span>
             </Button>
@@ -194,15 +194,15 @@ export function NotificationCenterView({
       {/* Notification List */}
       {items.length === 0 ? (
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border bg-card/40 p-12 text-center">
-          <div className="flex size-10 items-center justify-center rounded-lg bg-muted text-muted-foreground mb-3">
-            <Bell className="size-5" />
+          <div className="flex size-12 items-center justify-center rounded-lg bg-muted text-muted-foreground mb-4">
+            <Bell className="size-6" />
           </div>
-          <h3 className="text-sm font-semibold text-foreground">
+          <h3 className="text-base font-semibold text-foreground">
             {currentReadStatus === "unread"
               ? "Tidak ada notifikasi yang belum dibaca."
               : "Belum ada notifikasi untuk ditampilkan."}
           </h3>
-          <p className="mt-1 max-w-sm text-xs text-muted-foreground leading-relaxed">
+          <p className="mt-1 max-w-sm text-sm text-muted-foreground leading-relaxed">
             {currentReadStatus === "unread"
               ? "Semua notifikasi Anda sudah ditandai dibaca."
               : "Pemberitahuan penugasan tugas, revisi internal, feedback klien, dan status workflow akan muncul di sini."}
@@ -220,16 +220,16 @@ export function NotificationCenterView({
               <div
                 key={item.id}
                 className={cn(
-                  "p-4 transition-colors flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3",
+                  "p-4 sm:p-5 transition-colors flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3.5",
                   !item.isRead ? "bg-primary/5 hover:bg-primary/10" : "hover:bg-muted/40"
                 )}
               >
-                <div className="flex items-start gap-3 min-w-0 flex-1">
+                <div className="flex items-start gap-3.5 min-w-0 flex-1">
                   {/* Unread Accent Dot */}
-                  <div className="pt-1 shrink-0">
+                  <div className="pt-1.5 shrink-0">
                     <span
                       className={cn(
-                        "block size-2 rounded-full transition-colors",
+                        "block size-2.5 rounded-full transition-colors",
                         !item.isRead ? "bg-primary" : "bg-transparent"
                       )}
                       aria-hidden="true"
@@ -237,11 +237,11 @@ export function NotificationCenterView({
                   </div>
 
                   {/* Body Content */}
-                  <div className="space-y-1 min-w-0 flex-1">
+                  <div className="space-y-1.5 min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <span
                         className={cn(
-                          "text-[10px] px-2 py-0.5 rounded font-medium",
+                          "text-xs px-2.5 py-0.5 rounded-md font-medium",
                           category.badgeClass
                         )}
                       >
@@ -249,7 +249,7 @@ export function NotificationCenterView({
                       </span>
                       <h4
                         className={cn(
-                          "text-xs sm:text-sm",
+                          "text-sm sm:text-base",
                           !item.isRead
                             ? "font-semibold text-foreground"
                             : "font-medium text-foreground/85"
@@ -259,11 +259,11 @@ export function NotificationCenterView({
                       </h4>
                     </div>
 
-                    <p className="text-xs text-muted-foreground leading-relaxed">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
                       {item.message}
                     </p>
 
-                    <div className="flex items-center gap-2 text-[11px] text-muted-foreground/80 pt-0.5">
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground/80 pt-0.5">
                       <span>{formatNotificationTimestamp(item.createdAt)}</span>
                       {!hasValidLink && (
                         <>
@@ -278,13 +278,13 @@ export function NotificationCenterView({
                 </div>
 
                 {/* Right Actions */}
-                <div className="flex items-center justify-end gap-2 shrink-0 sm:pl-4">
+                <div className="flex items-center justify-end gap-2.5 shrink-0 sm:pl-4">
                   {hasValidLink && (
                     <Button
                       nativeButton={false}
                       variant="outline"
                       size="sm"
-                      className="h-7 text-xs gap-1"
+                      className="h-9 text-xs sm:text-sm px-3 gap-1.5"
                       render={
                         <Link
                           href={item.linkUrl}
@@ -293,7 +293,7 @@ export function NotificationCenterView({
                       }
                     >
                       <span>Buka</span>
-                      <ExternalLink className="size-3" />
+                      <ExternalLink className="size-3.5" />
                     </Button>
                   )}
 
@@ -308,7 +308,7 @@ export function NotificationCenterView({
                             aria-label="Tandai notifikasi ini sudah dibaca"
                             className="text-muted-foreground hover:text-foreground cursor-pointer"
                           >
-                            <Check className="size-3.5" />
+                            <Check className="size-4" />
                           </Button>
                         }
                       />
@@ -326,8 +326,8 @@ export function NotificationCenterView({
 
       {/* Server-Side Pagination */}
       {data.totalPages > 1 && (
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-2">
-          <p className="text-xs text-muted-foreground">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-3 pt-3">
+          <p className="text-sm text-muted-foreground">
             Halaman {data.currentPage} dari {data.totalPages} ({data.totalCount} total notifikasi)
           </p>
           <div className="flex items-center gap-2">
@@ -336,12 +336,12 @@ export function NotificationCenterView({
               size="sm"
               onClick={() => handleGoToPage(data.currentPage - 1)}
               disabled={data.currentPage <= 1}
-              className="gap-1 text-xs h-8"
+              className="gap-1.5 text-sm h-9 px-3"
             >
-              <ChevronLeft className="size-3.5" />
+              <ChevronLeft className="size-4" />
               <span>Sebelumnya</span>
             </Button>
-            <div className="text-xs font-medium px-2">
+            <div className="text-sm font-medium px-2.5">
               {data.currentPage} / {data.totalPages}
             </div>
             <Button
@@ -349,10 +349,10 @@ export function NotificationCenterView({
               size="sm"
               onClick={() => handleGoToPage(data.currentPage + 1)}
               disabled={data.currentPage >= data.totalPages}
-              className="gap-1 text-xs h-8"
+              className="gap-1.5 text-sm h-9 px-3"
             >
               <span>Berikutnya</span>
-              <ChevronRight className="size-3.5" />
+              <ChevronRight className="size-4" />
             </Button>
           </div>
         </div>

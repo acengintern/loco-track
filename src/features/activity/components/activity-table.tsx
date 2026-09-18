@@ -36,24 +36,24 @@ export function ActivityTable({ items }: ActivityTableProps) {
       <div className="overflow-x-auto w-full">
         <table className="w-full text-left text-sm min-w-[850px]">
           <thead>
-            <tr className="border-b border-border/80 bg-muted/40 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              <th className="py-3.5 pl-6 pr-4 whitespace-nowrap w-[160px] min-w-[140px]">Waktu</th>
+            <tr className="border-b border-border/80 bg-muted/40 text-xs sm:text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              <th className="py-3.5 pl-6 pr-4 whitespace-nowrap w-[170px] min-w-[150px]">Waktu</th>
               <th className="py-3.5 px-4 whitespace-nowrap w-[180px] min-w-[160px]">Personel</th>
               <th className="py-3.5 px-4 whitespace-nowrap w-[140px] min-w-[120px]">Kategori</th>
-              <th className="py-3.5 px-4 w-[160px] min-w-[140px]">Project</th>
-              <th className="py-3.5 pl-4 pr-6 min-w-[220px]">Rincian Aktivitas</th>
+              <th className="py-3.5 px-4 w-[170px] min-w-[150px]">Project</th>
+              <th className="py-3.5 pl-4 pr-6 min-w-[240px]">Rincian Aktivitas</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-border/50">
             {items.map((item) => (
               <tr
                 key={item.id}
-                className="hover:bg-muted/30 transition-colors text-xs"
+                className="hover:bg-muted/30 transition-colors text-sm"
               >
                 {/* Timestamp */}
-                <td className="py-3.5 pl-6 pr-4 whitespace-nowrap text-muted-foreground">
-                  <div className="flex items-center gap-1.5 font-mono text-[11px] tabular-nums">
-                    <Clock className="size-3 text-muted-foreground/70" />
+                <td className="py-3.5 sm:py-4 pl-6 pr-4 whitespace-nowrap text-muted-foreground">
+                  <div className="flex items-center gap-1.5 font-mono text-xs tabular-nums">
+                    <Clock className="size-3.5 text-muted-foreground/70" />
                     <span>
                       {new Date(item.createdAt).toLocaleString("id-ID", {
                         dateStyle: "short",
@@ -64,14 +64,14 @@ export function ActivityTable({ items }: ActivityTableProps) {
                 </td>
 
                 {/* Actor */}
-                <td className="py-3.5 px-4 whitespace-nowrap font-medium text-foreground">
+                <td className="py-3.5 sm:py-4 px-4 whitespace-nowrap font-medium text-foreground">
                   {item.actorName}
                 </td>
 
                 {/* Category Badge */}
-                <td className="py-3.5 px-4 whitespace-nowrap">
+                <td className="py-3.5 sm:py-4 px-4 whitespace-nowrap">
                   <span
-                    className={`inline-flex items-center rounded-md border px-2 py-0.5 text-[11px] font-medium ${
+                    className={`inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-medium ${
                       categoryStyles[item.category] || categoryStyles.ALL
                     }`}
                   >
@@ -80,7 +80,7 @@ export function ActivityTable({ items }: ActivityTableProps) {
                 </td>
 
                 {/* Project */}
-                <td className="py-3.5 px-4 max-w-[200px] truncate">
+                <td className="py-3.5 sm:py-4 px-4 max-w-[200px] truncate">
                   {item.projectId ? (
                     <Link
                       href={`/projects/${item.projectId}`}
@@ -96,12 +96,12 @@ export function ActivityTable({ items }: ActivityTableProps) {
                 </td>
 
                 {/* Activity Description */}
-                <td className="py-3.5 pl-4 pr-6">
+                <td className="py-3.5 sm:py-4 pl-4 pr-6">
                   <div className="flex flex-col gap-0.5">
-                    <span className="font-semibold text-foreground">
+                    <span className="font-semibold text-foreground text-sm">
                       {item.humanTitle}
                     </span>
-                    <span className="text-muted-foreground leading-relaxed">
+                    <span className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                       {item.humanDescription}
                     </span>
                   </div>

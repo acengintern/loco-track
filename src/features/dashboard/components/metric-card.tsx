@@ -47,27 +47,27 @@ export function MetricCard({
   return (
     <Card
       className={cn(
-        "flex flex-col justify-between p-5 transition-colors h-full min-h-[136px]",
+        "flex flex-col justify-between p-6 transition-colors h-full min-h-[160px]",
         className
       )}
     >
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-xs font-medium uppercase tracking-wider text-muted-foreground">
+      <div className="flex items-center justify-between gap-3">
+        <span className="text-sm font-medium tracking-wide text-muted-foreground">
           {label}
         </span>
         {icon && (
-          <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
+          <div className="flex size-9 sm:size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground [&>svg]:size-4.5 sm:[&>svg]:size-5">
             {icon}
           </div>
         )}
       </div>
 
-      <div className="mt-4">
-        <div className={cn("text-2xl font-bold tracking-tight tabular-nums", styles.value)}>
+      <div className="mt-4 sm:mt-5">
+        <div className={cn("text-3xl sm:text-[32px] font-bold tracking-tight tabular-nums", styles.value)}>
           {value}
         </div>
         {description && (
-          <p className="mt-1 text-xs text-muted-foreground leading-relaxed line-clamp-2">
+          <p className="mt-1.5 text-sm text-muted-foreground leading-relaxed line-clamp-2">
             {description}
           </p>
         )}

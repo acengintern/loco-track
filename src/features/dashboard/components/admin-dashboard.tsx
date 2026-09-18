@@ -40,9 +40,9 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
   );
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 sm:space-y-8">
       {/* 1. Metric Cards Grid (Prioritizing Governance) */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid grid-cols-1 gap-5 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
         {/* Metric 1: Pengguna Aktif */}
         <Link
           href="/users"
@@ -57,7 +57,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
                 : "Akun personel aktif dengan akses operasional"
             }
             variant="default"
-            icon={<Users className="size-3.5" />}
+            icon={<Users className="size-5" />}
             className="group-hover:border-primary/40"
           />
         </Link>
@@ -72,7 +72,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
             value={data.activeProjectsCount}
             description="Total project operasional yang sedang berjalan"
             variant="default"
-            icon={<FolderKanban className="size-3.5" />}
+            icon={<FolderKanban className="size-5" />}
             className="group-hover:border-primary/40"
           />
         </Link>
@@ -87,7 +87,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
             value={data.auditActivity7DaysCount}
             description="Total catatan log sistem dalam 7 hari terakhir"
             variant="default"
-            icon={<Activity className="size-3.5" />}
+            icon={<Activity className="size-5" />}
             className="group-hover:border-primary/40"
           />
         </Link>
@@ -102,7 +102,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
             value={data.overdueProjectsCount}
             description="Project aktif yang melewati tanggal deadline"
             variant={data.overdueProjectsCount > 0 ? "destructive" : "default"}
-            icon={<AlertTriangle className="size-3.5" />}
+            icon={<AlertTriangle className="size-5" />}
             className="group-hover:border-primary/40"
           />
         </Link>
@@ -110,57 +110,57 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
 
       {/* 2. Pusat Kendali Administrasi (Standardized Action Hub Card) */}
       <Card>
-        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 p-5">
-          <div className="flex items-center gap-3">
-            <div className="flex size-7 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
-              <Shield className="size-3.5" />
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-5 p-6 sm:p-7">
+          <div className="flex items-center gap-3.5">
+            <div className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+              <Shield className="size-5" />
             </div>
             <div>
               <CardTitle>Pusat Kendali Administrasi</CardTitle>
-              <CardDescription className="mt-0.5">
+              <CardDescription className="mt-1">
                 Akses cepat tata kelola pengguna, entitas bisnis, log audit, dan pengaturan
               </CardDescription>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2.5">
             <Link
               href="/users"
-              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-3.5 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
             >
-              <Users className="size-3.5 text-muted-foreground" />
+              <Users className="size-4 text-muted-foreground" />
               <span>Kelola Pengguna</span>
             </Link>
 
             <Link
               href="/clients"
-              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-3.5 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
             >
-              <Building2 className="size-3.5 text-muted-foreground" />
+              <Building2 className="size-4 text-muted-foreground" />
               <span>Client & Brand</span>
             </Link>
 
             <Link
               href="/activity"
-              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-3.5 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
             >
-              <Activity className="size-3.5 text-muted-foreground" />
+              <Activity className="size-4 text-muted-foreground" />
               <span>Audit Log</span>
             </Link>
 
             <Link
               href="/settings"
-              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-3.5 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
             >
-              <Settings className="size-3.5 text-muted-foreground" />
+              <Settings className="size-4 text-muted-foreground" />
               <span>Settings</span>
             </Link>
 
             <Link
               href="/projects?create=true"
-              className="inline-flex items-center gap-1.5 rounded-md border border-border bg-background px-3 py-1.5 text-xs font-medium text-foreground hover:bg-muted transition-colors shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
+              className="inline-flex items-center gap-2 rounded-md border border-border bg-background px-3.5 py-2 text-sm font-medium text-foreground hover:bg-muted transition-colors shadow-2xs focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring"
             >
-              <Plus className="size-3.5 text-muted-foreground" />
+              <Plus className="size-4 text-muted-foreground" />
               <span>Buat Project</span>
             </Link>
           </div>
@@ -168,32 +168,32 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
       </Card>
 
       {/* 3. Governance Row (2 Columns: Distribusi Pengguna & Perubahan Akses Terbaru) */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-6 sm:gap-7 lg:grid-cols-12">
         {/* Governance Column 1: Distribusi Pengguna */}
         <Card className="flex flex-col h-full lg:col-span-6">
-          <CardHeader className="flex flex-row items-center justify-between border-b border-border px-5 py-4 min-h-[68px]">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-border p-6 sm:p-7 min-h-[72px]">
             <div>
               <CardTitle>Distribusi Pengguna</CardTitle>
-              <CardDescription className="mt-0.5">
+              <CardDescription className="mt-1">
                 Sebaran akun personel berdasarkan peran akses operasional
               </CardDescription>
             </div>
             <Link
               href="/users"
-              className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-xs shrink-0"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-xs shrink-0"
             >
               <span>Kelola Pengguna</span>
-              <ArrowRight className="size-3" />
+              <ArrowRight className="size-4" />
             </Link>
           </CardHeader>
 
-          <CardContent className="p-5 flex-1 flex flex-col justify-between">
+          <CardContent className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
             {data.userDistribution.length === 0 ? (
-              <p className="py-8 text-center text-xs text-muted-foreground">
+              <p className="py-8 text-center text-sm text-muted-foreground">
                 Belum ada data pengguna yang terdaftar.
               </p>
             ) : (
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 {data.userDistribution.map((item) => {
                   const percentage =
                     item.count > 0
@@ -204,9 +204,9 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
                     <Link
                       key={item.role}
                       href={`/users?role=${item.role}`}
-                      className="group block rounded-md p-1.5 hover:bg-muted/40 transition-colors"
+                      className="group block rounded-md p-2 hover:bg-muted/40 transition-colors"
                     >
-                      <div className="flex items-center justify-between text-xs mb-1.5">
+                      <div className="flex items-center justify-between text-sm mb-1.5">
                         <span className="font-medium text-foreground group-hover:text-primary transition-colors">
                           {item.label}
                         </span>
@@ -214,7 +214,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
                           {item.count}
                         </span>
                       </div>
-                      <div className="h-1.5 w-full rounded-full bg-muted/60 overflow-hidden">
+                      <div className="h-2 w-full rounded-full bg-muted/60 overflow-hidden">
                         <div
                           className="h-full rounded-full bg-primary/70 group-hover:bg-primary transition-all duration-300"
                           style={{ width: `${percentage}%` }}
@@ -230,49 +230,49 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
 
         {/* Governance Column 2: Perubahan Akses Terbaru */}
         <Card className="flex flex-col h-full lg:col-span-6">
-          <CardHeader className="flex flex-row items-center justify-between border-b border-border px-5 py-4 min-h-[68px]">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-border p-6 sm:p-7 min-h-[72px]">
             <div>
               <CardTitle>Perubahan Akses Terbaru</CardTitle>
-              <CardDescription className="mt-0.5">
+              <CardDescription className="mt-1">
                 Catatan penambahan, pencabutan, dan penetapan akses personel
               </CardDescription>
             </div>
             <Link
               href="/activity"
-              className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-xs shrink-0"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-xs shrink-0"
             >
               <span>Buka Audit Log</span>
-              <ArrowRight className="size-3" />
+              <ArrowRight className="size-4" />
             </Link>
           </CardHeader>
 
-          <CardContent className="p-5 flex-1 flex flex-col justify-between">
+          <CardContent className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
             {data.recentAccessChanges.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center">
-                <UserCheck className="size-8 text-muted-foreground/50 mb-2" />
-                <p className="text-xs text-muted-foreground">
+                <UserCheck className="size-10 text-muted-foreground/50 mb-2.5" />
+                <p className="text-sm text-muted-foreground">
                   Belum ada perubahan akses terbaru.
                 </p>
               </div>
             ) : (
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 {data.recentAccessChanges.map((event) => (
                   <div
                     key={event.id}
-                    className="flex flex-col gap-1 rounded-md border border-border/50 bg-background/50 p-3 text-xs"
+                    className="flex flex-col gap-1.5 rounded-md border border-border/50 bg-background/50 p-3.5 text-sm"
                   >
                     <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-1.5 truncate">
+                      <div className="flex items-center gap-2 truncate">
                         <span className="font-semibold text-foreground truncate">
                           {event.targetUserName}
                         </span>
                         {event.targetUserRole && (
-                          <span className="inline-flex items-center rounded-xs bg-muted px-1.5 py-0.5 text-[10px] font-medium text-muted-foreground shrink-0">
+                          <span className="inline-flex items-center rounded-xs bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground shrink-0">
                             {event.targetUserRole}
                           </span>
                         )}
                       </div>
-                      <span className="text-[11px] text-muted-foreground shrink-0 tabular-nums">
+                      <span className="text-xs text-muted-foreground shrink-0 tabular-nums">
                         {new Date(event.createdAt).toLocaleString("id-ID", {
                           dateStyle: "short",
                           timeStyle: "short",
@@ -280,8 +280,8 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
                       </span>
                     </div>
 
-                    <div className="flex items-center justify-between gap-2 text-muted-foreground text-[11px]">
-                      <span className="text-foreground/80 font-medium">
+                    <div className="flex items-center justify-between gap-2 text-xs">
+                      <span className="text-foreground/90 font-medium text-sm">
                         {event.actionLabel}
                       </span>
                       {event.contextName && (
@@ -299,32 +299,32 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
       </div>
 
       {/* 4. Operational Row (2 Columns: Distribusi Status Workflow & Aktivitas Operasional) */}
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-12">
+      <div className="grid grid-cols-1 gap-6 sm:gap-7 lg:grid-cols-12">
         {/* Operational Column 1: Distribusi Status Workflow */}
         <Card className="flex flex-col h-full lg:col-span-6">
-          <CardHeader className="flex flex-row items-center justify-between border-b border-border px-5 py-4 min-h-[68px]">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-border p-6 sm:p-7 min-h-[72px]">
             <div>
               <CardTitle>Distribusi Status Workflow</CardTitle>
-              <CardDescription className="mt-0.5">
+              <CardDescription className="mt-1">
                 Sebaran tahapan seluruh project dalam sistem
               </CardDescription>
             </div>
             <Link
               href="/projects"
-              className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-xs shrink-0"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-xs shrink-0"
             >
               <span>Lihat Project</span>
-              <ArrowRight className="size-3" />
+              <ArrowRight className="size-4" />
             </Link>
           </CardHeader>
 
-          <CardContent className="p-5 flex-1 flex flex-col justify-between">
+          <CardContent className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
             {data.workflowDistribution.length === 0 ? (
-              <p className="py-8 text-center text-xs text-muted-foreground">
+              <p className="py-8 text-center text-sm text-muted-foreground">
                 Belum ada data project dalam workflow.
               </p>
             ) : (
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 {data.workflowDistribution.map((item) => {
                   const percentage =
                     item.count > 0
@@ -333,9 +333,9 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
 
                   return (
                     <div key={item.status} className="p-1">
-                      <div className="flex items-center justify-between text-xs mb-1.5">
+                      <div className="flex items-center justify-between text-sm mb-1.5">
                         <div className="flex items-center gap-2">
-                          <span className="size-1.5 rounded-full bg-primary/70 shrink-0" />
+                          <span className="size-2 rounded-full bg-primary/70 shrink-0" />
                           <span className="font-medium text-foreground">
                             {item.label}
                           </span>
@@ -344,7 +344,7 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
                           {item.count}
                         </span>
                       </div>
-                      <div className="h-1.5 w-full rounded-full bg-muted/60 overflow-hidden">
+                      <div className="h-2 w-full rounded-full bg-muted/60 overflow-hidden">
                         <div
                           className="h-full rounded-full bg-primary/60"
                           style={{ width: `${percentage}%` }}
@@ -360,50 +360,50 @@ export function AdminDashboard({ data }: AdminDashboardProps) {
 
         {/* Operational Column 2: Aktivitas Operasional Terkini */}
         <Card className="flex flex-col h-full lg:col-span-6">
-          <CardHeader className="flex flex-row items-center justify-between border-b border-border px-5 py-4 min-h-[68px]">
+          <CardHeader className="flex flex-row items-center justify-between border-b border-border p-6 sm:p-7 min-h-[72px]">
             <div>
               <CardTitle>Aktivitas Operasional Terkini</CardTitle>
-              <CardDescription className="mt-0.5">
+              <CardDescription className="mt-1">
                 10 catatan riwayat aksi operasional terbaru dari seluruh project
               </CardDescription>
             </div>
             <Link
               href="/activity"
-              className="inline-flex items-center gap-1 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-xs shrink-0"
+              className="inline-flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring rounded-xs shrink-0"
             >
               <span>Buka Audit Log</span>
-              <ArrowRight className="size-3" />
+              <ArrowRight className="size-4" />
             </Link>
           </CardHeader>
 
-          <CardContent className="p-5 flex-1 flex flex-col justify-between">
+          <CardContent className="p-6 sm:p-7 flex-1 flex flex-col justify-between">
             {data.recentActivity.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center">
-                <Activity className="size-8 text-muted-foreground/50 mb-2" />
-                <p className="text-xs text-muted-foreground">
+                <Activity className="size-10 text-muted-foreground/50 mb-2.5" />
+                <p className="text-sm text-muted-foreground">
                   Belum ada aktivitas operasional yang tercatat.
                 </p>
               </div>
             ) : (
-              <div className="space-y-2.5">
+              <div className="space-y-3">
                 {data.recentActivity.map((act) => (
                   <div
                     key={act.id}
-                    className="flex flex-col gap-1 rounded-md border border-border/50 bg-background/50 p-3 text-xs"
+                    className="flex flex-col gap-1.5 rounded-md border border-border/50 bg-background/50 p-3.5 text-sm"
                   >
                     <div className="flex items-center justify-between gap-2">
                       <span className="font-semibold text-foreground truncate">
                         {act.projectName}
                       </span>
-                      <span className="text-[11px] text-muted-foreground shrink-0 tabular-nums">
+                      <span className="text-xs text-muted-foreground shrink-0 tabular-nums">
                         {new Date(act.createdAt).toLocaleString("id-ID", {
                           dateStyle: "short",
                           timeStyle: "short",
                         })}
                       </span>
                     </div>
-                    <div className="flex items-center gap-1.5 text-muted-foreground text-[11px]">
-                      <span className="font-medium text-foreground/80">
+                    <div className="flex items-center gap-2 text-muted-foreground text-xs">
+                      <span className="font-medium text-foreground/90 text-sm">
                         {act.actorName}
                       </span>
                       <span>{act.actionPhrase}</span>

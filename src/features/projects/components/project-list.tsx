@@ -107,17 +107,17 @@ export function ProjectList({
           {/* Desktop Table */}
           <div className="hidden md:block overflow-hidden rounded-lg border border-border bg-card shadow-2xs">
             <div className="overflow-x-auto w-full">
-              <table className="w-full text-left text-xs border-collapse min-w-[1050px]">
+              <table className="w-full text-left text-sm border-collapse min-w-[1050px]">
                 <thead>
                   <tr className="border-b border-border bg-muted/30 text-muted-foreground">
-                    <th className="py-2.5 px-4 font-medium w-[150px] min-w-[140px] whitespace-nowrap">Kode Project</th>
-                    <th className="py-2.5 px-4 font-medium w-[300px] min-w-[260px]">Judul & Klien/Brand</th>
-                    <th className="py-2.5 px-4 font-medium text-center w-[160px] min-w-[140px] whitespace-nowrap">Status</th>
-                    <th className="py-2.5 px-4 font-medium text-center w-[120px] min-w-[100px] whitespace-nowrap">Prioritas</th>
-                    <th className="py-2.5 px-4 font-medium w-[180px] min-w-[160px] whitespace-nowrap">Penanggung Jawab</th>
-                    <th className="py-2.5 px-4 font-medium w-[150px] min-w-[140px] whitespace-nowrap">Batas Akhir</th>
-                    <th className="py-2.5 px-4 font-medium text-center w-[80px] min-w-[80px] whitespace-nowrap">Tim</th>
-                    <th className="py-2.5 px-4 font-medium text-right w-[100px] min-w-[100px] whitespace-nowrap">Aksi</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm w-[150px] min-w-[140px] whitespace-nowrap">Kode Project</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm w-[300px] min-w-[260px]">Judul & Klien/Brand</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm text-center w-[160px] min-w-[140px] whitespace-nowrap">Status</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm text-center w-[120px] min-w-[100px] whitespace-nowrap">Prioritas</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm w-[180px] min-w-[160px] whitespace-nowrap">Penanggung Jawab</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm w-[150px] min-w-[140px] whitespace-nowrap">Batas Akhir</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm text-center w-[80px] min-w-[80px] whitespace-nowrap">Tim</th>
+                    <th className="py-3.5 px-4 font-semibold text-sm text-right w-[100px] min-w-[100px] whitespace-nowrap">Aksi</th>
                   </tr>
                 </thead>
               <tbody className="divide-y divide-border/60">
@@ -129,25 +129,25 @@ export function ProjectList({
                       key={project.id}
                       className="hover:bg-accent/30 transition-colors"
                     >
-                      <td className="py-3 px-4">
+                      <td className="py-3.5 sm:py-4 px-4">
                         <Link
                           href={`/projects/${project.id}`}
-                          className="font-mono text-[11px] font-semibold text-foreground hover:underline"
+                          className="font-mono text-xs sm:text-sm font-semibold text-foreground hover:underline"
                         >
                           {project.project_code}
                         </Link>
                       </td>
-                      <td className="py-3 px-4 max-w-xs">
-                        <div className="font-semibold text-foreground">
+                      <td className="py-3.5 sm:py-4 px-4 max-w-xs">
+                        <div className="font-semibold text-foreground text-sm sm:text-[15px]">
                           <Link
                             href={`/projects/${project.id}`}
                             className="hover:underline flex items-center gap-1.5"
                           >
                             <span className="truncate">{project.name}</span>
-                            <ExternalLink className="size-3 text-muted-foreground shrink-0" />
+                            <ExternalLink className="size-3.5 text-muted-foreground shrink-0" />
                           </Link>
                         </div>
-                        <div className="text-[11px] text-muted-foreground truncate mt-0.5">
+                        <div className="text-xs text-muted-foreground truncate mt-1">
                           <span>{project.brand.client.name}</span>
                           <span className="mx-1">•</span>
                           <span className="font-medium text-foreground/80">
@@ -155,30 +155,30 @@ export function ProjectList({
                           </span>
                         </div>
                       </td>
-                      <td className="py-3 px-4 text-center">
+                      <td className="py-3.5 sm:py-4 px-4 text-center">
                         <ProjectStatusBadge status={project.status} />
                       </td>
-                      <td className="py-3 px-4 text-center">
+                      <td className="py-3.5 sm:py-4 px-4 text-center">
                         <ProjectPriorityBadge priority={project.priority} />
                       </td>
-                      <td className="py-3 px-4 text-muted-foreground font-medium">
+                      <td className="py-3.5 sm:py-4 px-4 text-muted-foreground font-medium text-sm">
                         {project.sms_owner.full_name}
                       </td>
-                      <td className="py-3 px-4 text-muted-foreground text-[11px]">
+                      <td className="py-3.5 sm:py-4 px-4 text-muted-foreground text-xs sm:text-sm">
                         {new Date(project.deadline).toLocaleDateString("id-ID", {
                           day: "numeric",
                           month: "short",
                           year: "numeric",
                         })}
                       </td>
-                      <td className="py-3 px-4 text-center">
-                        <span className="inline-flex items-center gap-1 text-[11px] text-muted-foreground font-medium">
-                          <Users className="size-3" />
+                      <td className="py-3.5 sm:py-4 px-4 text-center">
+                        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground font-medium">
+                          <Users className="size-3.5" />
                           <span>{project.members_count}</span>
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-right">
-                        <div className="inline-flex items-center gap-1">
+                      <td className="py-3.5 sm:py-4 px-4 text-right">
+                        <div className="inline-flex items-center gap-1.5">
                           <Tooltip>
                             <TooltipTrigger
                               render={
@@ -189,7 +189,7 @@ export function ProjectList({
                                   render={<Link href={`/projects/${project.id}`} />}
                                   aria-label={`Detail ${project.name}`}
                                 >
-                                  <ExternalLink className="size-3.5 text-muted-foreground hover:text-foreground" />
+                                  <ExternalLink className="size-4 text-muted-foreground hover:text-foreground" />
                                 </Button>
                               }
                             />
@@ -209,7 +209,7 @@ export function ProjectList({
                                     aria-label={`Arsipkan ${project.name}`}
                                     className="text-destructive/70 hover:text-destructive"
                                   >
-                                    <Archive className="size-3.5" />
+                                    <Archive className="size-4" />
                                   </Button>
                                 }
                               />

@@ -64,14 +64,14 @@ export function UserMenu({
     <DropdownMenu>
       <DropdownMenuTrigger
         className={cn(
-          "group flex items-center rounded-md transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring data-[open]:bg-accent select-none cursor-pointer",
+          "group flex items-center rounded-lg transition-colors hover:bg-accent hover:text-accent-foreground focus-visible:outline-hidden focus-visible:ring-2 focus-visible:ring-ring data-[open]:bg-accent select-none cursor-pointer",
           compact
-            ? "size-10 sm:size-9 min-h-[44px] min-w-[44px] sm:min-h-0 sm:min-w-0 justify-center p-0"
-            : "w-full gap-2.5 p-1.5 text-left text-sm"
+            ? "size-10 sm:size-10 min-h-[44px] min-w-[44px] justify-center p-0"
+            : "w-full gap-3 p-2 text-left text-sm"
         )}
         aria-label="Menu pengguna"
       >
-        <Avatar size="sm" className="border border-border shrink-0">
+        <Avatar className="size-9 border border-border shrink-0">
           <AvatarFallback className="bg-primary/10 text-xs font-semibold text-primary">
             {initials}
           </AvatarFallback>
@@ -79,10 +79,10 @@ export function UserMenu({
         {!compact && (
           <>
             <div className="flex flex-col min-w-0 flex-1 leading-tight text-left">
-              <span className="truncate text-xs font-semibold text-foreground">
+              <span className="truncate text-sm font-semibold text-foreground">
                 {user.full_name}
               </span>
-              <span className="truncate text-[10px] text-muted-foreground mt-0.5">
+              <span className="truncate text-xs text-muted-foreground mt-0.5">
                 {user.email}
               </span>
             </div>

@@ -80,7 +80,7 @@ export function ProfileForm({ initialProfile }: ProfileFormProps) {
         <div
           role="status"
           aria-live="polite"
-          className={`rounded-md border p-3.5 text-xs font-medium ${
+          className={`rounded-md border p-4 text-sm font-medium ${
             feedback.type === "success"
               ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
               : "border-destructive/30 bg-destructive/10 text-destructive"
@@ -90,10 +90,10 @@ export function ProfileForm({ initialProfile }: ProfileFormProps) {
         </div>
       )}
 
-      <div className="space-y-4">
+      <div className="space-y-4.5">
         {/* Full Name */}
-        <div className="space-y-1.5">
-          <Label htmlFor="fullName" className="text-xs font-medium">
+        <div className="space-y-2">
+          <Label htmlFor="fullName" className="text-sm font-medium">
             Nama Lengkap
           </Label>
           <Input
@@ -104,13 +104,13 @@ export function ProfileForm({ initialProfile }: ProfileFormProps) {
             onChange={(e) => setFullName(e.target.value)}
             disabled={isLoading}
             required
-            className="max-w-md text-sm"
+            className="max-w-md text-sm h-10"
           />
         </div>
 
         {/* Email (Read only) */}
-        <div className="space-y-1.5">
-          <Label htmlFor="email" className="text-xs font-medium text-muted-foreground">
+        <div className="space-y-2">
+          <Label htmlFor="email" className="text-sm font-medium text-muted-foreground">
             Alamat Email
           </Label>
           <Input
@@ -118,16 +118,16 @@ export function ProfileForm({ initialProfile }: ProfileFormProps) {
             type="email"
             value={initialProfile.email}
             disabled
-            className="max-w-md text-sm bg-muted/50 cursor-not-allowed opacity-80"
+            className="max-w-md text-sm h-10 bg-muted/50 cursor-not-allowed opacity-80"
           />
-          <p className="text-[11px] text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             Alamat email terdaftar dikelola oleh administrator sistem.
           </p>
         </div>
 
         {/* Role (Read only) */}
-        <div className="space-y-1.5">
-          <Label htmlFor="role" className="text-xs font-medium text-muted-foreground">
+        <div className="space-y-2">
+          <Label htmlFor="role" className="text-sm font-medium text-muted-foreground">
             Peran Operasional
           </Label>
           <Input
@@ -135,19 +135,20 @@ export function ProfileForm({ initialProfile }: ProfileFormProps) {
             type="text"
             value={roleLabel}
             disabled
-            className="max-w-md text-sm bg-muted/50 cursor-not-allowed opacity-80 font-medium"
+            className="max-w-md text-sm h-10 bg-muted/50 cursor-not-allowed opacity-80 font-medium"
           />
-          <p className="text-[11px] text-muted-foreground">
+          <p className="text-xs text-muted-foreground">
             Peran menentukan hak akses modul dan alur persetujuan Anda.
           </p>
         </div>
       </div>
 
-      <div className="pt-2">
+      <div className="pt-3">
         <Button
           type="submit"
           disabled={isLoading || fullName.trim() === initialProfile.fullName}
           size="sm"
+          className="h-10 px-5 text-sm"
         >
           {isLoading ? "Menyimpan..." : "Simpan Perubahan"}
         </Button>

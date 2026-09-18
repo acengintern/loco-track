@@ -40,11 +40,11 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "flex items-center justify-between gap-2 rounded-md border border-input bg-background px-2.5 py-1 text-xs text-foreground shadow-2xs transition-colors cursor-pointer outline-none select-none",
+        "flex items-center justify-between gap-2 rounded-lg border border-input bg-background px-3.5 py-2 text-sm text-foreground shadow-2xs transition-colors cursor-pointer outline-none select-none",
         "hover:bg-accent/50 focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring",
         "disabled:cursor-not-allowed disabled:opacity-50",
         "data-placeholder:text-muted-foreground",
-        size === "default" ? "h-9 min-w-32" : "h-8 min-w-28",
+        size === "default" ? "h-10 min-w-36" : "h-9 min-w-32 text-xs px-2.5 py-1.5",
         className
       )}
       {...props}
@@ -52,7 +52,7 @@ function SelectTrigger({
       {children}
       <SelectPrimitive.Icon
         render={
-          <ChevronDownIcon className="pointer-events-none size-3.5 text-muted-foreground shrink-0" />
+          <ChevronDownIcon className="pointer-events-none size-4 text-muted-foreground shrink-0" />
         }
       />
     </SelectPrimitive.Trigger>
@@ -126,7 +126,7 @@ function SelectItem({
     <SelectPrimitive.Item
       data-slot="select-item"
       className={cn(
-        "relative flex w-full cursor-pointer select-none items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-xs outline-none transition-colors",
+        "relative flex w-full cursor-pointer select-none items-center gap-2 rounded-md py-2 pr-8 pl-3 text-sm outline-none transition-colors",
         "hover:bg-accent hover:text-accent-foreground data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
         "data-disabled:pointer-events-none data-disabled:opacity-50",
         "[&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",

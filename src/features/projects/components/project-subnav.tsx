@@ -140,7 +140,7 @@ export function ProjectSubnav({
   return (
     <nav
       aria-label="Navigasi Proyek"
-      className="flex items-center gap-1 border-b border-border overflow-x-auto no-scrollbar text-xs font-medium"
+      className="flex items-center gap-1 border-b border-border overflow-x-auto no-scrollbar text-sm font-medium"
     >
       {tabs.map((tab) => {
         const Icon = tab.icon;
@@ -159,17 +159,17 @@ export function ProjectSubnav({
             key={tab.key}
             href={href}
             prefetch={false}
-            className={`flex items-center gap-1.5 px-3.5 py-2.5 border-b-2 whitespace-nowrap transition-colors ${
+            className={`flex items-center gap-2 px-4 py-3 border-b-2 whitespace-nowrap transition-colors ${
               isActive
                 ? "border-primary text-foreground font-semibold"
                 : "border-transparent text-muted-foreground hover:text-foreground hover:border-border"
             }`}
           >
-            <Icon className="size-3.5" />
+            <Icon className="size-4" />
             <span>{tab.label}</span>
             {tab.badge !== undefined && (
               <span
-                className={`ml-1 rounded px-1.5 py-0.2 text-[10px] font-semibold ${
+                className={`ml-1 rounded-full px-2 py-0.5 text-xs font-semibold ${
                   tab.badgeColor || "bg-muted text-muted-foreground"
                 }`}
               >

@@ -79,28 +79,28 @@ export function ProjectFilters({
   }, [currentBrandId, brands]);
 
   return (
-    <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+    <div className="flex flex-col gap-3.5 lg:flex-row lg:items-center lg:justify-between">
       <form
         onSubmit={handleSearchSubmit}
         className="relative flex-1 max-w-sm"
       >
-        <Search className="absolute left-2.5 top-2.5 size-4 text-muted-foreground" />
+        <Search className="absolute left-3 top-3 size-4 text-muted-foreground" />
         <Input
           type="search"
           placeholder="Cari judul project atau kode..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="pl-8 text-xs h-9"
+          className="pl-9.5 text-sm h-10"
         />
       </form>
 
-      <div className="flex flex-wrap items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2.5">
         {/* Status Dropdown */}
         <Select
           value={currentStatus || "ALL"}
           onValueChange={(val) => applyParam("status", val === "ALL" ? undefined : val || undefined)}
         >
-          <SelectTrigger className="h-9 text-xs min-w-36" aria-label="Filter status project">
+          <SelectTrigger className="h-10 text-sm min-w-40" aria-label="Filter status project">
             <SelectValue placeholder="Semua Status">
               {statusFilterLabel}
             </SelectValue>
@@ -120,7 +120,7 @@ export function ProjectFilters({
           value={currentPriority || "ALL"}
           onValueChange={(val) => applyParam("priority", val === "ALL" ? undefined : val || undefined)}
         >
-          <SelectTrigger className="h-9 text-xs min-w-36" aria-label="Filter prioritas project">
+          <SelectTrigger className="h-10 text-sm min-w-40" aria-label="Filter prioritas project">
             <SelectValue placeholder="Semua Prioritas">
               {priorityFilterLabel}
             </SelectValue>
@@ -141,7 +141,7 @@ export function ProjectFilters({
             value={currentBrandId || "ALL"}
             onValueChange={(val) => applyParam("brandId", val === "ALL" ? undefined : val || undefined)}
           >
-            <SelectTrigger className="h-9 text-xs min-w-36" aria-label="Filter brand project">
+            <SelectTrigger className="h-10 text-sm min-w-40" aria-label="Filter brand project">
               <SelectValue placeholder="Semua Brand">
                 {brandFilterLabel}
               </SelectValue>
@@ -163,9 +163,9 @@ export function ProjectFilters({
             variant="ghost"
             size="sm"
             onClick={handleReset}
-            className="h-9 px-2 text-xs text-muted-foreground hover:text-foreground gap-1"
+            className="h-10 px-3 text-sm text-muted-foreground hover:text-foreground gap-1.5"
           >
-            <X className="size-3.5" />
+            <X className="size-4" />
             <span>Reset</span>
           </Button>
         )}

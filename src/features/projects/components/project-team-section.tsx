@@ -161,11 +161,11 @@ export function ProjectTeamSection({
   };
 
   return (
-    <div className="rounded-lg border border-border bg-card p-5 space-y-4 shadow-2xs">
+    <div className="rounded-lg border border-border bg-card p-6 sm:p-7 space-y-5 shadow-2xs">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <Users className="size-4 text-muted-foreground" />
-          <h2 className="text-sm font-semibold text-foreground">
+        <div className="flex items-center gap-2.5">
+          <Users className="size-5 text-muted-foreground" />
+          <h2 className="text-base sm:text-lg font-semibold text-foreground">
             Anggota Tim Proyek ({members.length})
           </h2>
         </div>
@@ -175,14 +175,14 @@ export function ProjectTeamSection({
             type="button"
             size="sm"
             variant="outline"
-            className="text-xs h-8 gap-1.5"
+            className="text-sm h-10 px-4 gap-2"
             onClick={() => {
               setErrorMessage(null);
               setIsAddOpen(true);
             }}
             disabled={availableUsers.length === 0}
           >
-            <UserPlus className="size-3.5" />
+            <UserPlus className="size-4" />
             <span>Tambah Anggota</span>
           </Button>
         )}
@@ -191,7 +191,7 @@ export function ProjectTeamSection({
       {removeError && (
         <div
           role="alert"
-          className="flex items-center gap-2 rounded-md border border-destructive/20 bg-destructive/10 p-2.5 text-xs text-destructive font-medium"
+          className="flex items-center gap-2.5 rounded-lg border border-destructive/20 bg-destructive/10 p-3 text-sm text-destructive font-medium"
         >
           <AlertCircle className="size-4 shrink-0" />
           <span>{removeError}</span>
@@ -199,32 +199,32 @@ export function ProjectTeamSection({
       )}
 
       {members.length === 0 ? (
-        <div className="rounded-md border border-dashed border-border p-4 text-center text-xs text-muted-foreground">
+        <div className="rounded-lg border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
           Belum ada anggota tim terdaftar selain sistem pemilik.
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {members.map((member) => {
             const isOwner = member.user_id === smsOwnerId;
 
             return (
               <div
                 key={member.id}
-                className="flex items-center justify-between rounded-md border border-border bg-background p-3 text-xs shadow-2xs"
+                className="flex items-center justify-between rounded-lg border border-border bg-background p-3.5 sm:p-4 text-sm shadow-2xs"
               >
-                <div className="space-y-0.5 min-w-0 pr-2">
-                  <div className="flex items-center gap-1.5 font-medium text-foreground truncate">
+                <div className="space-y-1 min-w-0 pr-2">
+                  <div className="flex items-center gap-1.5 font-semibold text-foreground text-sm sm:text-[15px] truncate">
                     <span className="truncate">{member.user.full_name}</span>
                     {isOwner && (
                       <span
                         title="Penanggung Jawab Utama (SMS Owner)"
                         className="inline-flex items-center text-primary"
                       >
-                        <ShieldCheck className="size-3.5" />
+                        <ShieldCheck className="size-4" />
                       </span>
                     )}
                   </div>
-                  <div className="text-[11px] text-muted-foreground truncate">
+                  <div className="text-xs text-muted-foreground truncate font-medium">
                     {ROLE_LABELS[member.user.role] || member.user.role}
                   </div>
                 </div>
@@ -236,7 +236,7 @@ export function ProjectTeamSection({
                         <Button
                           type="button"
                           variant="ghost"
-                          size="icon-xs"
+                          size="icon-sm"
                           aria-label={`Hapus ${member.user.full_name} dari roster`}
                           onClick={() => {
                             setRemoveError(null);
@@ -247,7 +247,7 @@ export function ProjectTeamSection({
                           }}
                           className="text-muted-foreground hover:bg-destructive/10 hover:text-destructive shrink-0"
                         >
-                          <Trash2 className="size-3.5" />
+                          <Trash2 className="size-4" />
                         </Button>
                       }
                     />

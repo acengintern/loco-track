@@ -21,7 +21,7 @@ export function DashboardShell({
     "Sistem manajemen alur kerja internal LOCO TRACK.";
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8 sm:space-y-10">
       <PageHeader title={`Halo, ${fullName}`} description={description}>
         {action && <div className="flex items-center gap-2">{action}</div>}
       </PageHeader>
